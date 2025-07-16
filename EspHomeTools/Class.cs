@@ -2,4 +2,4 @@
 
 namespace EspHomeTools;
 
-public class Class { }
+public class Clas2 { }
