@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace EspHomeTools.scratch;
+namespace EspHomeTools.Classes;
 
 public class YamlFloat : YamlScalarBase<double>
 {
