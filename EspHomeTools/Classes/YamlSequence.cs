@@ -18,37 +18,34 @@ public class YamlSequence : IYamlSequence
     public string ToYaml(int indent = 0)
     {
         var sb = new StringBuilder();
-        var prefix = new string(' ', indent);
+        var basePrefix = new string(' ', indent);
         if (!string.IsNullOrWhiteSpace(Comment))
         {
-            sb.Append(prefix).Append("# ").AppendLine(Comment);
+            sb.Append(basePrefix).Append("# ").AppendLine(Comment);
         }
 
         if (!string.IsNullOrWhiteSpace(Name))
         {
-            sb.Append(prefix).Append(Name).AppendLine(":");
+            sb.Append(basePrefix).Append(Name).AppendLine(":");
+            indent += 2; // Einrückung für die Listenelemente erhöhen
         }
 
+        var itemIndentStr = new string(' ', indent);
+        var childIndent = indent + 2;
         foreach (var node in _nodes)
         {
-            node.Name = null;
-            string childYaml = node.ToYaml(indent + 2);
-            string[] lines = childYaml.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-            if (!lines.Any())
-                continue;
+            string childYaml = node.ToYaml(childIndent);
 
-            sb.Append(new string(' ', indent)).Append("- ").AppendLine(lines[0].TrimStart());
-            for (int i = 1; i < lines.Length; i++)
-            {
-                sb.AppendLine(lines[i]);
-            }
+            // Entferne die Einrückung der ersten Zeile, die von der Kind-Methode kommt
+            string trimmedChildYaml = childYaml.TrimStart();
+            sb.Append(itemIndentStr).Append("- ").AppendLine(trimmedChildYaml);
         }
 
         return sb.ToString().TrimEnd();
     }
 
 
-    #region IList Implementierung (einfache Weiterleitung)
+    #region IList Implementierung
 
     public void Add(IYamlNode item) => _nodes.Add(item);
     public void Clear() => _nodes.Clear();
