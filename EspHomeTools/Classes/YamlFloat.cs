@@ -9,13 +9,9 @@ public class YamlFloat : YamlScalarBase<double>
         Value = value;
     }
 
-
-
-
     protected override string SerializeValue()
     {
         if (Value == null) return "null";
-
         return Value.ToString(CultureInfo.InvariantCulture);
     }
 }
