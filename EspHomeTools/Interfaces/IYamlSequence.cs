@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
 
-namespace EspHomeTools.scratch;
+namespace EspHomeTools.Interfaces;
 
 public interface IYamlSequence : IYamlStructure, IList<IYamlNode> { }
