@@ -1,4 +1,4 @@
-﻿namespace EspHomeTools.scratch;
+﻿namespace EspHomeTools.Interfaces;
 
 public interface IYamlScalar<TValue> : IYamlNode
 {
