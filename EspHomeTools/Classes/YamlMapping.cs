@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Classes;
@@ -16,20 +17,21 @@ public class YamlMapping : IYamlMapping
 
     public string ToYaml(int indent = 0)
     {
-        var lines = new List<string>();
+        var text = new StringBuilder();
         if (!string.IsNullOrWhiteSpace(Name))
         {
-            lines.Add($"{new string(' ', indent)}{Name}:");
+            text.AppendLine($"{new string(' ', indent)}{Name}:");
             indent += 2;
         }
 
         foreach (var kvp in _nodes)
         {
             kvp.Value.Name = kvp.Key;
-            lines.Add(kvp.Value.ToYaml(indent));
+            text.AppendLine(kvp.Value.ToYaml(indent));
         }
 
-        return string.Join(Environment.NewLine, lines);
+        // Entfernt den letzten, überflüssigen Zeilenumbruch
+        return text.ToString().TrimEnd();
     }
 
 
