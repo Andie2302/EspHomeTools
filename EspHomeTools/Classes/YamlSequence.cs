@@ -27,7 +27,7 @@ public class YamlSequence : IYamlSequence
         if (!string.IsNullOrWhiteSpace(Name))
         {
             sb.Append(basePrefix).Append(Name).AppendLine(":");
-            indent += 2; // Einrückung für die Listenelemente erhöhen
+            indent += 2;
         }
 
         var itemIndentStr = new string(' ', indent);
@@ -35,8 +35,6 @@ public class YamlSequence : IYamlSequence
         foreach (var node in _nodes)
         {
             string childYaml = node.ToYaml(childIndent);
-
-            // Entferne die Einrückung der ersten Zeile, die von der Kind-Methode kommt
             string trimmedChildYaml = childYaml.TrimStart();
             sb.Append(itemIndentStr).Append("- ").AppendLine(trimmedChildYaml);
         }
