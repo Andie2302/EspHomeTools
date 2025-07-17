@@ -1,4 +1,4 @@
-﻿namespace EspHomeTools.scratch;
+﻿namespace EspHomeTools.Classes;
 
 public class YamlBool : YamlScalarBase<bool>
 {
@@ -6,8 +6,6 @@ public class YamlBool : YamlScalarBase<bool>
     {
         Value = value;
     }
-
-
 
     protected override string SerializeValue()
     {
