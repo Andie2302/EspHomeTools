@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace EspHomeTools.scratch;
+namespace EspHomeTools.Classes;
 
 public class YamlString : YamlScalarBase<string>
 {
