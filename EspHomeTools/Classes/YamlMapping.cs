@@ -30,7 +30,6 @@ public class YamlMapping : IYamlMapping
             text.AppendLine(kvp.Value.ToYaml(indent));
         }
 
-        // Entfernt den letzten, überflüssigen Zeilenumbruch
         return text.ToString().TrimEnd();
     }
 
