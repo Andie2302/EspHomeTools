@@ -1,4 +1,4 @@
-﻿namespace EspHomeTools.scratch;
+﻿namespace EspHomeTools.Classes;
 
 public class YamlInt : YamlScalarBase<int>
 {
