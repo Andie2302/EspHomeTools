@@ -1,6 +1,7 @@
 ﻿using System.Text;
+using EspHomeTools.Interfaces;
 
-namespace EspHomeTools.scratch;
+namespace EspHomeTools.Classes;
 
 
 
