@@ -7,8 +7,6 @@ public class YamlInt : YamlScalarBase<int>
         Value = value;
     }
 
-
-
     protected override string SerializeValue()
     {
         return Value.ToString();
