@@ -3,7 +3,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Classes;
 
-public abstract class YamlScalarBase<TValue> : IYamlScalar<TValue>
+public abstract class YamlScalar<TValue> : IYamlScalar<TValue>
 {
     public TValue? Value { get; set; }
     public string? Name { get; set; }
