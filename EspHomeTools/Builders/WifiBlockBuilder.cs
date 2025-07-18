@@ -30,4 +30,9 @@ public class WifiBlockBuilder
 
         return _block;
     }
+    public WifiBlockBuilder WithPassword(YamlSecret password)
+    {
+        _block["password"] = password;
+        return this;
+    }
 }
