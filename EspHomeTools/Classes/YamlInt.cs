@@ -1,14 +1,11 @@
 ﻿namespace EspHomeTools.Classes;
 
-public class YamlInt : YamlScalarBase<int>
+public class YamlInt : YamlScalar<int>
 {
     public YamlInt(int value)
     {
         Value = value;
     }
 
-    protected override string SerializeValue()
-    {
-        return Value.ToString();
-    }
+    protected override string SerializeValue() => Value.ToString();
 }
