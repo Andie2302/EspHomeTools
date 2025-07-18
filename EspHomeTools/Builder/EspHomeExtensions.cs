@@ -9,7 +9,7 @@ public static class EspHomeExtensions
     public static IYamlMapping WithEsphome(this IYamlMapping root, Action<EsphomeBlockBuilder> configurator)
     {
         var builder = new EsphomeBlockBuilder();
-        configurator(builder); // Führt die vom Benutzer definierte Konfiguration aus
+        configurator(builder);
         root["esphome"] = builder.Build();
         return root;
     }
@@ -55,8 +55,15 @@ public static class EspHomeExtensions
     public static IYamlMapping WithDhtSensor(this IYamlMapping root, Action<DhtSensorBuilder> configurator)
     {
         var builder = new DhtSensorBuilder();
-        configurator(builder); // Führt die Benutzerkonfiguration aus
+        configurator(builder);
         var sensorConfig = builder.Build();
         return root.WithComponent("sensor", sensorConfig);
+    }
+    public static IYamlMapping WithGpioSwitch(this IYamlMapping root, Action<GpioSwitchBuilder> configurator)
+    {
+        var builder = new GpioSwitchBuilder();
+        configurator(builder);
+        var switchConfig = builder.Build();
+        return root.WithComponent("switch", switchConfig);
     }
 }
