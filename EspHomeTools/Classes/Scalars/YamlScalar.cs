@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using EspHomeTools.Interfaces;
 
-namespace EspHomeTools.Classes;
+namespace EspHomeTools.Classes.Scalars;
 
 /// <summary>
 /// Abstract base class for YAML scalar nodes.
