@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using EspHomeTools.Interfaces;
 
-namespace EspHomeTools.Classes;
+namespace EspHomeTools.Classes.Structures;
 
 /// <summary>
 /// Represents a YAML mapping structure which consists of key-value pairs, where both
