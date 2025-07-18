@@ -66,4 +66,36 @@ public static class EspHomeExtensions
         var switchConfig = builder.Build();
         return root.WithComponent("switch", switchConfig);
     }
+
+    public static IYamlMapping WithEsp8266(this IYamlMapping root, Action<Esp8266BlockBuilder> configurator)
+    {
+        var builder = new Esp8266BlockBuilder();
+        configurator(builder);
+        root["esp8266"] = builder.Build();
+        return root;
+    }
+
+    public static IYamlMapping WithEsp32(this IYamlMapping root, Action<Esp32BlockBuilder> configurator)
+    {
+        var builder = new Esp32BlockBuilder();
+        configurator(builder);
+        root["esp32"] = builder.Build();
+        return root;
+    }
+
+    public static IYamlMapping WithRp2040(this IYamlMapping root, Action<Rp2040BlockBuilder> configurator)
+    {
+        var builder = new Rp2040BlockBuilder();
+        configurator(builder);
+        root["rp2040"] = builder.Build();
+        return root;
+    }
+
+    public static IYamlMapping WithBeken(this IYamlMapping root, Action<BekenBlockBuilder> configurator)
+    {
+        var builder = new BekenBlockBuilder();
+        configurator(builder);
+        root["bk72xx"] = builder.Build();
+        return root;
+    }
 }
