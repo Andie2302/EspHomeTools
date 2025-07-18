@@ -1,8 +1,5 @@
-﻿using EspHomeTools.Classes;
-using EspHomeTools.Classes.Scalars;
+﻿using EspHomeTools.Classes.Scalars;
 using EspHomeTools.Classes.Structures;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Text;
 
 namespace TestEspHomeTools;
