@@ -1,10 +1,9 @@
 ﻿using System;
-using EspHomeTools.Classes;
 using EspHomeTools.Classes.Scalars;
 using EspHomeTools.Classes.Structures;
 using EspHomeTools.Interfaces;
 
-namespace EspHomeTools.Builder;
+namespace EspHomeTools.Builders;
 
 public class EsphomeBlockBuilder
 {
