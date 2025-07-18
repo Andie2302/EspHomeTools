@@ -1,46 +1,45 @@
-﻿using EspHomeTools.Classes;
+﻿using System;
+using EspHomeTools.Classes;
 using EspHomeTools.Interfaces;
 
-namespace EspHomeTools.Extensions;
+namespace EspHomeTools.Builder;
 
 public static class EspHomeExtensions
 {
-    public static IYamlMapping WithEsphome(this IYamlMapping mapping, string name)
+    public static IYamlMapping WithEsphome(this IYamlMapping root, Action<EsphomeBlockBuilder> configurator)
     {
-        var esphomeBlock = new YamlMapping
-        {
-            { "name", new YamlString(name) }
-        };
-
-        mapping.Add("esphome", esphomeBlock);
-        return mapping;
+        var builder = new EsphomeBlockBuilder();
+        configurator(builder); // Führt die vom Benutzer definierte Konfiguration aus
+        root["esphome"] = builder.Build();
+        return root;
     }
-    public static IYamlMapping WithWifi(this IYamlMapping mapping, string ssid, string password)
+
+    public static IYamlMapping WithWifi(this IYamlMapping root, Action<WifiBlockBuilder> configurator)
     {
-        var wifiBlock = new YamlMapping
-        {
-            { "ssid", new YamlString(ssid) },
-            { "password", new YamlString(password) }
-        };
-
-        mapping.Add("wifi", wifiBlock);
-        return mapping;
+        var builder = new WifiBlockBuilder();
+        configurator(builder);
+        root["wifi"] = builder.Build();
+        return root;
     }
+
     public static IYamlMapping WithLogger(this IYamlMapping mapping)
     {
         mapping.Add("logger", new YamlMapping());
         return mapping;
     }
+
     public static IYamlMapping WithApi(this IYamlMapping mapping)
     {
         mapping.Add("api", new YamlMapping());
         return mapping;
     }
+
     public static IYamlMapping WithOta(this IYamlMapping mapping)
     {
         mapping.Add("ota", new YamlMapping());
         return mapping;
     }
+
     public static IYamlMapping WithComponent(this IYamlMapping root, string componentType, IYamlMapping componentConfig)
     {
         if (!root.TryGetValue(componentType, out var node) || node is not IYamlSequence sequence)
