@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace EspHomeTools.Classes;
+namespace EspHomeTools.Classes.Scalars;
 
 /// <summary>
 /// Represents a YAML scalar value of type double, providing functionality for serialization and manipulation
