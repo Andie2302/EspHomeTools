@@ -1,14 +1,11 @@
 ﻿namespace EspHomeTools.Classes;
 
-public class YamlBool : YamlScalarBase<bool>
+public class YamlBool : YamlScalar<bool>
 {
     public YamlBool(bool value)
     {
         Value = value;
     }
 
-    protected override string SerializeValue()
-    {
-        return Value.ToString().ToLowerInvariant();
-    }
+    protected override string SerializeValue() => Value.ToString().ToLowerInvariant();
 }
