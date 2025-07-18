@@ -119,4 +119,4 @@ Beiträge sind herzlich willkommen! Wenn du eine neue Komponente hinzufügst, st
 
 ## Lizenz
 
-Dieses Projekt steht unter der [MIT-Lizenz](LICENSE).
+Dieses Projekt steht unter der [MIT-Lizenz](LICENSE). 
