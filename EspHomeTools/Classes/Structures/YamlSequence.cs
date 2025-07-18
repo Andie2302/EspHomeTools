@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using EspHomeTools.Interfaces;
 
-namespace EspHomeTools.Classes;
+namespace EspHomeTools.Classes.Structures;
 
 /// <summary>
 /// Represents a YAML sequence structure. This class implements the <see cref="IYamlSequence"/> interface and is used
