@@ -1,4 +1,4 @@
-﻿namespace EspHomeTools.Classes;
+﻿namespace EspHomeTools.Classes.Scalars;
 
 /// <summary>
 /// Represents a YAML scalar node that holds a string value.
