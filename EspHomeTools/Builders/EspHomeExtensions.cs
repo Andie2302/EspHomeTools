@@ -1,9 +1,8 @@
 ﻿using System;
-using EspHomeTools.Classes;
 using EspHomeTools.Classes.Structures;
 using EspHomeTools.Interfaces;
 
-namespace EspHomeTools.Builder;
+namespace EspHomeTools.Builders;
 
 public static class EspHomeExtensions
 {
