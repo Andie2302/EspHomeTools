@@ -1,4 +1,4 @@
-﻿namespace EspHomeTools.Classes;
+﻿namespace EspHomeTools.Classes.Scalars;
 
 /// <summary>
 /// Represents a YAML scalar integer node, providing functionality to serialize integer values into YAML format.
