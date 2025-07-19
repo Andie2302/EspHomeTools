@@ -1,6 +1,4 @@
-﻿// ... (innerhalb der WifiBlockBuilder.cs Datei)
-
-using System;
+﻿using System;
 using EspHomeTools.Classes.Scalars;
 using EspHomeTools.Classes.Structures;
 using EspHomeTools.Interfaces;
