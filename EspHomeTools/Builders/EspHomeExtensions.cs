@@ -98,4 +98,11 @@ public static class EspHomeExtensions
         root["bk72xx"] = builder.Build();
         return root;
     }
+    public static IYamlMapping WithMqtt(this IYamlMapping root, Action<MqttBlockBuilder> configurator)
+    {
+        var builder = new MqttBlockBuilder();
+        configurator(builder);
+        root["mqtt"] = builder.Build();
+        return root;
+    }
 }
