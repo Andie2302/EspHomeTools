@@ -111,15 +111,28 @@ switch:
     icon: "mdi:lightbulb"
 ```
 
-## Contributing
+## Project Goals
 
-Contributions are welcome! If you add a new component, please ensure you also add corresponding unit tests to verify its functionality.
-
-1.  Fork the repository.
-2.  Create your feature branch (`git checkout -b feature/NewComponent`).
-3.  Commit your changes and add tests (`git commit -am 'Add new builder for XYZ'`).
-4.  Push to the branch (`git push origin feature/NewComponent`).
-5.  Open a new Pull Request.
+* <details>
+    <summary><strong>Maximum Type-Safety:</strong></summary>
+    By using C#, errors are caught during development (compile-time), not when you're trying to flash your device. Manually writing YAML can be error-prone, as a single misplaced space can invalidate the entire configuration.
+    </details>
+* <details>
+    <summary><strong>Intuitive Fluent API:</strong></summary>
+    The self-documenting builder methods guide you through the configuration process, often eliminating the need to manually consult the ESPHome documentation.
+    </details>
+* <details>
+    <summary><strong>Automation and Scalability:</strong></summary>
+    Enables the programmatic creation of configurations. This is ideal for projects where configurations need to be generated dynamically based on application logic or for a large number of devices.
+    </details>
+* <details>
+    <summary><strong>Improved Maintainability and Readability:</strong></summary>
+    Keep your configurations clean, well-structured, and version-controlled—right alongside your C# code. This improves clarity compared to long, cumbersome YAML files.
+    </details>
+* <details>
+    <summary><strong>Easy Extensibility:</strong></summary>
+    The existing design makes it straightforward to add new ESPHome components. New builders can be easily created and integrated into the existing structure.
+    </details>
 
 ## License
 
