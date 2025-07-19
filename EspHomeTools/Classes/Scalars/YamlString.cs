@@ -30,7 +30,7 @@ public class YamlString : YamlScalar<string>
     /// </returns>
     protected override string SerializeValue()
     {
-        var value = (Value??string.Empty).Trim();
+        var value = (Value ?? string.Empty).Trim();
         return YamlTools.NeedsQuoting(value) ? $"\"{value.Replace("\"", "\\\"")}\"" : value;
     }
 }
