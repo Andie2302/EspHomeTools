@@ -28,7 +28,6 @@ public class YamlSecret : YamlScalar<string>
     /// </returns>
     protected override string SerializeValue()
     {
-        // Secrets in YAML benötigen keine Anführungszeichen.
         return $"!secret {Value}";
     }
 }
