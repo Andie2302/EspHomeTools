@@ -37,8 +37,8 @@ Here’s how you can easily generate a complete ESPHome configuration for a devi
 ```csharp
 using System;
 using EspHomeTools.Builders;
-using EspHomeTools.Classes;
-using EspHomeTools.Classes.Scalars; // Required for YamlSecret
+using EspHomeTools.Classes.Scalars;
+using EspHomeTools.Classes.Structures; // Required for YamlSecret
 
 // 1. Create the root node for the YAML file
 var root = new YamlMapping();
@@ -64,16 +64,16 @@ root.WithEsphome(esphome =>
     .WithDhtSensor(dht =>
     {
         dht.UsePin("D2")
-           .WithTemperature("Living Room Temperature")
-           .WithHumidity("Living Room Humidity")
-           .WithUpdateInterval("60s");
+            .WithTemperature("Living Room Temperature")
+            .WithHumidity("Living Room Humidity")
+            .WithUpdateInterval("60s");
     })
     .WithGpioSwitch(sw =>
     {
         sw.UsePin("D1")
-          .WithName("Living Room Lamp")
-          .WithId("living_room_lamp")
-          .WithIcon("mdi:lightbulb");
+            .WithName("Living Room Lamp")
+            .WithId("living_room_lamp")
+            .WithIcon("mdi:lightbulb");
     });
 
 // 3. Generate and print the final YAML string
@@ -108,7 +108,7 @@ switch:
     pin: D1
     name: Living Room Lamp
     id: living_room_lamp
-    icon: mdi:lightbulb
+    icon: "mdi:lightbulb"
 ```
 
 ## Contributing
