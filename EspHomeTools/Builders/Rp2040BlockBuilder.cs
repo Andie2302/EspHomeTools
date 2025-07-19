@@ -23,6 +23,14 @@ public class Rp2040BlockBuilder
 
     public Rp2040BlockBuilder WithBoard(string board, bool isSecret) => isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
 
+    public Rp2040BlockBuilder WithCommentOn(string key, string comment)
+    {
+        if (_block.TryGetValue(key, out var node))
+            node.Comment = comment;
+
+        return this;
+    }
+
     internal IYamlMapping Build()
     {
         if (!_block.ContainsKey("board"))
