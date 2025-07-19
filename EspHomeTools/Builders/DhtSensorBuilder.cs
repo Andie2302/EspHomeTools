@@ -68,6 +68,14 @@ public class DhtSensorBuilder
 
     public DhtSensorBuilder WithModel(string model, bool isSecret) => isSecret ? WithModel(new YamlSecret(model)) : WithModel(model);
 
+    public DhtSensorBuilder WithCommentOn(string key, string comment)
+    {
+        if (_config.TryGetValue(key, out var node))
+            node.Comment = comment;
+
+        return this;
+    }
+
     internal IYamlMapping Build()
     {
         if (!_config.ContainsKey("pin"))
