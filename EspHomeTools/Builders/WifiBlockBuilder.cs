@@ -5,6 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
+// (AccessPointBlockBuilder ist hier bereits enthalten)
 public class WifiBlockBuilder
 {
     private readonly YamlMapping _block = new();
@@ -42,6 +43,14 @@ public class WifiBlockBuilder
         var builder = new AccessPointBlockBuilder();
         configurator(builder);
         _block["ap"] = builder.Build();
+        return this;
+    }
+
+    public WifiBlockBuilder WithCommentOn(string key, string comment)
+    {
+        if (_block.TryGetValue(key, out var node))
+            node.Comment = comment;
+
         return this;
     }
 
