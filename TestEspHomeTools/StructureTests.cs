@@ -11,8 +11,6 @@ namespace TestEspHomeTools;
 [TestClass]
 public class StructureTests
 {
-    // ================== YamlMapping Tests ==================
-
     /// Unit test that verifies the functionality of generating a YAML representation
     /// from a YamlMapping instance containing simple scalar values.
     /// This test:
@@ -24,7 +22,6 @@ public class StructureTests
     [TestMethod]
     public void YamlMapping_WithSimpleScalars_GeneratesCorrectYaml()
     {
-        // Arrange
         var mapping = new YamlMapping
         {
             { "name", new YamlString("My Device") },
@@ -33,15 +30,10 @@ public class StructureTests
         };
 
         var expected = new StringBuilder();
-        // KORREKTUR: "My Device" benötigt laut deinen Regeln keine Anführungszeichen.
         expected.AppendLine("name: My Device");
         expected.AppendLine("enabled: true");
         expected.Append("retries: 5");
-
-        // Act
         var actual = mapping.ToYaml().Trim();
-
-        // Assert
         Assert.AreEqual(expected.ToString(), actual);
     }
 
@@ -57,7 +49,6 @@ public class StructureTests
     [TestMethod]
     public void YamlMapping_WithNestedMapping_GeneratesCorrectYaml()
     {
-        // Arrange
         var nestedMapping = new YamlMapping
         {
             { "ssid", new YamlString("MyWifi") },
@@ -72,15 +63,9 @@ public class StructureTests
         expected.AppendLine("wifi:");
         expected.AppendLine("  ssid: MyWifi");
         expected.Append("  password: secret");
-
-        // Act
         var actual = rootMapping.ToYaml().Trim();
-
-        // Assert
         Assert.AreEqual(expected.ToString(), actual);
     }
-
-    // ================== YamlSequence Tests ==================
 
     /// <summary>
     /// Verifies that a YAML sequence containing simple scalar elements (strings and integers) generates
@@ -100,7 +85,6 @@ public class StructureTests
     [TestMethod]
     public void YamlSequence_WithSimpleScalars_GeneratesCorrectYaml()
     {
-        // Arrange
         var sequence = new YamlSequence
         {
             new YamlString("item1"),
@@ -112,11 +96,7 @@ public class StructureTests
         expected.AppendLine("- item1");
         expected.AppendLine("- item2");
         expected.Append("- 3");
-
-        // Act
         var actual = sequence.ToYaml().Trim();
-
-        // Assert
         Assert.AreEqual(expected.ToString(), actual);
     }
 
@@ -141,7 +121,6 @@ public class StructureTests
     [TestMethod]
     public void YamlSequence_WithMappings_GeneratesCorrectYaml()
     {
-        // Arrange
         var sequence = new YamlSequence
         {
             new YamlMapping { { "platform", new YamlString("dht") }, { "pin", new YamlString("D1") } },
@@ -153,11 +132,7 @@ public class StructureTests
         expected.AppendLine("  pin: D1");
         expected.AppendLine("- platform: gpio");
         expected.Append("  pin: D2");
-
-        // Act
         var actual = sequence.ToYaml().Trim();
-
-        // Assert
         Assert.AreEqual(expected.ToString(), actual);
     }
 }
