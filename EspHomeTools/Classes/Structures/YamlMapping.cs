@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EspHomeTools.Interfaces;
+using System;
 
 namespace EspHomeTools.Classes.Structures;
 
@@ -48,19 +49,31 @@ public class YamlMapping : IYamlMapping
     public string ToYaml(int indent = 0)
     {
         var text = new StringBuilder();
+        var prefix = new string(' ', indent);
+        if (!string.IsNullOrWhiteSpace(Comment))
+        {
+            var commentLines = Comment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            foreach (var line in commentLines)
+            {
+                text.Append(prefix).Append("# ").AppendLine(line);
+            }
+        }
+
         if (!string.IsNullOrWhiteSpace(Name))
         {
-            text.AppendLine($"{new string(' ', indent)}{Name}:");
+            text.Append(prefix).Append(Name).AppendLine(":");
             indent += 2;
         }
 
+        var nodeStrings = new List<string>();
         foreach (var kvp in _nodes)
         {
             kvp.Value.Name = kvp.Key;
-            text.AppendLine(kvp.Value.ToYaml(indent));
+            nodeStrings.Add(kvp.Value.ToYaml(indent));
         }
 
-        return text.ToString().Trim();
+        text.Append(string.Join(Environment.NewLine, nodeStrings.Where(s => !string.IsNullOrEmpty(s))));
+        return text.ToString().TrimEnd('\r', '\n', ' ');
     }
 
 
@@ -151,6 +164,7 @@ public class YamlMapping : IYamlMapping
     /// For this instance, the property always returns `false`, indicating that
     /// the collection is not read-only and modification is permitted.
     public bool IsReadOnly => false;
+
     /// Adds the specified key and value pair to the YAML mapping.
     /// <param name="item">
     /// The key-value pair to add to the YAML mapping. The key represents the name of the YAML node,
