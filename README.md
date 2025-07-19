@@ -1,122 +1,130 @@
 # EspHomeTools
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/andie2302/esphometools)
+**EspHomeTools** is a .NET library for programmatically creating [ESPHome](https://esphome.io/) configurations using C#. Instead of writing YAML files by hand, you can leverage a type-safe and intuitive fluent builder API to generate your configurations.
 
-**EspHomeTools** ist eine .NET-Bibliothek, die das Erstellen von [ESPHome](https://esphome.io/)-Konfigurationen in C# ermöglicht. Anstatt YAML-Dateien manuell zu schreiben, kannst du eine typsichere und intuitive Fluent-Builder-API verwenden, um deine Konfigurationen programmatisch zu generieren.
+## Why EspHomeTools?
 
-## Warum EspHomeTools?
+Manually writing YAML can be error-prone—a single misplaced space can invalidate the entire configuration. EspHomeTools solves this by allowing you to define your device configurations in C#.
 
-Das manuelle Schreiben von YAML-Dateien kann fehleranfällig sein – ein falsches Leerzeichen kann die gesamte Konfiguration unbrauchbar machen. EspHomeTools löst dieses Problem, indem es dir erlaubt, deine Konfigurationen in C# zu definieren.
-
-- **Typsicherheit:** Finde Fehler bereits zur Kompilierzeit, nicht erst beim Hochladen auf dein Gerät.
-- **Intuitive API:** Die Builder-Methoden sind selbsterklärend und führen dich durch die Konfiguration.
-- **Automatisierung:** Generiere dynamisch Konfigurationen basierend auf anderen Programmlogiken.
-- **Wartbarkeit:** Halte deine Konfigurationen sauber und gut strukturiert direkt in deinem C#-Code.
+* **Type-Safety:** Catch errors at compile time, not when you're trying to flash your device.
+* **Intuitive API:** The self-documenting builder methods guide you through the configuration process.
+* **Automation:** Programmatically generate device configurations based on your application's logic.
+* **Maintainability:** Keep your configurations clean, well-structured, and version-controlled right alongside your C# code.
 
 ## Features
 
-- Fluent-Builder-API für eine saubere und lesbare Konfiguration.
-- Unterstützung für alle grundlegenden ESPHome-Blöcke (`esphome`, `wifi`, `logger`, `api`, `ota`).
-- Integrierte Builder für gängige Komponenten wie `dht`-Sensoren und `gpio`-Schalter.
-- Korrekte Handhabung von YAML-Besonderheiten wie Anführungszeichen und `!secret`-Tags.
-- Einfach erweiterbar für jede ESPHome-Komponente.
+* A fluent builder API for clean and readable configuration code.
+* Built-in support for all core ESPHome components (`esphome`, `wifi`, `logger`, `api`, `ota`).
+* Integrated builders for major hardware platforms (`esp32`, `esp8266`, `rp2040`, `bk72xx`).
+* High-level builders for common components like `dht` sensors and `gpio` switches.
+* Correctly handles YAML intricacies like quoting and `!secret` tags.
+* Easily extensible to support any ESPHome component.
 
 ## Installation
 
-*Dieses Projekt ist derzeit noch nicht als NuGet-Paket verfügbar.*
+*This project is not yet available as a NuGet package.*
 
-Um es zu verwenden, klone dieses Repository und füge das `EspHomeTools`-Projekt als Referenz zu deiner Solution hinzu.
+To use the library, clone this repository and add a project reference to `EspHomeTools.csproj` in your solution.
 
 ```bash
 git clone [https://github.com/andie2302/esphometools.git](https://github.com/andie2302/esphometools.git)
 ```
 
-## Schnellstart & Beispiel
+## Quick Start & Example
 
-So einfach erstellst du eine komplette ESPHome-Konfiguration für ein Gerät mit einem DHT-Sensor und einem Schalter.
+Here’s how you can easily generate a complete ESPHome configuration for a device with a DHT sensor and a switch.
 
 ```csharp
 using System;
 using EspHomeTools.Builders;
 using EspHomeTools.Classes;
-using EspHomeTools.Classes.Scalars; // Für YamlSecret
+using EspHomeTools.Classes.Scalars; // Required for YamlSecret
 
-// 1. Erstelle das Wurzel-Element der YAML-Datei
+// 1. Create the root node for the YAML file
 var root = new YamlMapping();
 
-// 2. Verwende die Fluent-Builder, um die Konfiguration zu erstellen
+// 2. Use the fluent builder API to construct the configuration
 root.WithEsphome(esphome =>
     {
-        esphome.WithName("wohnzimmer-sensor");
+        esphome.WithName("living_room_sensor");
+    })
+    .WithEsp32(esp32 => // Or WithEsp8266, WithRp2040, etc.
+    {
+        esp32.WithBoard("esp32dev");
     })
     .WithWifi(wifi =>
     {
-        // Verwende !secret für sensible Daten
-        wifi.WithSsid("MeinSuperWLAN")
-            .WithPassword(new YamlSecret("wifi_passwort")); // Erzeugt: !secret wifi_passwort
+        // Use !secret for sensitive data like passwords
+        wifi.WithSsid("MySuperWiFi")
+            .WithPassword(new YamlSecret("wifi_password")); // Generates: !secret wifi_password
     })
     .WithLogger()
     .WithApi()
-    .WithOta()
+    .WithOta(ota =>
+    {
+        ota.WithPassword(new YamlSecret("ota_password"));
+    })
     .WithDhtSensor(dht =>
     {
         dht.UsePin("D2")
-           .WithTemperature("Wohnzimmer Temperatur")
-           .WithHumidity("Wohnzimmer Luftfeuchtigkeit")
+           .WithTemperature("Living Room Temperature")
+           .WithHumidity("Living Room Humidity")
            .WithUpdateInterval("60s");
     })
     .WithGpioSwitch(sw =>
     {
         sw.UsePin("D1")
-          .WithName("Wohnzimmer Licht")
-          .WithId("wohnzimmer_licht")
+          .WithName("Living Room Lamp")
+          .WithId("living_room_lamp")
           .WithIcon("mdi:lightbulb");
     });
 
-// 3. Gib die fertige YAML-Datei auf der Konsole aus
+// 3. Generate and print the final YAML string
 Console.WriteLine(root.ToYaml().Trim());
 ```
 
-### Erzeugte YAML-Ausgabe
+### Generated YAML Output
 
-Der obige C#-Code generiert die folgende, perfekt formatierte YAML-Datei:
+The C# code above generates the following perfectly formatted YAML file:
 
 ```yaml
 esphome:
-  name: wohnzimmer-sensor
+  name: living_room_sensor
+esp32:
+  board: esp32dev
 wifi:
-  ssid: MeinSuperWLAN
-  password: !secret wifi_passwort
+  ssid: MySuperWiFi
+  password: !secret wifi_password
 logger:
 api:
 ota:
+  password: !secret ota_password
 sensor:
   - platform: dht
     pin: D2
     temperature:
-      name: Wohnzimmer Temperatur
+      name: Living Room Temperature
     humidity:
-      name: Wohnzimmer Luftfeuchtigkeit
+      name: Living Room Humidity
     update_interval: 60s
 switch:
   - platform: gpio
     pin: D1
-    name: Wohnzimmer Licht
-    id: wohnzimmer_licht
+    name: Living Room Lamp
+    id: living_room_lamp
     icon: mdi:lightbulb
 ```
 
-## Beitragen (Contributing)
+## Contributing
 
-Beiträge sind herzlich willkommen! Wenn du eine neue Komponente hinzufügst, stelle bitte sicher, dass du auch entsprechende Unit Tests erstellst, um die Funktionalität zu gewährleisten.
+Contributions are welcome! If you add a new component, please ensure you also add corresponding unit tests to verify its functionality.
 
-1.  Forke das Repository.
-2.  Erstelle einen neuen Branch (`git checkout -b feature/neue-komponente`).
-3.  Implementiere deine Änderungen und Tests.
-4.  Committe deine Änderungen (`git commit -am 'Füge neuen Builder für XYZ hinzu'`).
-5.  Pushe zum Branch (`git push origin feature/neue-komponente`).
-6.  Öffne einen Pull Request.
+1. Fork the repository.
+2. Create your feature branch (`git checkout -b feature/NewComponent`).
+3. Commit your changes and add tests (`git commit -am 'Add new builder for XYZ'`).
+4. Push to the branch (`git push origin feature/NewComponent`).
+5. Open a new Pull Request.
 
-## Lizenz
+## License
 
-Dieses Projekt steht unter der [MIT-Lizenz](LICENSE). 
+This project is licensed under the [MIT License](LICENSE).
