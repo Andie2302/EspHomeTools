@@ -60,7 +60,7 @@ public class YamlMapping : IYamlMapping
             text.AppendLine(kvp.Value.ToYaml(indent));
         }
 
-        return text.ToString().TrimEnd();
+        return text.ToString().Trim();
     }
 
 
