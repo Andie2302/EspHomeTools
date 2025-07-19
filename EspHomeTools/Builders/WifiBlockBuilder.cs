@@ -21,6 +21,8 @@ public class AccessPointBlockBuilder
         return this;
     }
 
+    public AccessPointBlockBuilder WithPassword(string password, bool isSecret) => isSecret ? WithPassword(new YamlSecret(password)) : WithPassword(password);
+
     public AccessPointBlockBuilder WithPassword(YamlSecret password)
     {
         _block["password"] = password;
@@ -64,6 +66,8 @@ public class WifiBlockBuilder
         _block["password"] = password;
         return this;
     }
+
+    public WifiBlockBuilder WithPassword(string password, bool isSecret) => isSecret ? WithPassword(new YamlSecret(password)) : WithPassword(password);
 
     public WifiBlockBuilder WithAccessPoint(Action<AccessPointBlockBuilder> configurator)
     {
