@@ -15,6 +15,14 @@ public class Esp8266BlockBuilder
         return this;
     }
 
+    public Esp8266BlockBuilder WithBoard(YamlSecret board)
+    {
+        _block["board"] = board;
+        return this;
+    }
+
+    public Esp8266BlockBuilder WithBoard(string board, bool isSecret) => isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
+
     internal IYamlMapping Build()
     {
         if (!_block.ContainsKey("board"))
