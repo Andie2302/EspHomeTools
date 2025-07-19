@@ -60,10 +60,7 @@ root.WithEsphome(esphome =>
     })
     .WithLogger()
     .WithApi()
-    .WithOta(ota =>
-    {
-        ota.WithPassword(new YamlSecret("ota_password"));
-    })
+    .WithOta() // This now matches your implementation
     .WithDhtSensor(dht =>
     {
         dht.UsePin("D2")
@@ -98,7 +95,6 @@ wifi:
 logger:
 api:
 ota:
-  password: !secret ota_password
 sensor:
   - platform: dht
     pin: D2
@@ -119,11 +115,11 @@ switch:
 
 Contributions are welcome! If you add a new component, please ensure you also add corresponding unit tests to verify its functionality.
 
-1. Fork the repository.
-2. Create your feature branch (`git checkout -b feature/NewComponent`).
-3. Commit your changes and add tests (`git commit -am 'Add new builder for XYZ'`).
-4. Push to the branch (`git push origin feature/NewComponent`).
-5. Open a new Pull Request.
+1.  Fork the repository.
+2.  Create your feature branch (`git checkout -b feature/NewComponent`).
+3.  Commit your changes and add tests (`git commit -am 'Add new builder for XYZ'`).
+4.  Push to the branch (`git push origin feature/NewComponent`).
+5.  Open a new Pull Request.
 
 ## License
 
