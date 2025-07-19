@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Classes.Scalars;
@@ -54,21 +55,31 @@ public abstract class YamlScalar<TValue> : IYamlScalar<TValue>
         var prefix = new string(' ', indent);
         if (!string.IsNullOrWhiteSpace(Comment))
         {
-            sb.Append(prefix).Append("# ").AppendLine(Comment);
+            var commentLines = Comment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            foreach (var line in commentLines)
+            {
+                sb.Append(prefix).Append("# ").AppendLine(line);
+            }
         }
 
+        var contentLine = new StringBuilder();
         if (!string.IsNullOrWhiteSpace(Name))
         {
-            sb.Append(prefix).Append(Name).Append(':');
+            contentLine.Append(prefix).Append(Name).Append(':');
             if (!string.IsNullOrWhiteSpace(Tag))
             {
-                sb.Append(' ').Append(Tag);
+                contentLine.Append(' ').Append(Tag);
             }
 
-            sb.Append(' ');
+            contentLine.Append(' ');
+        }
+        else
+        {
+            contentLine.Append(prefix);
         }
 
-        sb.Append(SerializeValue());
+        contentLine.Append(SerializeValue());
+        sb.Append(contentLine.ToString());
         return sb.ToString();
     }
 
