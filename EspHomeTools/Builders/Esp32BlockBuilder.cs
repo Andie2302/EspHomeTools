@@ -37,6 +37,14 @@ public class Esp32BlockBuilder
 
     public Esp32BlockBuilder WithFramework(string framework, bool isSecret) => isSecret ? WithFramework(new YamlSecret(framework)) : WithFramework(framework);
 
+    public Esp32BlockBuilder WithCommentOn(string key, string comment)
+    {
+        if (_block.TryGetValue(key, out var node))
+            node.Comment = comment;
+
+        return this;
+    }
+
     internal IYamlMapping Build()
     {
         if (!_block.ContainsKey("board"))
