@@ -15,11 +15,27 @@ public class Esp32BlockBuilder
         return this;
     }
 
+    public Esp32BlockBuilder WithBoard(YamlSecret board)
+    {
+        _block["board"] = board;
+        return this;
+    }
+
+    public Esp32BlockBuilder WithBoard(string board, bool isSecret) => isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
+
     public Esp32BlockBuilder WithFramework(string framework)
     {
         _block["framework"] = new YamlString(framework);
         return this;
     }
+
+    public Esp32BlockBuilder WithFramework(YamlSecret framework)
+    {
+        _block["framework"] = framework;
+        return this;
+    }
+
+    public Esp32BlockBuilder WithFramework(string framework, bool isSecret) => isSecret ? WithFramework(new YamlSecret(framework)) : WithFramework(framework);
 
     internal IYamlMapping Build()
     {
