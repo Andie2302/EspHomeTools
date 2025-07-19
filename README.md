@@ -113,7 +113,7 @@ switch:
 
 ## Project Goals (may change)
 
-* Single-line comments
+* **Single-line comments**
 * <details>
     <summary><strong>Maximum Type-Safety:</strong></summary>
     By using C#, errors are caught during development (compile-time), not when you're trying to flash your device. Manually writing YAML can be error-prone, as a single misplaced space can invalidate the entire configuration.
