@@ -1,9 +1,9 @@
-﻿using System;
+﻿// ... (innerhalb der WifiBlockBuilder.cs Datei)
+
+using System;
 using EspHomeTools.Classes.Scalars;
 using EspHomeTools.Classes.Structures;
 using EspHomeTools.Interfaces;
-
-namespace EspHomeTools.Builders;
 
 public class AccessPointBlockBuilder
 {
@@ -34,6 +34,14 @@ public class AccessPointBlockBuilder
     public AccessPointBlockBuilder WithPassword(YamlSecret password)
     {
         _block["password"] = password;
+        return this;
+    }
+
+    public AccessPointBlockBuilder WithCommentOn(string key, string comment)
+    {
+        if (_block.TryGetValue(key, out var node))
+            node.Comment = comment;
+
         return this;
     }
 
