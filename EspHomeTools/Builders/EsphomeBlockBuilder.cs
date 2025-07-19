@@ -33,6 +33,14 @@ public class EsphomeBlockBuilder
         return this;
     }
 
+    public EsphomeBlockBuilder WithCommentOn(string key, string comment)
+    {
+        if (_block.TryGetValue(key, out var node))
+            node.Comment = comment;
+
+        return this;
+    }
+
     internal IYamlMapping Build()
     {
         if (!_block.ContainsKey("name"))
