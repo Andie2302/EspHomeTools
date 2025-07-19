@@ -5,7 +5,6 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-// (AccessPointBlockBuilder ist hier bereits enthalten)
 public class WifiBlockBuilder
 {
     private readonly YamlMapping _block = new();
