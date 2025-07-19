@@ -20,6 +20,14 @@ public class DhtSensorBuilder
         return this;
     }
 
+    public DhtSensorBuilder UsePin(YamlSecret pin)
+    {
+        _config["pin"] = pin;
+        return this;
+    }
+
+    public DhtSensorBuilder UsePin(string pin, bool isSecret) => isSecret ? UsePin(new YamlSecret(pin)) : UsePin(pin);
+
     public DhtSensorBuilder WithTemperature(string name)
     {
         _config["temperature"] = new YamlMapping { { "name", new YamlString(name) } };
@@ -38,11 +46,27 @@ public class DhtSensorBuilder
         return this;
     }
 
+    public DhtSensorBuilder WithUpdateInterval(YamlSecret interval)
+    {
+        _config["update_interval"] = interval;
+        return this;
+    }
+
+    public DhtSensorBuilder WithUpdateInterval(string interval, bool isSecret) => isSecret ? WithUpdateInterval(new YamlSecret(interval)) : WithUpdateInterval(interval);
+
     public DhtSensorBuilder WithModel(string model)
     {
         _config["model"] = new YamlString(model);
         return this;
     }
+
+    public DhtSensorBuilder WithModel(YamlSecret model)
+    {
+        _config["model"] = model;
+        return this;
+    }
+
+    public DhtSensorBuilder WithModel(string model, bool isSecret) => isSecret ? WithModel(new YamlSecret(model)) : WithModel(model);
 
     internal IYamlMapping Build()
     {
@@ -59,4 +83,3 @@ public class DhtSensorBuilder
         return _config;
     }
 }
-
