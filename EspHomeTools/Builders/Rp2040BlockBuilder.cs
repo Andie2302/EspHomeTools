@@ -15,6 +15,14 @@ public class Rp2040BlockBuilder
         return this;
     }
 
+    public Rp2040BlockBuilder WithBoard(YamlSecret board)
+    {
+        _block["board"] = board;
+        return this;
+    }
+
+    public Rp2040BlockBuilder WithBoard(string board, bool isSecret) => isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
+
     internal IYamlMapping Build()
     {
         if (!_block.ContainsKey("board"))
