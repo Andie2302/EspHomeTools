@@ -70,6 +70,14 @@ public class GpioSwitchBuilder
 
     public GpioSwitchBuilder WithIcon(string icon, bool isSecret) => isSecret ? WithIcon(new YamlSecret(icon)) : WithIcon(icon);
 
+    public GpioSwitchBuilder WithCommentOn(string key, string comment)
+    {
+        if (_config.TryGetValue(key, out var node))
+            node.Comment = comment;
+
+        return this;
+    }
+
     internal IYamlMapping Build()
     {
         if (!_config.ContainsKey("pin"))
