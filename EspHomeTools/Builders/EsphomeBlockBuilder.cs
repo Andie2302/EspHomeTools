@@ -15,6 +15,14 @@ public class EsphomeBlockBuilder
         return this;
     }
 
+    public EsphomeBlockBuilder WithName(YamlSecret name)
+    {
+        _block["name"] = name;
+        return this;
+    }
+
+    public EsphomeBlockBuilder WithName(string name, bool isSecret) => isSecret ? WithName(new YamlSecret(name)) : WithName(name);
+
     public EsphomeBlockBuilder WithComment(string comment)
     {
         if (_block.TryGetValue("name", out var nameNode))
