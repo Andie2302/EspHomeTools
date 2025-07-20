@@ -206,8 +206,9 @@ api:
   encryption:
     key: !secret YOUR_ENCRYPTION_KEY_HERE
 ota:
-  # Secures over-the-air updates.
-  password: !secret YOUR_OTA_PASSWORD_HERE
+  - platform: esphome
+    # Secures over-the-air updates.
+    password: !secret YOUR_OTA_PASSWORD_HERE
 i2c:
   sda: D21
   scl: D22
@@ -278,6 +279,7 @@ light:
     # Links this light to the PWM output defined above.
     output: dimmable_led_output
     id: dimmable_led_output
+
 ```
 
 ## Project Goals (may change)
