@@ -6,9 +6,9 @@ namespace EspHomeTools.Builders;
 
 public static class EspHomeExtensions
 {
-    public static IYamlMapping WithEsphome(this IYamlMapping root, Action<EsphomeBlockBuilder> configurator)
+    public static IYamlMapping WithEsphome(this IYamlMapping root, Action<EsphomeBuilder> configurator)
     {
-        var builder = new EsphomeBlockBuilder();
+        var builder = new EsphomeBuilder();
         configurator(builder);
         root["esphome"] = builder.Build();
         return root;
