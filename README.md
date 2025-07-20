@@ -291,21 +291,21 @@ light:
 ## Project Goals (may change)
 
 * text-sensor builder
-* pulse_counter
-* hx711
-* ina219
-* fan
-* cover
-* stepper
+* pulse_counter builder
+* hx711 builder
+* ina219 builder
+* fan builder
+* cover builder
+* stepper builder
 
 ## maybe
-* display
-* font
-* ssd1306
-* sh1106
-* web_server
-* ethernet
-* bluetooth_proxy
+* display builder
+* font builder
+* ssd1306 builder
+* sh1106 builder
+* web_server builder
+* ethernet builder
+* bluetooth_proxy builder
 
 
 ## License
