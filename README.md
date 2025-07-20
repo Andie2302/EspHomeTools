@@ -252,18 +252,10 @@ light:
 
 ## Project Goals (may change)
 
-* <details>
-    <summary><strong>Intuitive Fluent API: </strong></summary>
-    The self-documenting builder methods guide you through the configuration process, often eliminating the need to manually consult the ESPHome documentation.
-    </details>
-* <details>
-    <summary><strong>Improved Maintainability and Readability:</strong></summary>
-    Keep your configurations clean, well-structured, and version-controlled—right alongside your C# code. This improves clarity compared to long, cumbersome YAML files.
-    </details>
-* <details>
-    <summary><strong>Easy Extensibility:</strong></summary>
-    The existing design makes it straightforward to add new ESPHome components. New builders can be easily created and integrated into the existing structure.
-    </details>
+* 
+* Intuitive Fluent API*
+* Improved Maintainability and Readability
+* Easy Extensibility
 
 ## License
 
