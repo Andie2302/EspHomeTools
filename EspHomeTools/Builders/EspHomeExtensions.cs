@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using EspHomeTools.Classes.Structures;
 using EspHomeTools.Interfaces;
 
@@ -111,5 +112,27 @@ public static class EspHomeExtensions
         configurator(builder);
         var componentConfig = builder.Build();
         return root.WithComponent("binary_sensor", componentConfig);
+    }
+    public static IYamlMapping WithTime(this IYamlMapping root, Action<TimeBlockBuilder> configurator)
+    {
+        var builder = new TimeBlockBuilder();
+        configurator(builder);
+        var componentConfig = builder.Build();
+        return root.WithComponent("time", componentConfig);
+    }
+    public static IYamlMapping WithOutput(this IYamlMapping root, Action<OutputBuilder> configurator)
+    {
+        var builder = new OutputBuilder();
+        configurator(builder);
+        var componentConfig = builder.Build();
+        return root.WithComponent("output", componentConfig);
+    }
+
+    public static IYamlMapping WithLight(this IYamlMapping root, Action<LightBlockBuilder> configurator)
+    {
+        var builder = new LightBlockBuilder();
+        configurator(builder);
+        var componentConfig = builder.Build();
+        return root.WithComponent("light", componentConfig);
     }
 }
