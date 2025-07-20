@@ -100,7 +100,7 @@ public class YamlMapping : IYamlMapping
         return string.Join(Environment.NewLine, commentLines.Select(line => $"{prefix}# {line}")) + Environment.NewLine;
     }
 
-    // ... Rest der IDictionary Implementierung bleibt unverändert ...
+
     #region IDictionary Implementierung (einfache Weiterleitung)
 
     /// <summary>
