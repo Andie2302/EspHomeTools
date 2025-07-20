@@ -252,10 +252,8 @@ light:
 
 ## Project Goals (may change)
 
-* 
-* Intuitive Fluent API*
-* Improved Maintainability and Readability
-* Easy Extensibility
+* text-sensor builder
+
 
 ## License
 
