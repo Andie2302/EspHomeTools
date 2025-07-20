@@ -4,48 +4,56 @@ using EspHomeTools.Classes.Scalars;
 
 namespace EspHomeTools.Builders;
 
-/// <summary>
-/// Represents a YAML scalar that is serialized as a multi-line literal block (using |-).
-/// This is primarily used for lambda scripts in ESPHome.
-/// </summary>
 public class YamlLambda : YamlScalar<string>
 {
+    private const int CodeIndentationSpaces = 2;
+    private static readonly string[] LineBreakSeparators = ["\r\n", "\r", "\n"];
+
     public YamlLambda(string value)
     {
         Value = value;
     }
 
-    /// <summary>
-    /// Overrides the default serialization to produce a YAML literal block style.
-    /// </summary>
     public override string ToYaml(int indent = 0)
     {
         var sb = new StringBuilder();
-        var prefix = new string(' ', indent);
-        if (!string.IsNullOrWhiteSpace(Comment))
-        {
-            var commentLines = Comment?.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-            foreach (var line in commentLines)
-            {
-                sb.Append(prefix).Append("# ").AppendLine(line);
-            }
-        }
+        var baseIndentation = new string(' ', indent);
+        AppendComments(sb, baseIndentation);
+        AppendNameAndLiteralBlock(sb, baseIndentation);
+        AppendCodeLines(sb, indent);
+        return sb.ToString().TrimEnd('\r', '\n', ' ');
+    }
 
-        sb.Append(prefix);
+    private void AppendComments(StringBuilder sb, string baseIndentation)
+    {
+        if (string.IsNullOrWhiteSpace(Comment)) return;
+        var commentLines = Comment.Split(LineBreakSeparators, StringSplitOptions.None);
+        foreach (var commentLine in commentLines)
+        {
+            sb.Append(baseIndentation).Append("# ").AppendLine(commentLine);
+        }
+    }
+
+    private void AppendNameAndLiteralBlock(StringBuilder sb, string baseIndentation)
+    {
+        sb.Append(baseIndentation);
         if (!string.IsNullOrWhiteSpace(Name))
         {
             sb.Append(Name).Append(':');
         }
 
         sb.AppendLine(" |-");
-        var codeLines = (Value ?? string.Empty).Trim().Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-        var codeIndent = new string(' ', indent + 2);
-        foreach (var line in codeLines)
-        {
-            sb.Append(codeIndent).AppendLine(line);
-        }
+    }
 
-        return sb.ToString().TrimEnd('\r', '\n', ' ');
+    private void AppendCodeLines(StringBuilder sb, int indent)
+    {
+        var normalizedValue = (Value ?? string.Empty).Trim();
+        var codeLines = normalizedValue.Split(LineBreakSeparators, StringSplitOptions.None);
+        var codeIndentation = new string(' ', indent + CodeIndentationSpaces);
+        foreach (var codeLine in codeLines)
+        {
+            sb.Append(codeIndentation).AppendLine(codeLine);
+        }
     }
 
     protected override string SerializeValue()
