@@ -47,19 +47,23 @@ var root = new YamlMapping();
 root.WithEsphome(esphome =>
     {
         esphome.WithName("living_room_sensor")
-               // Add a comment to the 'name' key
-               .WithCommentOn("name", "This is the unique name for the device on the network.");
+               .WithCommentOn("name", "This is the unique name for the device on the network.")
+               // Add an on_boot trigger to run actions when the device starts
+               .OnBoot(actions =>
+               {
+                   actions.Lambda(@"ESP_LOGI(""main"", ""Device has successfully booted!"");")
+                          .Delay("2s")
+                          .LightTurnOn("dimmable_led_output");
+               });
     })
     .WithEsp32(esp32 =>
     {
         esp32.WithBoard("esp32dev")
-             // Add a comment to the 'board' key
              .WithCommentOn("board", "Using a standard ESP32 development kit.");
     })
     .WithWifi(wifi =>
     {
         wifi.WithSsid("MySuperWiFi")
-            // Add a multi-line comment to the 'ssid' key
             .WithCommentOn("ssid", "The SSID of your primary WiFi network.\nMust be 2.4 GHz.")
             .WithPassword(new YamlSecret("wifi_password"))
             .WithCommentOn("password", "The WiFi password, stored securely in 'secrets.yaml'.");
@@ -71,10 +75,18 @@ root.WithEsphome(esphome =>
             .WithUsername("mqtt_user", isSecret: true)
             .WithPassword("mqtt_pass", isSecret: true);
     })
-    .WithLogger() 
-    .WithApi()
-    .WithOta()
-    .WithI2C(i2c =>
+    .WithLogger()
+    .WithApi(api =>
+    {
+        api.WithEncryptionKey("YOUR_ENCRYPTION_KEY_HERE", isSecret: true)
+           .WithCommentOn("encryption", "Secures the native API communication with Home Assistant.");
+    })
+    .WithOta(ota =>
+    {
+        ota.WithPassword("YOUR_OTA_PASSWORD_HERE", isSecret: true)
+           .WithCommentOn("password", "Secures over-the-air updates.");
+    })
+    .WithI2C(i2c => 
     {
         i2c.SetSdaPin("D21")
            .SetSclPin("D22")
@@ -128,7 +140,11 @@ root.WithEsphome(esphome =>
         bs.UsePin("D5")
           .WithName("Motion Sensor")
           .WithDeviceClass("motion")
-          .WithCommentOn("name", "PIR sensor in the hallway.");
+          .WithCommentOn("name", "PIR sensor in the hallway.")
+          // Add an on_press trigger to turn on the dimmable light when motion is detected
+          .OnPress(actions => {
+              actions.LightTurnOn("dimmable_led_output");
+          });
     })
     .WithBinarySensor(bs =>
     {
@@ -148,11 +164,13 @@ root.WithEsphome(esphome =>
         l.WithPlatform("monochromatic")
          .WithName("Dimmable LED Strip")
          .UseOutput("dimmable_led_output")
+         .WithId("dimmable_led_output") // Add an ID to the light to be able to control it
          .WithCommentOn("output", "Links this light to the PWM output defined above.");
     });
 
 // 3. Generate and print the final YAML string
 Console.WriteLine(root.ToYaml());
+
 ```
 
 ### Generated YAML Output
@@ -163,6 +181,11 @@ The C# code above generates the following perfectly formatted YAML file:
 esphome:
   # This is the unique name for the device on the network.
   name: living_room_sensor
+  on_boot:
+    - lambda: |-
+        ESP_LOGI("main", "Device has successfully booted!");
+    - delay: 2s
+    - light.turn_on: dimmable_led_output
 esp32:
   # Using a standard ESP32 development kit.
   board: esp32dev
@@ -179,7 +202,12 @@ mqtt:
   password: !secret mqtt_pass
 logger:
 api:
+  # Secures the native API communication with Home Assistant.
+  encryption:
+    key: !secret YOUR_ENCRYPTION_KEY_HERE
 ota:
+  # Secures over-the-air updates.
+  password: !secret YOUR_OTA_PASSWORD_HERE
 i2c:
   sda: D21
   scl: D22
@@ -232,6 +260,8 @@ binary_sensor:
     # PIR sensor in the hallway.
     name: Motion Sensor
     device_class: motion
+    on_press:
+      - light.turn_on: dimmable_led_output
   - platform: gpio
     pin: D6
     # Magnetic contact sensor on the living room window.
@@ -247,7 +277,7 @@ light:
     name: Dimmable LED Strip
     # Links this light to the PWM output defined above.
     output: dimmable_led_output
-
+    id: dimmable_led_output
 ```
 
 ## Project Goals (may change)
