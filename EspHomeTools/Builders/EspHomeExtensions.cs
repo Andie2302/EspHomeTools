@@ -142,4 +142,19 @@ public static class EspHomeExtensions
         root["i2c"] = builder.Build();
         return root;
     }
+    public static IYamlMapping WithBoschSensor(this IYamlMapping root, Action<BoschSensorBuilder> configurator)
+    {
+        var builder = new BoschSensorBuilder();
+        configurator(builder);
+        var componentConfig = builder.Build();
+        return root.WithComponent("sensor", componentConfig);
+    }
+    public static IYamlMapping WithSpi(this IYamlMapping root, Action<SpiBlockBuilder> configurator)
+    {
+        var builder = new SpiBlockBuilder();
+        configurator(builder);
+        root["spi"] = builder.Build();
+        return root;
+    }
+
 }
