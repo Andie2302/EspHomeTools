@@ -12,7 +12,6 @@ public class OutputBuilder
     public OutputBuilder()
     {
         // Set a default platform, which can be changed.
-        // For simple on/off, "gpio" is fine. For dimming, others are needed.
         _config["platform"] = new YamlString("gpio");
     }
 
