@@ -49,7 +49,7 @@ public abstract class YamlScalar<TValue> : IYamlScalar<TValue>
     /// <returns>
     /// A string representing the YAML scalar, including its name, tag, value, and optional comment.
     /// </returns>
-    public string ToYaml(int indent = 0)
+    public virtual string ToYaml(int indent = 0)
     {
         var sb = new StringBuilder();
         var prefix = new string(' ', indent);
