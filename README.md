@@ -253,7 +253,7 @@ light:
 ## Project Goals (may change)
 
 * <details>
-    <summary><strong>Intuitive Fluent API:</strong></summary>
+    <summary><strong>Intuitive Fluent API: </strong></summary>
     The self-documenting builder methods guide you through the configuration process, often eliminating the need to manually consult the ESPHome documentation.
     </details>
 * <details>
