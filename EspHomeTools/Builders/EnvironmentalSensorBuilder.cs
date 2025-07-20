@@ -11,7 +11,6 @@ public class EnvironmentalSensorBuilder
 
     public EnvironmentalSensorBuilder()
     {
-        // Set a common default, can be overwritten.
         _config["platform"] = new YamlString("bme280");
     }
 
@@ -65,7 +64,6 @@ public class EnvironmentalSensorBuilder
 
     public EnvironmentalSensorBuilder WithGasResistance(string name)
     {
-        // Specific to BME680
         _config["gas_resistance"] = new YamlMapping { { "name", new YamlString(name) } };
         return this;
     }
