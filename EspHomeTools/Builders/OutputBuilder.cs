@@ -11,7 +11,6 @@ public class OutputBuilder
 
     public OutputBuilder()
     {
-        // Default platform is gpio
         _config["platform"] = new YamlString("gpio");
     }
 
