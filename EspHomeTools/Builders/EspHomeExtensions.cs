@@ -1,4 +1,5 @@
 ﻿
+
 using System;
 using EspHomeTools.Classes.Structures;
 using EspHomeTools.Interfaces;
@@ -26,18 +27,6 @@ public static class EspHomeExtensions
     public static IYamlMapping WithLogger(this IYamlMapping mapping)
     {
         mapping.Add("logger", new YamlMapping());
-        return mapping;
-    }
-
-    public static IYamlMapping WithApi(this IYamlMapping mapping)
-    {
-        mapping.Add("api", new YamlMapping());
-        return mapping;
-    }
-
-    public static IYamlMapping WithOta(this IYamlMapping mapping)
-    {
-        mapping.Add("ota", new YamlMapping());
         return mapping;
     }
 
@@ -157,4 +146,33 @@ public static class EspHomeExtensions
         return root;
     }
 
+// Ersetze die alte "WithApi"-Methode durch diese beiden
+    public static IYamlMapping WithApi(this IYamlMapping mapping)
+    {
+        mapping.Add("api", new YamlMapping());
+        return mapping;
+    }
+
+    public static IYamlMapping WithApi(this IYamlMapping root, Action<ApiBlockBuilder> configurator)
+    {
+        var builder = new ApiBlockBuilder();
+        configurator(builder);
+        root["api"] = builder.Build();
+        return root;
+    }
+
+// Ersetze die alte "WithOta"-Methode durch diese beiden
+    public static IYamlMapping WithOta(this IYamlMapping mapping)
+    {
+        mapping.Add("ota", new YamlMapping());
+        return mapping;
+    }
+
+    public static IYamlMapping WithOta(this IYamlMapping root, Action<OtaBlockBuilder> configurator)
+    {
+        var builder = new OtaBlockBuilder();
+        configurator(builder);
+        root["ota"] = builder.Build();
+        return root;
+    }
 }
