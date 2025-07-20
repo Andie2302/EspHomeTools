@@ -5,48 +5,48 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class LightBlockBuilder
+public class LightBuilder
 {
     private readonly YamlMapping _config = new();
 
-    public LightBlockBuilder()
+    public LightBuilder()
     {
         _config["platform"] = new YamlString("monochromatic");
     }
 
-    public LightBlockBuilder WithPlatform(string platform)
+    public LightBuilder WithPlatform(string platform)
     {
         _config["platform"] = new YamlString(platform);
         return this;
     }
 
-    public LightBlockBuilder WithName(string name)
+    public LightBuilder WithName(string name)
     {
         _config["name"] = new YamlString(name);
         return this;
     }
 
-    public LightBlockBuilder WithName(YamlSecret name)
+    public LightBuilder WithName(YamlSecret name)
     {
         _config["name"] = name;
         return this;
     }
 
-    public LightBlockBuilder WithName(string name, bool isSecret) => isSecret ? WithName(new YamlSecret(name)) : WithName(name);
+    public LightBuilder WithName(string name, bool isSecret) => isSecret ? WithName(new YamlSecret(name)) : WithName(name);
 
-    public LightBlockBuilder WithId(string id)
+    public LightBuilder WithId(string id)
     {
         _config["id"] = new YamlString(id);
         return this;
     }
 
-    public LightBlockBuilder UseOutput(string outputId)
+    public LightBuilder UseOutput(string outputId)
     {
         _config["output"] = new YamlString(outputId);
         return this;
     }
 
-    public LightBlockBuilder WithCommentOn(string key, string comment)
+    public LightBuilder WithCommentOn(string key, string comment)
     {
         if (_config.TryGetValue(key, out var node))
             node.Comment = comment;
