@@ -1,93 +1,107 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Classes.Scalars;
 
 /// <summary>
-/// Abstract base class for YAML scalar nodes.
+/// Represents a base class for YAML scalar nodes with a specific underlying value type.
 /// </summary>
-/// <typeparam name="TValue">The underlying type of the value represented by the YAML scalar.</typeparam>
+/// <typeparam name="TValue">The type of the value this scalar encapsulates.</typeparam>
 /// <remarks>
-/// The <c>YamlScalar&lt;TValue&gt;</c> class provides a foundation for representing scalar values
-/// in YAML. It incorporates optional properties such as a name, comment, and tag, which can be used
-/// to enhance the representation of the YAML node. Additionally, it enforces the implementation of
-/// value serialization to a YAML-compatible string through the <c>SerializeValue</c> method.
+/// The YamlScalar class provides functionality for:
+/// - Storing scalar node values, names, comments, and optional tags.
+/// - Serializing the scalar node into a YAML format string, including comments and indentation.
 /// </remarks>
 public abstract class YamlScalar<TValue> : IYamlScalar<TValue>
 {
-    /// Gets or sets the value of the YAML scalar.
-    /// This property allows access to the underlying scalar value, which can be of a generic type.
-    /// It is used to define and manipulate the scalar content of the YAML node.
+    /// <summary>
+    /// Gets or sets the scalar value of the YAML node.
+    /// </summary>
+    /// <typeparamref name="TValue" /> represents the type of the value contained within the scalar
+    /// node. This property allows retrieval or assignment of the node's value, which can be
+    /// of various data types such as strings, integers, floats, and more.
+    /// <remarks>
+    /// This property is nullable to ensure flexibility in handling cases where the value is
+    /// not explicitly set or represented in the YAML structure.
+    /// </remarks>
     public TValue? Value { get; set; }
 
-    /// Gets or sets the name of the YAML node.
-    /// This property represents the identifier or key associated with the
-    /// YAML element in serialized output.
-    /// When serialized to YAML, the value of this property is used as the
-    /// key. For sequences, it may represent a label or descriptor.
-    /// Setting this property to null or an empty string will omit it
-    /// from the serialized output.
+    /// Gets or sets the name of the YAML scalar element.
+    /// The `Name` property represents the key of the YAML scalar when serialized.
+    /// It is typically used to identify the key portion in key-value pairs
+    /// within YAML structures.
+    /// This property can be null or empty, and when it is, the serialization
+    /// process may handle it differently or omit it, depending on the implementation.
     public string? Name { get; set; }
 
     /// <summary>
-    /// Gets or sets the comment associated with the YAML node.
-    /// This comment is typically used to annotate the corresponding YAML structure
-    /// with additional information or notes and is serialized as a comment line in the YAML output.
+    /// Gets or sets the comment associated with the YAML scalar.
+    /// This comment is typically used to provide additional information or context for
+    /// the value represented by the scalar in a YAML document. It can be included as
+    /// part of the YAML output, formatted appropriately to adhere to YAML syntax.
     /// </summary>
     public string? Comment { get; set; }
 
-    /// Gets or sets the explicit YAML tag associated with the node.
-    /// This property allows specifying a data type or category for the YAML node within the serialized output.
-    /// For example, tags are used in YAML to denote types, such as `!!int`, `!!str`, or custom application-specific tags.
+    /// <summary>
+    /// Gets or sets the tag associated with the YAML scalar node.
+    /// </summary>
+    /// <remarks>
+    /// The tag is a string used to explicitly define the data type or semantic meaning
+    /// of the scalar node in the YAML document. If the tag is not specified,
+    /// the scalar node relies on implicit typing determined by its content.
+    /// </remarks>
     public string? Tag { get; set; }
 
-    /// Converts the YAML scalar object to its YAML string representation.
-    /// <param name="indent">
-    /// The number of spaces to prepend to each line for indentation. Default is 0.
-    /// </param>
-    /// <returns>
-    /// A string representing the YAML scalar, including its name, tag, value, and optional comment.
-    /// </returns>
+    /// <summary>
+    /// Converts the scalar object to a YAML-formatted string representation with the specified indentation.
+    /// </summary>
+    /// <param name="indent">The number of spaces to use for indentation.</param>
+    /// <returns>A YAML-formatted string representation of the scalar object.</returns>
     public virtual string ToYaml(int indent = 0)
     {
-        var sb = new StringBuilder();
+        var yamlBuilder = new StringBuilder();
         var prefix = new string(' ', indent);
+
+        // Format the comment section
         if (!string.IsNullOrWhiteSpace(Comment))
         {
-            var commentLines = Comment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-            foreach (var line in commentLines)
-            {
-                sb.Append(prefix).Append("# ").AppendLine(line);
-            }
+            yamlBuilder.Append(FormatComment(Comment, prefix));
         }
 
-        var contentLine = new StringBuilder();
+        // Prepare the content line
+        var formattedContentLine = new StringBuilder();
         if (!string.IsNullOrWhiteSpace(Name))
         {
-            contentLine.Append(prefix).Append(Name).Append(':');
-            if (!string.IsNullOrWhiteSpace(Tag))
-            {
-                contentLine.Append(' ').Append(Tag);
-            }
-
-            contentLine.Append(' ');
+            var tagPart = !string.IsNullOrWhiteSpace(Tag) ? $" {Tag}" : string.Empty;
+            formattedContentLine.Append($"{prefix}{Name}:{tagPart} ");
         }
         else
         {
-            contentLine.Append(prefix);
+            formattedContentLine.Append(prefix);
         }
 
-        contentLine.Append(SerializeValue());
-        sb.Append(contentLine.ToString());
-        return sb.ToString();
+        formattedContentLine.Append(SerializeValue());
+        yamlBuilder.Append(formattedContentLine.ToString());
+        return yamlBuilder.ToString();
     }
 
     /// <summary>
-    /// Serializes the scalar value of the YAML node into its string representation.
+    /// Formats the specified comment for YAML output, prefixing each line with '#' and the provided indentation.
     /// </summary>
-    /// <returns>
-    /// The string representation of the scalar value.
-    /// </returns>
+    /// <param name="comment">The comment text to be formatted.</param>
+    /// <param name="prefix">The indentation prefix to apply to each line of the comment.</param>
+    /// <returns>A string representing the formatted comment, with each line prefixed and properly indented.</returns>
+    private static string FormatComment(string comment, string prefix)
+    {
+        var commentLines = comment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+        return string.Join(Environment.NewLine, commentLines.Select(line => $"{prefix}# {line}")) + Environment.NewLine;
+    }
+
+    /// <summary>
+    /// Serializes the scalar value to its YAML string representation.
+    /// </summary>
+    /// <returns>A serialized YAML string for the scalar value.</returns>
     protected abstract string SerializeValue();
 }
