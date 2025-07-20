@@ -5,37 +5,37 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class TimeBlockBuilder
+public class TimeBuilder
 {
     private readonly YamlMapping _config = new();
 
-    public TimeBlockBuilder WithPlatform(string platform)
+    public TimeBuilder WithPlatform(string platform)
     {
         _config["platform"] = new YamlString(platform);
         return this;
     }
 
-    public TimeBlockBuilder WithId(string id)
+    public TimeBuilder WithId(string id)
     {
         _config["id"] = new YamlString(id);
         return this;
     }
 
-    public TimeBlockBuilder WithTimezone(string timezone)
+    public TimeBuilder WithTimezone(string timezone)
     {
         _config["timezone"] = new YamlString(timezone);
         return this;
     }
 
-    public TimeBlockBuilder WithTimezone(YamlSecret timezone)
+    public TimeBuilder WithTimezone(YamlSecret timezone)
     {
         _config["timezone"] = timezone;
         return this;
     }
 
-    public TimeBlockBuilder WithTimezone(string timezone, bool isSecret) => isSecret ? WithTimezone(new YamlSecret(timezone)) : WithTimezone(timezone);
+    public TimeBuilder WithTimezone(string timezone, bool isSecret) => isSecret ? WithTimezone(new YamlSecret(timezone)) : WithTimezone(timezone);
 
-    public TimeBlockBuilder WithServers(params string[] servers)
+    public TimeBuilder WithServers(params string[] servers)
     {
         var serverSequence = new YamlSequence();
         foreach (var server in servers)
@@ -47,7 +47,7 @@ public class TimeBlockBuilder
         return this;
     }
 
-    public TimeBlockBuilder WithCommentOn(string key, string comment)
+    public TimeBuilder WithCommentOn(string key, string comment)
     {
         if (_config.TryGetValue(key, out var node))
             node.Comment = comment;
