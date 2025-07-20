@@ -1,4 +1,5 @@
-﻿using EspHomeTools.Classes.Scalars;
+﻿using System;
+using EspHomeTools.Classes.Scalars;
 using EspHomeTools.Classes.Structures;
 using EspHomeTools.Interfaces;
 
@@ -7,6 +8,18 @@ namespace EspHomeTools.Builders;
 public class OtaBlockBuilder
 {
     private readonly YamlMapping _block = new();
+
+    public OtaBlockBuilder()
+    {
+        // Set the default platform for OTA
+        _block["platform"] = new YamlString("esphome");
+    }
+
+    public OtaBlockBuilder WithPlatform(string platform)
+    {
+        _block["platform"] = new YamlString(platform);
+        return this;
+    }
 
     public OtaBlockBuilder WithPassword(string password)
     {
