@@ -66,8 +66,8 @@ public class YamlSequence : IYamlSequence
         var childIndent = indent + 2;
         foreach (var node in _nodes)
         {
-            string childYaml = node.ToYaml(childIndent);
-            string trimmedChildYaml = childYaml.TrimStart();
+            var childYaml = node.ToYaml(childIndent);
+            var trimmedChildYaml = childYaml.TrimStart();
             sb.Append(itemIndentStr).Append("- ").AppendLine(trimmedChildYaml);
         }
 
