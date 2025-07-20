@@ -150,18 +150,19 @@ public static class EspHomeExtensions
         return root;
     }
 
-    public static IYamlMapping WithOta(this IYamlMapping mapping)
+    public static IYamlMapping WithOta(this IYamlMapping root)
     {
-        mapping.Add("ota", new YamlMapping());
-        return mapping;
+        var builder = new OtaBlockBuilder();
+        var componentConfig = builder.Build();
+        return root.WithComponent("ota", componentConfig);
     }
 
     public static IYamlMapping WithOta(this IYamlMapping root, Action<OtaBlockBuilder> configurator)
     {
         var builder = new OtaBlockBuilder();
         configurator(builder);
-        root["ota"] = builder.Build();
-        return root;
+        var componentConfig = builder.Build();
+        return root.WithComponent("ota", componentConfig);
     }
 
     public static IYamlMapping WithSpi(this IYamlMapping root, Action<SpiBlockBuilder> configurator)
