@@ -172,12 +172,4 @@ public static class EspHomeExtensions
         root["spi"] = builder.Build();
         return root;
     }
-
-    public static IYamlMapping WithLedc(this IYamlMapping root, Action<LedcBuilder> configurator)
-    {
-        var builder = new LedcBuilder();
-        configurator(builder);
-        var componentConfig = builder.Build();
-        return root.WithComponent("ledc", componentConfig);
-    }
 }
