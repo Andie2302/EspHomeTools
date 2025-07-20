@@ -5,35 +5,35 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class SpiBlockBuilder
+public class SpiBuilder
 {
     private readonly YamlMapping _config = new();
 
-    public SpiBlockBuilder SetClkPin(string pin)
+    public SpiBuilder SetClkPin(string pin)
     {
         _config["clk_pin"] = new YamlString(pin);
         return this;
     }
 
-    public SpiBlockBuilder SetMosiPin(string pin)
+    public SpiBuilder SetMosiPin(string pin)
     {
         _config["mosi_pin"] = new YamlString(pin);
         return this;
     }
 
-    public SpiBlockBuilder SetMisoPin(string pin)
+    public SpiBuilder SetMisoPin(string pin)
     {
         _config["miso_pin"] = new YamlString(pin);
         return this;
     }
 
-    public SpiBlockBuilder WithId(string id)
+    public SpiBuilder WithId(string id)
     {
         _config["id"] = new YamlString(id);
         return this;
     }
 
-    public SpiBlockBuilder WithCommentOn(string key, string comment)
+    public SpiBuilder WithCommentOn(string key, string comment)
     {
         if (_config.TryGetValue(key, out var node))
             node.Comment = comment;
