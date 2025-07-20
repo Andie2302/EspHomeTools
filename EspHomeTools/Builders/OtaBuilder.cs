@@ -11,7 +11,6 @@ public class OtaBuilder
 
     public OtaBuilder()
     {
-        // Set the default platform for OTA
         _block["platform"] = new YamlString("esphome");
     }
 
