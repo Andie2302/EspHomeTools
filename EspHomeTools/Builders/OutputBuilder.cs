@@ -11,6 +11,8 @@ public class OutputBuilder
 
     public OutputBuilder()
     {
+        // Set a default platform, which can be changed.
+        // For simple on/off, "gpio" is fine. For dimming, others are needed.
         _config["platform"] = new YamlString("gpio");
     }
 
@@ -44,7 +46,6 @@ public class OutputBuilder
     {
         if (_config.TryGetValue(key, out var node))
             node.Comment = comment;
-
         return this;
     }
 
@@ -54,7 +55,6 @@ public class OutputBuilder
         {
             throw new InvalidOperationException("Ein Pin muss für die 'output'-Komponente mit UsePin() angegeben werden.");
         }
-
         if (!_config.ContainsKey("id"))
         {
             throw new InvalidOperationException("Eine ID muss für die 'output'-Komponente mit WithId() angegeben werden, damit andere Komponenten darauf verweisen können.");
