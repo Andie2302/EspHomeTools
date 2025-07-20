@@ -5,41 +5,41 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class I2CBlockBuilder
+public class I2CBuilder
 {
     private readonly YamlMapping _config = new();
 
-    public I2CBlockBuilder SetSdaPin(string pin)
+    public I2CBuilder SetSdaPin(string pin)
     {
         _config["sda"] = new YamlString(pin);
         return this;
     }
 
-    public I2CBlockBuilder SetSclPin(string pin)
+    public I2CBuilder SetSclPin(string pin)
     {
         _config["scl"] = new YamlString(pin);
         return this;
     }
 
-    public I2CBlockBuilder WithScan(bool scan)
+    public I2CBuilder WithScan(bool scan)
     {
         _config["scan"] = new YamlBool(scan);
         return this;
     }
 
-    public I2CBlockBuilder WithId(string id)
+    public I2CBuilder WithId(string id)
     {
         _config["id"] = new YamlString(id);
         return this;
     }
 
-    public I2CBlockBuilder WithFrequency(string frequency)
+    public I2CBuilder WithFrequency(string frequency)
     {
         _config["frequency"] = new YamlString(frequency);
         return this;
     }
 
-    public I2CBlockBuilder WithCommentOn(string key, string comment)
+    public I2CBuilder WithCommentOn(string key, string comment)
     {
         if (_config.TryGetValue(key, out var node))
             node.Comment = comment;
