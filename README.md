@@ -46,38 +46,75 @@ var root = new YamlMapping();
 // 2. Use the fluent builder API to construct the configuration
 root.WithEsphome(esphome =>
     {
-        esphome.WithName("living_room_sensor");
+        esphome.WithName("living_room_sensor")
+               // Add a comment to the 'name' key
+               .WithCommentOn("name", "This is the unique name for the device on the network.");
     })
-    .WithEsp32(esp32 => // Or WithEsp8266, WithRp2040, etc.
+    .WithEsp32(esp32 =>
     {
-        esp32.WithBoard("esp32dev");
+        esp32.WithBoard("esp32dev")
+             // Add a comment to the 'board' key
+             .WithCommentOn("board", "Using a standard ESP32 development kit.");
     })
     .WithWifi(wifi =>
     {
-        // Use !secret for sensitive data like passwords
         wifi.WithSsid("MySuperWiFi")
-            .WithPassword(new YamlSecret("wifi_password")); // Generates: !secret wifi_password
+            // Add a multi-line comment to the 'ssid' key
+            .WithCommentOn("ssid", "The SSID of your primary WiFi network.\nMust be 2.4 GHz.")
+            .WithPassword(new YamlSecret("wifi_password"))
+            .WithCommentOn("password", "The WiFi password, stored securely in 'secrets.yaml'.");
     })
-    .WithLogger()
+    .WithMqtt(mqtt =>
+    {
+        mqtt.WithBroker("192.168.1.100")
+            .WithCommentOn("broker", "IP address of the Mosquitto MQTT broker.")
+            .WithUsername("mqtt_user", isSecret: true)
+            .WithPassword("mqtt_pass", isSecret: true);
+    })
+    .WithLogger() // You can also add comments to simple blocks
     .WithApi()
-    .WithOta() // This now matches your implementation
+    .WithOta()
+    .WithTime(time =>
+    {
+        time.WithPlatform("homeassistant")
+            .WithId("ha_time")
+            .WithCommentOn("platform", "Use Home Assistant as the source for the current time.");
+    })
     .WithDhtSensor(dht =>
     {
         dht.UsePin("D2")
-            .WithTemperature("Living Room Temperature")
-            .WithHumidity("Living Room Humidity")
-            .WithUpdateInterval("60s");
+           .WithCommentOn("pin", "The data pin for the DHT22 sensor.")
+           .WithTemperature("Living Room Temperature")
+           .WithHumidity("Living Room Humidity")
+           .WithUpdateInterval("60s")
+           .WithCommentOn("update_interval", "Read sensor data every 60 seconds.");
     })
     .WithGpioSwitch(sw =>
     {
         sw.UsePin("D1")
-            .WithName("Living Room Lamp")
-            .WithId("living_room_lamp")
-            .WithIcon("mdi:lightbulb");
+          .WithName("Living Room Lamp")
+          .WithCommentOn("name", "Friendly name for the switch in Home Assistant.")
+          .WithId("living_room_lamp")
+          .WithIcon("mdi:lightbulb");
+    })
+    .WithBinarySensor(bs =>
+    {
+        bs.UsePin("D5")
+          .WithName("Motion Sensor")
+          .WithDeviceClass("motion")
+          .WithCommentOn("name", "PIR sensor in the hallway.");
+    })
+    .WithBinarySensor(bs =>
+    {
+        bs.UsePin("D6")
+          .WithName("Window Contact")
+          .WithDeviceClass("window")
+          .WithCommentOn("name", "Magnetic contact sensor on the living room window.");
     });
 
 // 3. Generate and print the final YAML string
-Console.WriteLine(root.ToYaml().Trim());
+Console.WriteLine(root.ToYaml());
+
 ```
 
 ### Generated YAML Output
@@ -86,29 +123,57 @@ The C# code above generates the following perfectly formatted YAML file:
 
 ```yaml
 esphome:
+  # This is the unique name for the device on the network.
   name: living_room_sensor
 esp32:
+  # Using a standard ESP32 development kit.
   board: esp32dev
 wifi:
+  # The SSID of your primary WiFi network.
+  # Must be 2.4 GHz.
   ssid: MySuperWiFi
+  # The WiFi password, stored securely in 'secrets.yaml'.
   password: !secret wifi_password
+mqtt:
+  # IP address of the Mosquitto MQTT broker.
+  broker: 192.168.1.100
+  username: !secret mqtt_user
+  password: !secret mqtt_pass
 logger:
 api:
 ota:
+time:
+  - # Use Home Assistant as the source for the current time.
+    platform: homeassistant
+    id: ha_time
 sensor:
   - platform: dht
+    # The data pin for the DHT22 sensor.
     pin: D2
     temperature:
       name: Living Room Temperature
     humidity:
       name: Living Room Humidity
+    # Read sensor data every 60 seconds.
     update_interval: 60s
 switch:
   - platform: gpio
     pin: D1
+    # Friendly name for the switch in Home Assistant.
     name: Living Room Lamp
     id: living_room_lamp
     icon: "mdi:lightbulb"
+binary_sensor:
+  - platform: gpio
+    pin: D5
+    # PIR sensor in the hallway.
+    name: Motion Sensor
+    device_class: motion
+  - platform: gpio
+    pin: D6
+    # Magnetic contact sensor on the living room window.
+    name: Window Contact
+    device_class: window
 ```
 
 ## Project Goals (may change)
