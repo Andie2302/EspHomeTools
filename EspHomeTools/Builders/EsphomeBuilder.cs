@@ -5,25 +5,25 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class EsphomeBlockBuilder
+public class EsphomeBuilder
 {
     private readonly YamlMapping _block = new();
 
-    public EsphomeBlockBuilder WithName(string name)
+    public EsphomeBuilder WithName(string name)
     {
         _block["name"] = new YamlString(name);
         return this;
     }
 
-    public EsphomeBlockBuilder WithName(YamlSecret name)
+    public EsphomeBuilder WithName(YamlSecret name)
     {
         _block["name"] = name;
         return this;
     }
 
-    public EsphomeBlockBuilder WithName(string name, bool isSecret) => isSecret ? WithName(new YamlSecret(name)) : WithName(name);
+    public EsphomeBuilder WithName(string name, bool isSecret) => isSecret ? WithName(new YamlSecret(name)) : WithName(name);
 
-    public EsphomeBlockBuilder WithComment(string comment)
+    public EsphomeBuilder WithComment(string comment)
     {
         if (_block.TryGetValue("name", out var nameNode))
         {
@@ -33,7 +33,7 @@ public class EsphomeBlockBuilder
         return this;
     }
 
-    public EsphomeBlockBuilder WithCommentOn(string key, string comment)
+    public EsphomeBuilder WithCommentOn(string key, string comment)
     {
         if (_block.TryGetValue(key, out var node))
             node.Comment = comment;
@@ -50,7 +50,7 @@ public class EsphomeBlockBuilder
 
         return _block;
     }
-    public EsphomeBlockBuilder OnBoot(Action<ActionSequenceBuilder> configurator)
+    public EsphomeBuilder OnBoot(Action<ActionSequenceBuilder> configurator)
     {
         var builder = new ActionSequenceBuilder();
         configurator(builder);
