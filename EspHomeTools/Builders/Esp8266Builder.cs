@@ -5,25 +5,25 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class Esp8266BlockBuilder
+public class Esp8266Builder
 {
     private readonly YamlMapping _block = new();
 
-    public Esp8266BlockBuilder WithBoard(string board)
+    public Esp8266Builder WithBoard(string board)
     {
         _block["board"] = new YamlString(board);
         return this;
     }
 
-    public Esp8266BlockBuilder WithBoard(YamlSecret board)
+    public Esp8266Builder WithBoard(YamlSecret board)
     {
         _block["board"] = board;
         return this;
     }
 
-    public Esp8266BlockBuilder WithBoard(string board, bool isSecret) => isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
+    public Esp8266Builder WithBoard(string board, bool isSecret) => isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
 
-    public Esp8266BlockBuilder WithCommentOn(string key, string comment)
+    public Esp8266Builder WithCommentOn(string key, string comment)
     {
         if (_block.TryGetValue(key, out var node))
             node.Comment = comment;
