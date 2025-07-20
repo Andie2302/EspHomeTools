@@ -82,4 +82,19 @@ public class BinarySensorBuilder
 
         return _config;
     }
+    public BinarySensorBuilder OnPress(Action<ActionSequenceBuilder> configurator)
+    {
+        var builder = new ActionSequenceBuilder();
+        configurator(builder);
+        _config["on_press"] = builder.Build();
+        return this;
+    }
+
+    public BinarySensorBuilder OnRelease(Action<ActionSequenceBuilder> configurator)
+    {
+        var builder = new ActionSequenceBuilder();
+        configurator(builder);
+        _config["on_release"] = builder.Build();
+        return this;
+    }
 }
