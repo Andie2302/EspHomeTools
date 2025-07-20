@@ -146,7 +146,6 @@ public static class EspHomeExtensions
         return root;
     }
 
-// Ersetze die alte "WithApi"-Methode durch diese beiden
     public static IYamlMapping WithApi(this IYamlMapping mapping)
     {
         mapping.Add("api", new YamlMapping());
@@ -161,7 +160,6 @@ public static class EspHomeExtensions
         return root;
     }
 
-// Ersetze die alte "WithOta"-Methode durch diese beiden
     public static IYamlMapping WithOta(this IYamlMapping mapping)
     {
         mapping.Add("ota", new YamlMapping());
