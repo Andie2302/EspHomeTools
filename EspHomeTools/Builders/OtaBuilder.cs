@@ -5,37 +5,37 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class OtaBlockBuilder
+public class OtaBuilder
 {
     private readonly YamlMapping _block = new();
 
-    public OtaBlockBuilder()
+    public OtaBuilder()
     {
         // Set the default platform for OTA
         _block["platform"] = new YamlString("esphome");
     }
 
-    public OtaBlockBuilder WithPlatform(string platform)
+    public OtaBuilder WithPlatform(string platform)
     {
         _block["platform"] = new YamlString(platform);
         return this;
     }
 
-    public OtaBlockBuilder WithPassword(string password)
+    public OtaBuilder WithPassword(string password)
     {
         _block["password"] = new YamlString(password);
         return this;
     }
 
-    public OtaBlockBuilder WithPassword(YamlSecret password)
+    public OtaBuilder WithPassword(YamlSecret password)
     {
         _block["password"] = password;
         return this;
     }
 
-    public OtaBlockBuilder WithPassword(string password, bool isSecret) => isSecret ? WithPassword(new YamlSecret(password)) : WithPassword(password);
+    public OtaBuilder WithPassword(string password, bool isSecret) => isSecret ? WithPassword(new YamlSecret(password)) : WithPassword(password);
 
-    public OtaBlockBuilder WithCommentOn(string key, string comment)
+    public OtaBuilder WithCommentOn(string key, string comment)
     {
         if (_block.TryGetValue(key, out var node))
             node.Comment = comment;
