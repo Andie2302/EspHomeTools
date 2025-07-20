@@ -55,40 +55,40 @@ public static class EspHomeExtensions
         return root.WithComponent("switch", switchConfig);
     }
 
-    public static IYamlMapping WithEsp8266(this IYamlMapping root, Action<Esp8266BlockBuilder> configurator)
+    public static IYamlMapping WithEsp8266(this IYamlMapping root, Action<Esp8266Builder> configurator)
     {
-        var builder = new Esp8266BlockBuilder();
+        var builder = new Esp8266Builder();
         configurator(builder);
         root["esp8266"] = builder.Build();
         return root;
     }
 
-    public static IYamlMapping WithEsp32(this IYamlMapping root, Action<Esp32BlockBuilder> configurator)
+    public static IYamlMapping WithEsp32(this IYamlMapping root, Action<Esp32Builder> configurator)
     {
-        var builder = new Esp32BlockBuilder();
+        var builder = new Esp32Builder();
         configurator(builder);
         root["esp32"] = builder.Build();
         return root;
     }
 
-    public static IYamlMapping WithRp2040(this IYamlMapping root, Action<Rp2040BlockBuilder> configurator)
+    public static IYamlMapping WithRp2040(this IYamlMapping root, Action<Rp2040Builder> configurator)
     {
-        var builder = new Rp2040BlockBuilder();
+        var builder = new Rp2040Builder();
         configurator(builder);
         root["rp2040"] = builder.Build();
         return root;
     }
 
-    public static IYamlMapping WithBeken(this IYamlMapping root, Action<BekenBlockBuilder> configurator)
+    public static IYamlMapping WithBeken(this IYamlMapping root, Action<BekenBuilder> configurator)
     {
-        var builder = new BekenBlockBuilder();
+        var builder = new BekenBuilder();
         configurator(builder);
         root["bk72xx"] = builder.Build();
         return root;
     }
-    public static IYamlMapping WithMqtt(this IYamlMapping root, Action<MqttBlockBuilder> configurator)
+    public static IYamlMapping WithMqtt(this IYamlMapping root, Action<MqttBuilder> configurator)
     {
-        var builder = new MqttBlockBuilder();
+        var builder = new MqttBuilder();
         configurator(builder);
         root["mqtt"] = builder.Build();
         return root;
@@ -100,9 +100,9 @@ public static class EspHomeExtensions
         var componentConfig = builder.Build();
         return root.WithComponent("binary_sensor", componentConfig);
     }
-    public static IYamlMapping WithTime(this IYamlMapping root, Action<TimeBlockBuilder> configurator)
+    public static IYamlMapping WithTime(this IYamlMapping root, Action<TimeBuilder> configurator)
     {
-        var builder = new TimeBlockBuilder();
+        var builder = new TimeBuilder();
         configurator(builder);
         var componentConfig = builder.Build();
         return root.WithComponent("time", componentConfig);
@@ -115,16 +115,16 @@ public static class EspHomeExtensions
         return root.WithComponent("output", componentConfig);
     }
 
-    public static IYamlMapping WithLight(this IYamlMapping root, Action<LightBlockBuilder> configurator)
+    public static IYamlMapping WithLight(this IYamlMapping root, Action<LightBuilder> configurator)
     {
-        var builder = new LightBlockBuilder();
+        var builder = new LightBuilder();
         configurator(builder);
         var componentConfig = builder.Build();
         return root.WithComponent("light", componentConfig);
     }
-    public static IYamlMapping WithI2C(this IYamlMapping root, Action<I2CBlockBuilder> configurator)
+    public static IYamlMapping WithI2C(this IYamlMapping root, Action<I2CBuilder> configurator)
     {
-        var builder = new I2CBlockBuilder();
+        var builder = new I2CBuilder();
         configurator(builder);
         root["i2c"] = builder.Build();
         return root;
@@ -142,9 +142,9 @@ public static class EspHomeExtensions
         return mapping;
     }
 
-    public static IYamlMapping WithApi(this IYamlMapping root, Action<ApiBlockBuilder> configurator)
+    public static IYamlMapping WithApi(this IYamlMapping root, Action<ApiBuilder> configurator)
     {
-        var builder = new ApiBlockBuilder();
+        var builder = new ApiBuilder();
         configurator(builder);
         root["api"] = builder.Build();
         return root;
@@ -152,22 +152,22 @@ public static class EspHomeExtensions
 
     public static IYamlMapping WithOta(this IYamlMapping root)
     {
-        var builder = new OtaBlockBuilder();
+        var builder = new OtaBuilder();
         var componentConfig = builder.Build();
         return root.WithComponent("ota", componentConfig);
     }
 
-    public static IYamlMapping WithOta(this IYamlMapping root, Action<OtaBlockBuilder> configurator)
+    public static IYamlMapping WithOta(this IYamlMapping root, Action<OtaBuilder> configurator)
     {
-        var builder = new OtaBlockBuilder();
+        var builder = new OtaBuilder();
         configurator(builder);
         var componentConfig = builder.Build();
         return root.WithComponent("ota", componentConfig);
     }
 
-    public static IYamlMapping WithSpi(this IYamlMapping root, Action<SpiBlockBuilder> configurator)
+    public static IYamlMapping WithSpi(this IYamlMapping root, Action<SpiBuilder> configurator)
     {
-        var builder = new SpiBlockBuilder();
+        var builder = new SpiBuilder();
         configurator(builder);
         root["spi"] = builder.Build();
         return root;
