@@ -53,7 +53,8 @@ root.WithEsphome(esphome =>
                {
                    actions.Lambda(@"ESP_LOGI(""main"", ""Device has successfully booted!"");")
                           .Delay("2s")
-                          .LightTurnOn("dimmable_led_output");
+                          // Action now targets the unique light ID
+                          .LightTurnOn("dimmable_light");
                });
     })
     .WithEsp32(esp32 =>
@@ -86,19 +87,19 @@ root.WithEsphome(esphome =>
         ota.WithPassword("YOUR_OTA_PASSWORD_HERE", isSecret: true)
            .WithCommentOn("password", "Secures over-the-air updates.");
     })
-    .WithI2C(i2c => 
+    .WithI2C(i2c =>
     {
-        i2c.SetSdaPin("D21")
-           .SetSclPin("D22")
+        i2c.SetSdaPin("GPIO21") // Corrected pin name for esp32dev
+           .SetSclPin("GPIO22") // Corrected pin name for esp32dev
            .WithScan(true)
            .WithId("bus_a")
            .WithCommentOn("scan", "Scans for I2C devices on startup, useful for debugging.");
     })
     .WithSpi(spi =>
     {
-        spi.SetClkPin("D18")
-           .SetMosiPin("D23")
-           .SetMisoPin("D19")
+        spi.SetClkPin("GPIO18") // Using GPIO naming for consistency
+           .SetMosiPin("GPIO23")
+           .SetMisoPin("GPIO19")
            .WithId("bus_b")
            .WithCommentOn("id", "SPI bus for high-speed components like displays.");
     })
@@ -110,7 +111,7 @@ root.WithEsphome(esphome =>
     })
     .WithDhtSensor(dht =>
     {
-        dht.UsePin("D2")
+        dht.UsePin("GPIO2") // Using GPIO naming for consistency
            .WithCommentOn("pin", "The data pin for the DHT22 sensor.")
            .WithTemperature("Living Room Temperature")
            .WithHumidity("Living Room Humidity")
@@ -119,7 +120,7 @@ root.WithEsphome(esphome =>
     })
     .WithEnvironmentalSensor(bme =>
     {
-        bme.WithPlatform("bme280")
+        bme.WithPlatform("bme280_i2c") // Corrected platform for I2C
            .WithI2CAddress(0x76)
            .WithTemperature("BME280 Temperature")
            .WithPressure("BME280 Pressure")
@@ -129,7 +130,7 @@ root.WithEsphome(esphome =>
     })
     .WithGpioSwitch(sw =>
     {
-        sw.UsePin("D1")
+        sw.UsePin("GPIO1") // Using GPIO naming for consistency
           .WithName("Living Room Lamp")
           .WithCommentOn("name", "Friendly name for the switch in Home Assistant.")
           .WithId("living_room_lamp")
@@ -137,39 +138,44 @@ root.WithEsphome(esphome =>
     })
     .WithBinarySensor(bs =>
     {
-        bs.UsePin("D5")
+        bs.UsePin("GPIO5") // Using GPIO naming for consistency
           .WithName("Motion Sensor")
           .WithDeviceClass("motion")
           .WithCommentOn("name", "PIR sensor in the hallway.")
-          // Add an on_press trigger to turn on the dimmable light when motion is detected
+          // Action now targets the unique light ID
           .OnPress(actions => {
-              actions.LightTurnOn("dimmable_led_output");
+              actions.LightTurnOn("dimmable_light");
           });
     })
     .WithBinarySensor(bs =>
     {
-        bs.UsePin("D6")
+        bs.UsePin("GPIO25") // Corrected from GPIO6, which is used by flash memory
           .WithName("Window Contact")
           .WithDeviceClass("window")
           .WithCommentOn("name", "Magnetic contact sensor on the living room window.");
     })
     .WithOutput(o =>
     {
-        o.UsePin("D4")
-         .WithId("dimmable_led_output")
+        // For dimmable lights on ESP32, the 'output' platform must be 'ledc'.
+        o.WithPlatform("ledc")
+         .UsePin("GPIO4")
+         .WithId("led_pwm_output")
          .WithCommentOn("id", "This PWM output controls the dimmable LED strip.");
     })
     .WithLight(l =>
     {
         l.WithPlatform("monochromatic")
          .WithName("Dimmable LED Strip")
-         .UseOutput("dimmable_led_output")
-         .WithId("dimmable_led_output") // Add an ID to the light to be able to control it
-         .WithCommentOn("output", "Links this light to the PWM output defined above.");
+         // The light uses the 'ledc' output's unique ID
+         .UseOutput("led_pwm_output")
+         // The light gets its own unique ID to be controlled by actions
+         .WithId("dimmable_light")
+         .WithCommentOn("output", "Links this light to the 'ledc' PWM channel defined above.");
     });
 
 // 3. Generate and print the final YAML string
 Console.WriteLine(root.ToYaml());
+
 
 ```
 
@@ -185,7 +191,7 @@ esphome:
     - lambda: |-
         ESP_LOGI("main", "Device has successfully booted!");
     - delay: 2s
-    - light.turn_on: dimmable_led_output
+    - light.turn_on: dimmable_light
 esp32:
   # Using a standard ESP32 development kit.
   board: esp32dev
@@ -210,15 +216,15 @@ ota:
     # Secures over-the-air updates.
     password: !secret YOUR_OTA_PASSWORD_HERE
 i2c:
-  sda: D21
-  scl: D22
+  sda: GPIO21
+  scl: GPIO22
   # Scans for I2C devices on startup, useful for debugging.
   scan: true
   id: bus_a
 spi:
-  clk_pin: D18
-  mosi_pin: D23
-  miso_pin: D19
+  clk_pin: GPIO18
+  mosi_pin: GPIO23
+  miso_pin: GPIO19
   # SPI bus for high-speed components like displays.
   id: bus_b
 time:
@@ -228,7 +234,7 @@ time:
 sensor:
   - platform: dht
     # The data pin for the DHT22 sensor.
-    pin: D2
+    pin: GPIO2
     temperature:
       name: Living Room Temperature
     humidity:
@@ -236,7 +242,7 @@ sensor:
     # Read sensor data every 60 seconds.
     update_interval: 60s
   - # Environmental sensor for temp, humidity, and pressure.
-    platform: bme280
+    platform: bme280_i2c
     address: 118
     temperature:
       name: BME280 Temperature
@@ -250,35 +256,35 @@ sensor:
     update_interval: 60s
 switch:
   - platform: gpio
-    pin: D1
+    pin: GPIO1
     # Friendly name for the switch in Home Assistant.
     name: Living Room Lamp
     id: living_room_lamp
     icon: "mdi:lightbulb"
 binary_sensor:
   - platform: gpio
-    pin: D5
+    pin: GPIO5
     # PIR sensor in the hallway.
     name: Motion Sensor
     device_class: motion
     on_press:
-      - light.turn_on: dimmable_led_output
+      - light.turn_on: dimmable_light
   - platform: gpio
-    pin: D6
+    pin: GPIO25
     # Magnetic contact sensor on the living room window.
     name: Window Contact
     device_class: window
 output:
-  - platform: gpio
-    pin: D4
+  - platform: ledc
+    pin: GPIO4
     # This PWM output controls the dimmable LED strip.
-    id: dimmable_led_output
+    id: led_pwm_output
 light:
   - platform: monochromatic
     name: Dimmable LED Strip
-    # Links this light to the PWM output defined above.
-    output: dimmable_led_output
-    id: dimmable_led_output
+    # Links this light to the 'ledc' PWM channel defined above.
+    output: led_pwm_output
+    id: dimmable_light
 
 ```
 
