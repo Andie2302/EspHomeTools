@@ -105,4 +105,11 @@ public static class EspHomeExtensions
         root["mqtt"] = builder.Build();
         return root;
     }
+    public static IYamlMapping WithBinarySensor(this IYamlMapping root, Action<BinarySensorBuilder> configurator)
+    {
+        var builder = new BinarySensorBuilder();
+        configurator(builder);
+        var componentConfig = builder.Build();
+        return root.WithComponent("binary_sensor", componentConfig);
+    }
 }
