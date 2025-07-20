@@ -49,9 +49,6 @@ public class I2CBlockBuilder
 
     internal IYamlMapping Build()
     {
-        // SDA and SCL are often optional as ESPHome can use board defaults,
-        // so we don't enforce their presence with an exception.
-        // An ID is highly recommended if other components will use this bus.
         if (!_config.ContainsKey("id"))
         {
             Console.WriteLine("Warning: I2C bus created without an ID. Other components might not be able to use it.");
