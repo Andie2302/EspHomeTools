@@ -10,7 +10,7 @@ namespace TestEspHomeTools;
 /// required properties are not provided.
 /// </summary>
 [TestClass]
-public class EsphomeBlockBuilderTests
+public class EsphomeBuilderTests
 {
     /// <summary>
     /// Validates that a YAML structure is correctly generated for a given valid device name input.
