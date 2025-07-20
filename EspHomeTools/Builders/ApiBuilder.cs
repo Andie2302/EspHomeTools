@@ -4,41 +4,41 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class ApiBlockBuilder
+public class ApiBuilder
 {
     private readonly YamlMapping _block = new();
 
-    public ApiBlockBuilder WithPassword(string password)
+    public ApiBuilder WithPassword(string password)
     {
         _block["password"] = new YamlString(password);
         return this;
     }
 
-    public ApiBlockBuilder WithPassword(YamlSecret password)
+    public ApiBuilder WithPassword(YamlSecret password)
     {
         _block["password"] = password;
         return this;
     }
 
-    public ApiBlockBuilder WithPassword(string password, bool isSecret) => isSecret ? WithPassword(new YamlSecret(password)) : WithPassword(password);
+    public ApiBuilder WithPassword(string password, bool isSecret) => isSecret ? WithPassword(new YamlSecret(password)) : WithPassword(password);
 
-    public ApiBlockBuilder WithEncryptionKey(string key)
+    public ApiBuilder WithEncryptionKey(string key)
     {
         var encryptionMapping = new YamlMapping { { "key", new YamlString(key) } };
         _block["encryption"] = encryptionMapping;
         return this;
     }
 
-    public ApiBlockBuilder WithEncryptionKey(YamlSecret key)
+    public ApiBuilder WithEncryptionKey(YamlSecret key)
     {
         var encryptionMapping = new YamlMapping { { "key", key } };
         _block["encryption"] = encryptionMapping;
         return this;
     }
 
-    public ApiBlockBuilder WithEncryptionKey(string key, bool isSecret) => isSecret ? WithEncryptionKey(new YamlSecret(key)) : WithEncryptionKey(key);
+    public ApiBuilder WithEncryptionKey(string key, bool isSecret) => isSecret ? WithEncryptionKey(new YamlSecret(key)) : WithEncryptionKey(key);
 
-    public ApiBlockBuilder WithCommentOn(string key, string comment)
+    public ApiBuilder WithCommentOn(string key, string comment)
     {
         if (_block.TryGetValue(key, out var node))
             node.Comment = comment;
