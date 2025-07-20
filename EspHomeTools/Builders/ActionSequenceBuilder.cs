@@ -23,8 +23,6 @@ public class ActionSequenceBuilder
         return this;
     }
 
-    // --- Common Pre-defined Actions ---
-
     public ActionSequenceBuilder LightToggle(string lightId) => AddSimpleAction("light.toggle", lightId);
     public ActionSequenceBuilder LightTurnOn(string lightId) => AddSimpleAction("light.turn_on", lightId);
     public ActionSequenceBuilder LightTurnOff(string lightId) => AddSimpleAction("light.turn_off", lightId);
@@ -39,7 +37,6 @@ public class ActionSequenceBuilder
     /// <param name="csharpLambda">The C++ code to execute in the lambda.</param>
     public ActionSequenceBuilder Lambda(string csharpLambda)
     {
-        // A lambda is a special mapping node where the key is "lambda"
         var lambdaNode = new YamlLambda(csharpLambda) { Name = "lambda" };
         _sequence.Add(lambdaNode);
         return this;
