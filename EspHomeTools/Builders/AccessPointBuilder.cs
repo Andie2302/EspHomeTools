@@ -5,39 +5,39 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class AccessPointBlockBuilder
+public class AccessPointBuilder
 {
     private readonly YamlMapping _block = new();
 
-    public AccessPointBlockBuilder WithSsid(string ssid)
+    public AccessPointBuilder WithSsid(string ssid)
     {
         _block["ssid"] = new YamlString(ssid);
         return this;
     }
 
-    public AccessPointBlockBuilder WithSsid(YamlSecret ssid)
+    public AccessPointBuilder WithSsid(YamlSecret ssid)
     {
         _block["ssid"] = ssid;
         return this;
     }
 
-    public AccessPointBlockBuilder WithSsid(string ssid, bool isSecret) => isSecret ? WithSsid(new YamlSecret(ssid)) : WithSsid(ssid);
+    public AccessPointBuilder WithSsid(string ssid, bool isSecret) => isSecret ? WithSsid(new YamlSecret(ssid)) : WithSsid(ssid);
 
-    public AccessPointBlockBuilder WithPassword(string password)
+    public AccessPointBuilder WithPassword(string password)
     {
         _block["password"] = new YamlString(password);
         return this;
     }
 
-    public AccessPointBlockBuilder WithPassword(string password, bool isSecret) => isSecret ? WithPassword(new YamlSecret(password)) : WithPassword(password);
+    public AccessPointBuilder WithPassword(string password, bool isSecret) => isSecret ? WithPassword(new YamlSecret(password)) : WithPassword(password);
 
-    public AccessPointBlockBuilder WithPassword(YamlSecret password)
+    public AccessPointBuilder WithPassword(YamlSecret password)
     {
         _block["password"] = password;
         return this;
     }
 
-    public AccessPointBlockBuilder WithCommentOn(string key, string comment)
+    public AccessPointBuilder WithCommentOn(string key, string comment)
     {
         if (_block.TryGetValue(key, out var node))
             node.Comment = comment;
