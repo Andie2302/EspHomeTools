@@ -36,71 +36,123 @@ Here’s how you can easily generate a complete ESPHome configuration for a devi
 
 ```csharp
 using System;
+using EspHomeTools.Builders;
 using EspHomeTools.Classes.Scalars;
-using EspHomeTools.Classes.Structures;
-using EspHomeTools.Interfaces;
+using EspHomeTools.Classes.Structures; // Required for YamlSecret
 
-namespace EspHomeTools.Builders;
+// 1. Create the root node for the YAML file
+var root = new YamlMapping();
 
-public class WifiBlockBuilder
-{
-    private readonly YamlMapping _block = new();
-
-    public WifiBlockBuilder WithSsid(string ssid)
+// 2. Use the fluent builder API to construct the configuration
+root.WithEsphome(esphome =>
     {
-        _block["ssid"] = new YamlString(ssid);
-        return this;
-    }
-
-    public WifiBlockBuilder WithSsid(YamlSecret ssid)
+        esphome.WithName("living_room_sensor")
+               // Add a comment to the 'name' key
+               .WithCommentOn("name", "This is the unique name for the device on the network.");
+    })
+    .WithEsp32(esp32 =>
     {
-        _block["ssid"] = ssid;
-        return this;
-    }
-
-    public WifiBlockBuilder WithSsid(string ssid, bool isSecret) => isSecret ? WithSsid(new YamlSecret(ssid)) : WithSsid(ssid);
-
-    public WifiBlockBuilder WithPassword(string password)
+        esp32.WithBoard("esp32dev")
+             // Add a comment to the 'board' key
+             .WithCommentOn("board", "Using a standard ESP32 development kit.");
+    })
+    .WithWifi(wifi =>
     {
-        _block["password"] = new YamlString(password);
-        return this;
-    }
-
-    public WifiBlockBuilder WithPassword(YamlSecret password)
+        wifi.WithSsid("MySuperWiFi")
+            // Add a multi-line comment to the 'ssid' key
+            .WithCommentOn("ssid", "The SSID of your primary WiFi network.\nMust be 2.4 GHz.")
+            .WithPassword(new YamlSecret("wifi_password"))
+            .WithCommentOn("password", "The WiFi password, stored securely in 'secrets.yaml'.");
+    })
+    .WithMqtt(mqtt =>
     {
-        _block["password"] = password;
-        return this;
-    }
-
-    public WifiBlockBuilder WithPassword(string password, bool isSecret) => isSecret ? WithPassword(new YamlSecret(password)) : WithPassword(password);
-
-    public WifiBlockBuilder WithAccessPoint(Action<AccessPointBlockBuilder> configurator)
+        mqtt.WithBroker("192.168.1.100")
+            .WithCommentOn("broker", "IP address of the Mosquitto MQTT broker.")
+            .WithUsername("mqtt_user", isSecret: true)
+            .WithPassword("mqtt_pass", isSecret: true);
+    })
+    .WithLogger() // You can also add comments to simple blocks
+    .WithApi()
+    .WithOta()
+    .WithI2C(i2c => 
     {
-        var builder = new AccessPointBlockBuilder();
-        configurator(builder);
-        _block["ap"] = builder.Build();
-        return this;
-    }
-
-    public WifiBlockBuilder WithCommentOn(string key, string comment)
+        i2c.SetSdaPin("D21")
+           .SetSclPin("D22")
+           .WithScan(true)
+           .WithId("bus_a")
+           .WithCommentOn("scan", "Scans for I2C devices on startup, useful for debugging.");
+    })
+    .WithSpi(spi =>
     {
-        if (_block.TryGetValue(key, out var node))
-            node.Comment = comment;
-
-        return this;
-    }
-
-    internal IYamlMapping Build()
+        spi.SetClkPin("D18")
+           .SetMosiPin("D23")
+           .SetMisoPin("D19")
+           .WithId("bus_b")
+           .WithCommentOn("id", "SPI bus for high-speed components like displays.");
+    })
+    .WithTime(time =>
     {
-        if (!_block.ContainsKey("ssid") || !_block.ContainsKey("password"))
-        {
-            throw new InvalidOperationException("SSID und Passwort sind im 'wifi'-Block erforderlich.");
-        }
+        time.WithPlatform("homeassistant")
+            .WithId("ha_time")
+            .WithCommentOn("platform", "Use Home Assistant as the source for the current time.");
+    })
+    .WithDhtSensor(dht =>
+    {
+        dht.UsePin("D2")
+           .WithCommentOn("pin", "The data pin for the DHT22 sensor.")
+           .WithTemperature("Living Room Temperature")
+           .WithHumidity("Living Room Humidity")
+           .WithUpdateInterval("60s")
+           .WithCommentOn("update_interval", "Read sensor data every 60 seconds.");
+    })
+    .WithEnvironmentalSensor(bme =>
+    {
+        bme.WithPlatform("bme280")
+           .WithI2CAddress(0x76)
+           .WithTemperature("BME280 Temperature")
+           .WithPressure("BME280 Pressure")
+           .WithHumidity("BME280 Humidity")
+           .WithUpdateInterval("60s")
+           .WithCommentOn("platform", "Environmental sensor for temp, humidity, and pressure.");
+    })
+    .WithGpioSwitch(sw =>
+    {
+        sw.UsePin("D1")
+          .WithName("Living Room Lamp")
+          .WithCommentOn("name", "Friendly name for the switch in Home Assistant.")
+          .WithId("living_room_lamp")
+          .WithIcon("mdi:lightbulb");
+    })
+    .WithBinarySensor(bs =>
+    {
+        bs.UsePin("D5")
+          .WithName("Motion Sensor")
+          .WithDeviceClass("motion")
+          .WithCommentOn("name", "PIR sensor in the hallway.");
+    })
+    .WithBinarySensor(bs =>
+    {
+        bs.UsePin("D6")
+          .WithName("Window Contact")
+          .WithDeviceClass("window")
+          .WithCommentOn("name", "Magnetic contact sensor on the living room window.");
+    })
+    .WithOutput(o =>
+    {
+        o.UsePin("D4")
+         .WithId("dimmable_led_output")
+         .WithCommentOn("id", "This PWM output controls the dimmable LED strip.");
+    })
+    .WithLight(l =>
+    {
+        l.WithPlatform("monochromatic")
+         .WithName("Dimmable LED Strip")
+         .UseOutput("dimmable_led_output")
+         .WithCommentOn("output", "Links this light to the PWM output defined above.");
+    });
 
-        return _block;
-    }
-}
-
+// 3. Generate and print the final YAML string
+Console.WriteLine(root.ToYaml());
 ```
 
 ### Generated YAML Output
