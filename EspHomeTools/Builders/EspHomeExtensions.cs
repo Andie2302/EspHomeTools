@@ -135,4 +135,11 @@ public static class EspHomeExtensions
         var componentConfig = builder.Build();
         return root.WithComponent("light", componentConfig);
     }
+    public static IYamlMapping WithI2C(this IYamlMapping root, Action<I2CBlockBuilder> configurator)
+    {
+        var builder = new I2CBlockBuilder();
+        configurator(builder);
+        root["i2c"] = builder.Build();
+        return root;
+    }
 }
