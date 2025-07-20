@@ -5,25 +5,25 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class Rp2040BlockBuilder
+public class Rp2040Builder
 {
     private readonly YamlMapping _block = new();
 
-    public Rp2040BlockBuilder WithBoard(string board)
+    public Rp2040Builder WithBoard(string board)
     {
         _block["board"] = new YamlString(board);
         return this;
     }
 
-    public Rp2040BlockBuilder WithBoard(YamlSecret board)
+    public Rp2040Builder WithBoard(YamlSecret board)
     {
         _block["board"] = board;
         return this;
     }
 
-    public Rp2040BlockBuilder WithBoard(string board, bool isSecret) => isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
+    public Rp2040Builder WithBoard(string board, bool isSecret) => isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
 
-    public Rp2040BlockBuilder WithCommentOn(string key, string comment)
+    public Rp2040Builder WithCommentOn(string key, string comment)
     {
         if (_block.TryGetValue(key, out var node))
             node.Comment = comment;
