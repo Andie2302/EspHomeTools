@@ -291,6 +291,21 @@ light:
 ## Project Goals (may change)
 
 * text-sensor builder
+* pulse_counter
+* hx711
+* ina219
+* fan
+* cover
+* stepper
+
+## maybe
+* display
+* font
+* ssd1306
+* sh1106
+* web_server
+* ethernet
+* bluetooth_proxy
 
 
 ## License
