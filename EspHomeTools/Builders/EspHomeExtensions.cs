@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using EspHomeTools.Classes.Structures;
 using EspHomeTools.Interfaces;
 
@@ -138,14 +136,6 @@ public static class EspHomeExtensions
         var componentConfig = builder.Build();
         return root.WithComponent("sensor", componentConfig);
     }
-    public static IYamlMapping WithSpi(this IYamlMapping root, Action<SpiBlockBuilder> configurator)
-    {
-        var builder = new SpiBlockBuilder();
-        configurator(builder);
-        root["spi"] = builder.Build();
-        return root;
-    }
-
     public static IYamlMapping WithApi(this IYamlMapping mapping)
     {
         mapping.Add("api", new YamlMapping());
@@ -171,6 +161,14 @@ public static class EspHomeExtensions
         var builder = new OtaBlockBuilder();
         configurator(builder);
         root["ota"] = builder.Build();
+        return root;
+    }
+
+    public static IYamlMapping WithSpi(this IYamlMapping root, Action<SpiBlockBuilder> configurator)
+    {
+        var builder = new SpiBlockBuilder();
+        configurator(builder);
+        root["spi"] = builder.Build();
         return root;
     }
 }
