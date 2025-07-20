@@ -11,7 +11,6 @@ public class LightBlockBuilder
 
     public LightBlockBuilder()
     {
-        // Default platform for a simple dimmable light
         _config["platform"] = new YamlString("monochromatic");
     }
 
