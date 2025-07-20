@@ -50,4 +50,11 @@ public class EsphomeBlockBuilder
 
         return _block;
     }
+    public EsphomeBlockBuilder OnBoot(Action<ActionSequenceBuilder> configurator)
+    {
+        var builder = new ActionSequenceBuilder();
+        configurator(builder);
+        _block["on_boot"] = builder.Build();
+        return this;
+    }
 }
