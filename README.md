@@ -71,10 +71,10 @@ root.WithEsphome(esphome =>
             .WithUsername("mqtt_user", isSecret: true)
             .WithPassword("mqtt_pass", isSecret: true);
     })
-    .WithLogger() // You can also add comments to simple blocks
+    .WithLogger() 
     .WithApi()
     .WithOta()
-    .WithI2C(i2c => 
+    .WithI2C(i2c =>
     {
         i2c.SetSdaPin("D21")
            .SetSclPin("D22")
@@ -253,16 +253,8 @@ light:
 ## Project Goals (may change)
 
 * <details>
-    <summary><strong>Maximum Type-Safety:</strong></summary>
-    By using C#, errors are caught during development (compile-time), not when you're trying to flash your device. Manually writing YAML can be error-prone, as a single misplaced space can invalidate the entire configuration.
-    </details>
-* <details>
     <summary><strong>Intuitive Fluent API:</strong></summary>
     The self-documenting builder methods guide you through the configuration process, often eliminating the need to manually consult the ESPHome documentation.
-    </details>
-* <details>
-    <summary><strong>Automation and Scalability:</strong></summary>
-    Enables the programmatic creation of configurations. This is ideal for projects where configurations need to be generated dynamically based on application logic or for a large number of devices.
     </details>
 * <details>
     <summary><strong>Improved Maintainability and Readability:</strong></summary>
