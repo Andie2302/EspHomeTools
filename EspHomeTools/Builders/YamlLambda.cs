@@ -22,8 +22,6 @@ public class YamlLambda : YamlScalar<string>
     {
         var sb = new StringBuilder();
         var prefix = new string(' ', indent);
-
-        // Handle comments if they exist
         if (!string.IsNullOrWhiteSpace(Comment))
         {
             var commentLines = Comment?.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
@@ -33,7 +31,6 @@ public class YamlLambda : YamlScalar<string>
             }
         }
 
-        // Append the key (e.g., "lambda:") and the literal block indicator
         sb.Append(prefix);
         if (!string.IsNullOrWhiteSpace(Name))
         {
@@ -41,8 +38,6 @@ public class YamlLambda : YamlScalar<string>
         }
 
         sb.AppendLine(" |-");
-
-        // Append the indented code lines
         var codeLines = (Value ?? string.Empty).Trim().Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
         var codeIndent = new string(' ', indent + 2);
         foreach (var line in codeLines)
@@ -55,7 +50,6 @@ public class YamlLambda : YamlScalar<string>
 
     protected override string SerializeValue()
     {
-        // This method is not used because ToYaml is fully overridden.
         throw new NotImplementedException();
     }
 }
