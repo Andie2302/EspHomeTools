@@ -23,5 +23,5 @@ public interface IYamlScalar<TValue> : IYamlNode
     /// serializable into a YAML-compatible string and can be deserialized into its corresponding
     /// .NET type.
     /// </remarks>
-    TValue? Value { get; set; }
+     TValue? Value { get; set; }
 }
