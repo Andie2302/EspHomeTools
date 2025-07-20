@@ -37,9 +37,9 @@ public class WifiBlockBuilder
 
     public WifiBlockBuilder WithPassword(string password, bool isSecret) => isSecret ? WithPassword(new YamlSecret(password)) : WithPassword(password);
 
-    public WifiBlockBuilder WithAccessPoint(Action<AccessPointBlockBuilder> configurator)
+    public WifiBlockBuilder WithAccessPoint(Action<AccessPointBuilder> configurator)
     {
-        var builder = new AccessPointBlockBuilder();
+        var builder = new AccessPointBuilder();
         configurator(builder);
         _block["ap"] = builder.Build();
         return this;
