@@ -63,14 +63,11 @@ public abstract class YamlScalar<TValue> : IYamlScalar<TValue>
     {
         var yamlBuilder = new StringBuilder();
         var prefix = new string(' ', indent);
-
-        // Format the comment section
         if (!string.IsNullOrWhiteSpace(Comment))
         {
             yamlBuilder.Append(FormatComment(Comment, prefix));
         }
 
-        // Prepare the content line
         var formattedContentLine = new StringBuilder();
         if (!string.IsNullOrWhiteSpace(Name))
         {
