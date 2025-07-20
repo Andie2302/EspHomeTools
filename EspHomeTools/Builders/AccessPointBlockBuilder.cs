@@ -3,6 +3,8 @@ using EspHomeTools.Classes.Scalars;
 using EspHomeTools.Classes.Structures;
 using EspHomeTools.Interfaces;
 
+namespace EspHomeTools.Builders;
+
 public class AccessPointBlockBuilder
 {
     private readonly YamlMapping _block = new();
