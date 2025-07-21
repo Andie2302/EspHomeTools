@@ -7,42 +7,53 @@ namespace EspHomeTools.Builders;
 
 public class LightBuilder
 {
+    private const string PlatformKey = "platform";
+    private const string NameKey = "name";
+    private const string OutputKey = "output";
+    private const string IdKey = "id";
+    private const string DefaultPlatform = "monochromatic";
+
+    private const string PlatformRequiredError = "Eine Platform muss für die 'light'-Komponente angegeben werden.";
+    private const string NameRequiredError = "Ein Name muss für die 'light'-Komponente mit WithName() angegeben werden.";
+    private const string OutputRequiredError = "Ein Output muss für die 'light'-Komponente mit UseOutput() angegeben werden.";
+
     private readonly YamlMapping _config = new();
 
     public LightBuilder()
     {
-        _config["platform"] = new YamlString("monochromatic");
+        _config[PlatformKey] = new YamlString(DefaultPlatform);
     }
 
     public LightBuilder WithPlatform(string platform)
     {
-        _config["platform"] = new YamlString(platform);
+        _config[PlatformKey] = new YamlString(platform);
         return this;
     }
 
     public LightBuilder WithName(string name)
     {
-        _config["name"] = new YamlString(name);
+        _config[NameKey] = new YamlString(name);
         return this;
     }
 
     public LightBuilder WithName(YamlSecret name)
     {
-        _config["name"] = name;
+        _config[NameKey] = name;
         return this;
     }
 
-    public LightBuilder WithName(string name, bool isSecret) => isSecret ? WithName(new YamlSecret(name)) : WithName(name);
+    public LightBuilder WithName(string name, bool isSecret) =>
+        isSecret ? WithName(new YamlSecret(name)) : WithName(name);
 
     public LightBuilder WithId(string id)
     {
-        _config["id"] = new YamlString(id);
+        _config[IdKey] = new YamlString(id);
         return this;
     }
 
     public LightBuilder UseOutput(string outputId)
     {
-        _config["output"] = new YamlString(outputId);
+        _config[OutputKey] = new YamlString(outputId);
         return this;
     }
 
@@ -56,21 +67,38 @@ public class LightBuilder
 
     internal IYamlMapping Build()
     {
-        if (!_config.ContainsKey("platform"))
-        {
-            throw new InvalidOperationException("Eine Platform muss für die 'light'-Komponente angegeben werden.");
-        }
-
-        if (!_config.ContainsKey("name"))
-        {
-            throw new InvalidOperationException("Ein Name muss für die 'light'-Komponente mit WithName() angegeben werden.");
-        }
-
-        if (!_config.ContainsKey("output"))
-        {
-            throw new InvalidOperationException("Ein Output muss für die 'light'-Komponente mit UseOutput() angegeben werden.");
-        }
-
+        ValidateRequiredFields();
         return _config;
+    }
+
+    private void ValidateRequiredFields()
+    {
+        ValidatePlatform();
+        ValidateName();
+        ValidateOutput();
+    }
+
+    private void ValidatePlatform()
+    {
+        if (!_config.ContainsKey(PlatformKey))
+        {
+            throw new InvalidOperationException(PlatformRequiredError);
+        }
+    }
+
+    private void ValidateName()
+    {
+        if (!_config.ContainsKey(NameKey))
+        {
+            throw new InvalidOperationException(NameRequiredError);
+        }
+    }
+
+    private void ValidateOutput()
+    {
+        if (!_config.ContainsKey(OutputKey))
+        {
+            throw new InvalidOperationException(OutputRequiredError);
+        }
     }
 }
