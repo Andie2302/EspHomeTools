@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class WifiBlockBuilder : IYamlBuilder<IYamlMapping>
+public class WifiBlockBuilder : IYamlBuilder<IYamlMapping>, IYamlBuilder
 {
     private const string SsidKey = "ssid";
 
