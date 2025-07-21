@@ -58,7 +58,7 @@ public static class EspHomeExtensions
             EnvironmentalSensorBuilder b => b.Build(),
             OtaBuilder b => b.Build(),
             AccessPointBuilder b => b.Build(),
-            _ => throw new NotSupportedException($"Der Builder-Typ {typeof(T).Name} wird nicht unterstützt.")
+            _ => throw new NotSupportedException($"The builder type {typeof(T).Name} is not supported.")
         };
     }
 
