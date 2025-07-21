@@ -7,22 +7,23 @@ namespace EspHomeTools.Builders;
 
 public class OtaBuilder
 {
+    private const string DefaultPlatform = "esphome";
     private readonly YamlMapping _block = new();
 
     public OtaBuilder()
     {
-        _block["platform"] = new YamlString("esphome");
+        SetNodeValue("platform", DefaultPlatform);
     }
 
     public OtaBuilder WithPlatform(string platform)
     {
-        _block["platform"] = new YamlString(platform);
+        SetNodeValue("platform", platform);
         return this;
     }
 
     public OtaBuilder WithPassword(string password)
     {
-        _block["password"] = new YamlString(password);
+        SetNodeValue("password", password);
         return this;
     }
 
@@ -34,7 +35,7 @@ public class OtaBuilder
 
     public OtaBuilder WithPassword(string password, bool isSecret) => isSecret ? WithPassword(new YamlSecret(password)) : WithPassword(password);
 
-    public OtaBuilder WithCommentOn(string key, string comment)
+    public OtaBuilder WithComment(string key, string comment)
     {
         if (_block.TryGetValue(key, out var node))
             node.Comment = comment;
@@ -45,5 +46,10 @@ public class OtaBuilder
     internal IYamlMapping Build()
     {
         return _block;
+    }
+
+    private void SetNodeValue(string key, string value)
+    {
+        _block[key] = new YamlString(value);
     }
 }
