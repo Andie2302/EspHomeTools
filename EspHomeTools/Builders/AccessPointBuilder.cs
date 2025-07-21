@@ -59,7 +59,7 @@ public class AccessPointBuilder
     {
         if (!_block.ContainsKey(SsidKey))
         {
-            throw new InvalidOperationException("Die SSID für den Access Point (AP) ist erforderlich.");
+            throw new InvalidOperationException("The SSID for the Access Point (AP) is required.");
         }
 
         return _block;
