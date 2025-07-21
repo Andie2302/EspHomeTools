@@ -14,8 +14,8 @@ public class YamlMapping : IYamlMapping
     private const string ColonSeparator = ":";
     private const string CommentPrefix = "# ";
     private const char SpaceChar = ' ';
-    private static readonly char[] TrimChars = { '\r', '\n', ' ' };
-    private static readonly string[] LineSeparators = { "\r\n", "\r", "\n" };
+    private readonly static char[] TrimChars = { '\r', '\n', ' ' };
+    private readonly static string[] LineSeparators = { "\r\n", "\r", "\n" };
 
     private readonly Dictionary<string, IYamlNode> _nodes = new();
 
