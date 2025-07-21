@@ -4,7 +4,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class ApiBuilder: IYamlBuilder
+public class ApiBuilder: IYamlBuilder<IYamlMapping>
 {
     private readonly YamlMapping _block = new();
 
@@ -52,10 +52,7 @@ public class ApiBuilder: IYamlBuilder
         return this;
     }
 
-    internal IYamlMapping Build()
-    {
-        return _block;
-    }
+    public IYamlMapping Build() => _block;
 
     private static IYamlNode CreateYamlNode(string value, bool isSecret)
     {
