@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class OtaBuilder: IYamlBuilder
+public class OtaBuilder: IYamlBuilder<IYamlMapping>
 {
     private const string DefaultPlatform = "esphome";
 
@@ -44,7 +44,7 @@ public class OtaBuilder: IYamlBuilder
         return this;
     }
 
-    internal IYamlMapping Build()
+    public IYamlMapping Build()
     {
         return _block;
     }
