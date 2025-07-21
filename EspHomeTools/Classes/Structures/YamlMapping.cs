@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using EspHomeTools.Classes.Scalars;
 using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Classes.Structures;
@@ -18,19 +19,25 @@ public class YamlMapping : IYamlMapping
         _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
     }
 
-    // Properties
     public string? Name { get; set; }
     public string? Comment { get; set; }
     public string? Tag { get; set; }
 
-    // Serialization
     public string ToYaml(int indent, string? name) => _serializer.SerializeMapping(this, indent, name);
 
-    // Dictionary interface implementation
     public void Add(string key, IYamlNode value) => _nodes.Add(key, value);
     public bool ContainsKey(string key) => _nodes.ContainsKey(key);
     public bool Remove(string key) => _nodes.Remove(key);
-    public bool TryGetValue(string key, out IYamlNode value) => _nodes.TryGetValue(key, out value);
+    public bool TryGetValue(string key, out IYamlNode value)
+    {
+        if (_nodes.TryGetValue(key, out var nodeValue) && nodeValue != null)
+        {
+            value = nodeValue;
+            return true;
+        }
+        value = new YamlString(string.Empty);
+        return false;
+    }
 
     public IYamlNode this[string key]
     {
@@ -43,7 +50,6 @@ public class YamlMapping : IYamlMapping
     public int Count => _nodes.Count;
     public bool IsReadOnly => false;
 
-    // Collection interface implementation
     public void Add(KeyValuePair<string, IYamlNode> item) => _nodes.Add(item.Key, item.Value);
     public void Clear() => _nodes.Clear();
     public bool Contains(KeyValuePair<string, IYamlNode> item) => _nodes.Contains(item);
@@ -52,10 +58,8 @@ public class YamlMapping : IYamlMapping
     public bool Remove(KeyValuePair<string, IYamlNode> item) =>
         ((ICollection<KeyValuePair<string, IYamlNode>>)_nodes).Remove(item);
 
-    // Enumerators
     public IEnumerator<KeyValuePair<string, IYamlNode>> GetEnumerator() => _nodes.GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => _nodes.GetEnumerator();
 
-    // Internal access for serializer
     internal IEnumerable<KeyValuePair<string, IYamlNode>> GetNodes() => _nodes;
 }
