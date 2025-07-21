@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class EsphomeBuilder
+public class EsphomeBuilder: IYamlBuilder
 {
     private const string NameKey = "name";
 
