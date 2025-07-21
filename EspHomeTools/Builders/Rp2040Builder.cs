@@ -43,7 +43,7 @@ public class Rp2040Builder
     {
         if (!_block.ContainsKey(BoardKey))
         {
-            throw new InvalidOperationException("Für den 'rp2040'-Block muss ein Board mit WithBoard() angegeben werden.");
+            throw new InvalidOperationException("A board must be specified for the 'rp2040' block using WithBoard().");
         }
     }
 }
