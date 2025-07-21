@@ -11,31 +11,33 @@ public class Esp32Builder
 
     public Esp32Builder WithBoard(string board)
     {
-        _block["board"] = new YamlString(board);
+        SetValue("board", board);
         return this;
     }
 
     public Esp32Builder WithBoard(YamlSecret board)
     {
-        _block["board"] = board;
+        SetValue("board", board);
         return this;
     }
 
-    public Esp32Builder WithBoard(string board, bool isSecret) => isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
+    public Esp32Builder WithBoard(string board, bool isSecret) =>
+        isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
 
     public Esp32Builder WithFramework(string framework)
     {
-        _block["framework"] = new YamlString(framework);
+        SetValue("framework", framework);
         return this;
     }
 
     public Esp32Builder WithFramework(YamlSecret framework)
     {
-        _block["framework"] = framework;
+        SetValue("framework", framework);
         return this;
     }
 
-    public Esp32Builder WithFramework(string framework, bool isSecret) => isSecret ? WithFramework(new YamlSecret(framework)) : WithFramework(framework);
+    public Esp32Builder WithFramework(string framework, bool isSecret) =>
+        isSecret ? WithFramework(new YamlSecret(framework)) : WithFramework(framework);
 
     public Esp32Builder WithCommentOn(string key, string comment)
     {
@@ -53,5 +55,15 @@ public class Esp32Builder
         }
 
         return _block;
+    }
+
+    private void SetValue(string key, string value)
+    {
+        _block[key] = new YamlString(value);
+    }
+
+    private void SetValue(string key, IYamlNode value)
+    {
+        _block[key] = value;
     }
 }
