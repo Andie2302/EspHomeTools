@@ -4,7 +4,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class ApiBuilder: IYamlBuilder<IYamlMapping>
+public class ApiBuilder: IYamlBuilder<IYamlMapping>, IYamlBuilder
 {
     private readonly YamlMapping _block = new();
 
