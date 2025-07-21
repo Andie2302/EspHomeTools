@@ -28,37 +28,19 @@ public class EnvironmentalSensorBuilder
 
     public EnvironmentalSensorBuilder WithTemperature(string name, string oversampling = "16x")
     {
-        var tempConfig = new YamlMapping { { "name", new YamlString(name) } };
-        if (!string.IsNullOrEmpty(oversampling))
-        {
-            tempConfig["oversampling"] = new YamlString(oversampling);
-        }
-
-        _config["temperature"] = tempConfig;
+        _config["temperature"] = CreateSensorConfig(name, oversampling);
         return this;
     }
 
     public EnvironmentalSensorBuilder WithPressure(string name, string oversampling = "16x")
     {
-        var pressureConfig = new YamlMapping { { "name", new YamlString(name) } };
-        if (!string.IsNullOrEmpty(oversampling))
-        {
-            pressureConfig["oversampling"] = new YamlString(oversampling);
-        }
-
-        _config["pressure"] = pressureConfig;
+        _config["pressure"] = CreateSensorConfig(name, oversampling);
         return this;
     }
 
     public EnvironmentalSensorBuilder WithHumidity(string name, string oversampling = "16x")
     {
-        var humidityConfig = new YamlMapping { { "name", new YamlString(name) } };
-        if (!string.IsNullOrEmpty(oversampling))
-        {
-            humidityConfig["oversampling"] = new YamlString(oversampling);
-        }
-
-        _config["humidity"] = humidityConfig;
+        _config["humidity"] = CreateSensorConfig(name, oversampling);
         return this;
     }
 
@@ -80,6 +62,17 @@ public class EnvironmentalSensorBuilder
             node.Comment = comment;
 
         return this;
+    }
+
+    private static YamlMapping CreateSensorConfig(string name, string oversampling)
+    {
+        var sensorConfig = new YamlMapping { { "name", new YamlString(name) } };
+        if (!string.IsNullOrEmpty(oversampling))
+        {
+            sensorConfig["oversampling"] = new YamlString(oversampling);
+        }
+
+        return sensorConfig;
     }
 
     internal IYamlMapping Build()
