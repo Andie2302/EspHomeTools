@@ -84,7 +84,7 @@ public class EsphomeBuilder
     {
         if (!_block.ContainsKey(NameKey))
         {
-            throw new InvalidOperationException("Der Name im 'esphome'-Block ist erforderlich. Benutze die WithName()-Methode.");
+            throw new InvalidOperationException("The name in the 'esphome' block is required. Use the WithName() method.");
         }
     }
 }
