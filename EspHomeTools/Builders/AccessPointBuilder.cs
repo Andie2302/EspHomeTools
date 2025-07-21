@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class AccessPointBuilder
+public class AccessPointBuilder : IYamlBuilder
 {
     private const string SsidKey = "ssid";
 
