@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class GpioSwitchBuilder
+public class GpioSwitchBuilder: IYamlBuilder
 {
     private readonly YamlMapping _config = new();
 
