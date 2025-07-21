@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class I2CBuilder
+public class I2CBuilder: IYamlBuilder
 {
     private const string SdaKey = "sda";
 
