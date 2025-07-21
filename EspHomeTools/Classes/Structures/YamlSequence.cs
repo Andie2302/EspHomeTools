@@ -12,8 +12,8 @@ namespace EspHomeTools.Classes.Structures;
 /// </summary>
 public class YamlSequence : IYamlSequence
 {
-    private const int INDENT_SIZE = 2;
-    private const string SEQUENCE_ITEM_PREFIX = "- ";
+    private const int IndentSize = 2;
+    private const string SequenceItemPrefix = "- ";
 
     /// <summary>
     /// Represents the internal collection of YAML nodes within a <see cref="YamlSequence"/>.
@@ -74,17 +74,17 @@ public class YamlSequence : IYamlSequence
         if (string.IsNullOrWhiteSpace(Name)) return indent;
         var indentPrefix = new string(' ', indent);
         sb.Append(indentPrefix).Append(Name).AppendLine(":");
-        return indent + INDENT_SIZE;
+        return indent + IndentSize;
     }
     private void AppendSequenceItems(StringBuilder sb, int indent)
     {
         var itemIndentPrefix = new string(' ', indent);
-        var childNodeIndent = indent + INDENT_SIZE;
+        var childNodeIndent = indent + IndentSize;
         foreach (var node in _nodes)
         {
             var childYamlContent = node.ToYaml(childNodeIndent);
             var trimmedChildYaml = childYamlContent.TrimStart();
-            sb.Append(itemIndentPrefix).Append(SEQUENCE_ITEM_PREFIX).AppendLine(trimmedChildYaml);
+            sb.Append(itemIndentPrefix).Append(SequenceItemPrefix).AppendLine(trimmedChildYaml);
         }
     }
 
