@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class OutputBuilder: IYamlBuilder
+public class OutputBuilder: IYamlBuilder<IYamlMapping>
 {
     private const string PlatformKey = "platform";
 
@@ -59,7 +59,7 @@ public class OutputBuilder: IYamlBuilder
         return this;
     }
 
-    internal IYamlMapping Build()
+    public IYamlMapping Build()
     {
         ValidateRequiredFields();
         return _config;
