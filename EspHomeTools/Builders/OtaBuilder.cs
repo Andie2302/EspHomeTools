@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class OtaBuilder
+public class OtaBuilder: IYamlBuilder
 {
     private const string DefaultPlatform = "esphome";
 
