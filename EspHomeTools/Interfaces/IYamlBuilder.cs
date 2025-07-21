@@ -1,8 +1,8 @@
-﻿using EspHomeTools.Interfaces;
+﻿namespace EspHomeTools.Interfaces;
 
-namespace EspHomeTools.Builders;
-
-public interface IYamlBuilder
+public interface IYamlBuilder<T> : IYamlBuilder
 {
-    IYamlMapping Build();
+    T Build();
 }
+
+public interface IYamlBuilder { }
