@@ -30,10 +30,8 @@ public class YamlSerializer : IYamlSerializer
 
     private static void AppendCommentIfPresent(StringBuilder builder, string indentString, string? comment)
     {
-        if (!string.IsNullOrWhiteSpace(comment))
-        {
-            builder.Append(FormatComment(comment, indentString));
-        }
+        comment = YamlTools.Normalize(comment);
+        builder.Append(FormatComment(comment, indentString));
     }
 
     private static int AppendNameIfPresent(StringBuilder builder, string indentString, int currentIndent, string? name)
