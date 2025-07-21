@@ -14,61 +14,38 @@ public class GpioSwitchBuilder
         _config["platform"] = new YamlString("gpio");
     }
 
-    public GpioSwitchBuilder UsePin(string pin)
+    private GpioSwitchBuilder SetConfigValue(string key, string value)
     {
-        _config["pin"] = new YamlString(pin);
+        _config[key] = new YamlString(value);
         return this;
     }
 
-    public GpioSwitchBuilder UsePin(YamlSecret pin)
+    private GpioSwitchBuilder SetConfigValue(string key, YamlSecret value)
     {
-        _config["pin"] = pin;
+        _config[key] = value;
         return this;
     }
 
-    public GpioSwitchBuilder UsePin(string pin, bool isSecret) => isSecret ? UsePin(new YamlSecret(pin)) : UsePin(pin);
-
-    public GpioSwitchBuilder WithName(string name)
+    private GpioSwitchBuilder SetConfigValue(string key, string value, bool isSecret)
     {
-        _config["name"] = new YamlString(name);
-        return this;
+        return isSecret ? SetConfigValue(key, new YamlSecret(value)) : SetConfigValue(key, value);
     }
 
-    public GpioSwitchBuilder WithName(YamlSecret name)
-    {
-        _config["name"] = name;
-        return this;
-    }
+    public GpioSwitchBuilder UsePin(string pin) => SetConfigValue("pin", pin);
+    public GpioSwitchBuilder UsePin(YamlSecret pin) => SetConfigValue("pin", pin);
+    public GpioSwitchBuilder UsePin(string pin, bool isSecret) => SetConfigValue("pin", pin, isSecret);
 
-    public GpioSwitchBuilder WithName(string name, bool isSecret) => isSecret ? WithName(new YamlSecret(name)) : WithName(name);
+    public GpioSwitchBuilder WithName(string name) => SetConfigValue("name", name);
+    public GpioSwitchBuilder WithName(YamlSecret name) => SetConfigValue("name", name);
+    public GpioSwitchBuilder WithName(string name, bool isSecret) => SetConfigValue("name", name, isSecret);
 
-    public GpioSwitchBuilder WithId(string id)
-    {
-        _config["id"] = new YamlString(id);
-        return this;
-    }
+    public GpioSwitchBuilder WithId(string id) => SetConfigValue("id", id);
+    public GpioSwitchBuilder WithId(YamlSecret id) => SetConfigValue("id", id);
+    public GpioSwitchBuilder WithId(string id, bool isSecret) => SetConfigValue("id", id, isSecret);
 
-    public GpioSwitchBuilder WithId(YamlSecret id)
-    {
-        _config["id"] = id;
-        return this;
-    }
-
-    public GpioSwitchBuilder WithId(string id, bool isSecret) => isSecret ? WithId(new YamlSecret(id)) : WithId(id);
-
-    public GpioSwitchBuilder WithIcon(string icon)
-    {
-        _config["icon"] = new YamlString(icon);
-        return this;
-    }
-
-    public GpioSwitchBuilder WithIcon(YamlSecret icon)
-    {
-        _config["icon"] = icon;
-        return this;
-    }
-
-    public GpioSwitchBuilder WithIcon(string icon, bool isSecret) => isSecret ? WithIcon(new YamlSecret(icon)) : WithIcon(icon);
+    public GpioSwitchBuilder WithIcon(string icon) => SetConfigValue("icon", icon);
+    public GpioSwitchBuilder WithIcon(YamlSecret icon) => SetConfigValue("icon", icon);
+    public GpioSwitchBuilder WithIcon(string icon, bool isSecret) => SetConfigValue("icon", icon, isSecret);
 
     public GpioSwitchBuilder WithCommentOn(string key, string comment)
     {
