@@ -8,7 +8,7 @@ public static class YamlTools
 {
     private readonly static char[] SpecialYamlChars = [':', '{', '}', '[', ']', ',', '&', '*', '#', '?', '|', '-', '<', '>', '!', '%', '@', '`'];
 
-    private readonly static HashSet<char> SpecialYamlCharSet = new(SpecialYamlChars);
+    private readonly static HashSet<char> SpecialYamlCharSet = [..SpecialYamlChars];
 
     private readonly static string[] DefaultYamlElements =
     [
@@ -52,8 +52,15 @@ public static class YamlTools
 
     private static bool IsBooleanValue(string str) => bool.TryParse(str, out _);
 
-    private static bool IsNullValue(string str) =>
-        str.Equals("null", StringComparison.OrdinalIgnoreCase);
+    private static bool IsNullValue(string str) => str.Equals("null", StringComparison.OrdinalIgnoreCase);
 
     public static IEnumerable<string> DefaultYamlCollectionOrder() => DefaultYamlElements;
+
+    private const string Quote = "\"";
+
+    private const string EscapedQuote = "\\\"";
+
+    public static string CreateQuotedValue(string value) => Quote + value.Replace(Quote, EscapedQuote) + Quote;
+
+    public static string Normalize(string? value) => value?.Trim() ?? string.Empty;
 }
