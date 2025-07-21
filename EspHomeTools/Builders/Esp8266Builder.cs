@@ -33,11 +33,15 @@ public class Esp8266Builder
 
     internal IYamlMapping Build()
     {
+        ValidateRequiredBoard();
+        return _block;
+    }
+
+    private void ValidateRequiredBoard()
+    {
         if (!_block.ContainsKey("board"))
         {
             throw new InvalidOperationException("Für den 'esp8266'-Block muss ein Board mit WithBoard() angegeben werden.");
         }
-
-        return _block;
     }
 }
