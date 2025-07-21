@@ -59,7 +59,7 @@ public class WifiBlockBuilder
     {
         if (!_block.ContainsKey(SsidKey) || !_block.ContainsKey(PasswordKey))
         {
-            throw new InvalidOperationException("SSID und Passwort sind im 'wifi'-Block erforderlich.");
+            throw new InvalidOperationException("SSID and password are required in the 'wifi' block.");
         }
 
         return _block;
