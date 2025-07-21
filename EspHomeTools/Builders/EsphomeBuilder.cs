@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class EsphomeBuilder: IYamlBuilder
+public class EsphomeBuilder: IYamlBuilder<IYamlMapping>
 {
     private const string NameKey = "name";
 
@@ -54,7 +54,7 @@ public class EsphomeBuilder: IYamlBuilder
         return this;
     }
 
-    internal IYamlMapping Build()
+    public IYamlMapping Build()
     {
         ValidateRequiredFields();
         return _block;
