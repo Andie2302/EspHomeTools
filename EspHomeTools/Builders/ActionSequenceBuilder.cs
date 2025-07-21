@@ -10,7 +10,6 @@ namespace EspHomeTools.Builders;
 
 public class ActionSequenceBuilder
 {
-    // Extracted constants for action types
     private const string LightToggleAction = "light.toggle";
     private const string LightTurnOnAction = "light.turn_on";
     private const string LightTurnOffAction = "light.turn_off";
