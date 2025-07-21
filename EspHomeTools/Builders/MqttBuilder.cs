@@ -45,7 +45,7 @@ public class MqttBuilder
     {
         if (!_block.ContainsKey("broker"))
         {
-            throw new InvalidOperationException("Ein Broker muss für den 'mqtt'-Block mit WithBroker() angegeben werden.");
+            throw new InvalidOperationException("A broker must be specified for the 'mqtt' block using WithBroker().");
         }
 
         return _block;
