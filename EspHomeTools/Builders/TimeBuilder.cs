@@ -7,47 +7,47 @@ namespace EspHomeTools.Builders;
 
 public class TimeBuilder
 {
+    private const string PlatformKey = "platform";
+    private const string IdKey = "id";
+    private const string TimezoneKey = "timezone";
+    private const string ServersKey = "servers";
+
     private readonly YamlMapping _config = new();
 
     public TimeBuilder WithPlatform(string platform)
     {
-        _config["platform"] = new YamlString(platform);
+        _config[PlatformKey] = new YamlString(platform);
         return this;
     }
 
     public TimeBuilder WithId(string id)
     {
-        _config["id"] = new YamlString(id);
+        _config[IdKey] = new YamlString(id);
         return this;
     }
 
     public TimeBuilder WithTimezone(string timezone)
     {
-        _config["timezone"] = new YamlString(timezone);
+        _config[TimezoneKey] = new YamlString(timezone);
         return this;
     }
 
     public TimeBuilder WithTimezone(YamlSecret timezone)
     {
-        _config["timezone"] = timezone;
+        _config[TimezoneKey] = timezone;
         return this;
     }
 
-    public TimeBuilder WithTimezone(string timezone, bool isSecret) => isSecret ? WithTimezone(new YamlSecret(timezone)) : WithTimezone(timezone);
+    public TimeBuilder WithTimezone(string timezone, bool isSecret) =>
+        isSecret ? WithTimezone(new YamlSecret(timezone)) : WithTimezone(timezone);
 
     public TimeBuilder WithServers(params string[] servers)
     {
-        var serverSequence = new YamlSequence();
-        foreach (var server in servers)
-        {
-            serverSequence.Add(new YamlString(server));
-        }
-
-        _config["servers"] = serverSequence;
+        _config[ServersKey] = CreateServerSequence(servers);
         return this;
     }
 
-    public TimeBuilder WithCommentOn(string key, string comment)
+    public TimeBuilder WithComment(string key, string comment)
     {
         if (_config.TryGetValue(key, out var node))
             node.Comment = comment;
@@ -55,9 +55,20 @@ public class TimeBuilder
         return this;
     }
 
+    private static YamlSequence CreateServerSequence(string[] servers)
+    {
+        var serverSequence = new YamlSequence();
+        foreach (var server in servers)
+        {
+            serverSequence.Add(new YamlString(server));
+        }
+
+        return serverSequence;
+    }
+
     internal IYamlMapping Build()
     {
-        if (!_config.ContainsKey("platform"))
+        if (!_config.ContainsKey(PlatformKey))
         {
             throw new InvalidOperationException("Eine Platform muss für die 'time'-Komponente mit WithPlatform() angegeben werden (z.B. 'homeassistant' oder 'sntp').");
         }
