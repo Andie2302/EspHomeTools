@@ -7,37 +7,47 @@ namespace EspHomeTools.Builders;
 
 public class AccessPointBuilder
 {
+    private const string SsidKey = "ssid";
+    private const string PasswordKey = "password";
     private readonly YamlMapping _block = new();
 
     public AccessPointBuilder WithSsid(string ssid)
     {
-        _block["ssid"] = new YamlString(ssid);
+        SetValue(SsidKey, ssid, false);
         return this;
     }
 
     public AccessPointBuilder WithSsid(YamlSecret ssid)
     {
-        _block["ssid"] = ssid;
+        _block[SsidKey] = ssid;
         return this;
     }
 
-    public AccessPointBuilder WithSsid(string ssid, bool isSecret) => isSecret ? WithSsid(new YamlSecret(ssid)) : WithSsid(ssid);
+    public AccessPointBuilder WithSsid(string ssid, bool isSecret)
+    {
+        SetValue(SsidKey, ssid, isSecret);
+        return this;
+    }
 
     public AccessPointBuilder WithPassword(string password)
     {
-        _block["password"] = new YamlString(password);
+        SetValue(PasswordKey, password, false);
         return this;
     }
 
-    public AccessPointBuilder WithPassword(string password, bool isSecret) => isSecret ? WithPassword(new YamlSecret(password)) : WithPassword(password);
+    public AccessPointBuilder WithPassword(string password, bool isSecret)
+    {
+        SetValue(PasswordKey, password, isSecret);
+        return this;
+    }
 
     public AccessPointBuilder WithPassword(YamlSecret password)
     {
-        _block["password"] = password;
+        _block[PasswordKey] = password;
         return this;
     }
 
-    public AccessPointBuilder WithCommentOn(string key, string comment)
+    public AccessPointBuilder AddComment(string key, string comment)
     {
         if (_block.TryGetValue(key, out var node))
             node.Comment = comment;
@@ -47,11 +57,13 @@ public class AccessPointBuilder
 
     internal IYamlMapping Build()
     {
-        if (!_block.ContainsKey("ssid"))
+        if (!_block.ContainsKey(SsidKey))
         {
             throw new InvalidOperationException("Die SSID für den Access Point (AP) ist erforderlich.");
         }
 
         return _block;
     }
+
+    private void SetValue(string key, string value, bool isSecret) => _block[key] = isSecret ? new YamlSecret(value) : new YamlString(value);
 }
