@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class Rp2040Builder: IYamlBuilder
+public class Rp2040Builder: IYamlBuilder<IYamlMapping>
 {
     private const string BoardKey = "board";
 
@@ -34,7 +34,7 @@ public class Rp2040Builder: IYamlBuilder
         return this;
     }
 
-    internal IYamlMapping Build()
+    public IYamlMapping Build()
     {
         ValidateRequiredFields();
         return _block;
