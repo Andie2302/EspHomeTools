@@ -7,21 +7,23 @@ namespace EspHomeTools.Builders;
 
 public class Rp2040Builder
 {
+    private const string BoardKey = "board";
     private readonly YamlMapping _block = new();
 
     public Rp2040Builder WithBoard(string board)
     {
-        _block["board"] = new YamlString(board);
+        _block[BoardKey] = new YamlString(board);
         return this;
     }
 
     public Rp2040Builder WithBoard(YamlSecret board)
     {
-        _block["board"] = board;
+        _block[BoardKey] = board;
         return this;
     }
 
-    public Rp2040Builder WithBoard(string board, bool isSecret) => isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
+    public Rp2040Builder WithBoard(string board, bool isSecret) =>
+        isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
 
     public Rp2040Builder WithCommentOn(string key, string comment)
     {
@@ -33,11 +35,15 @@ public class Rp2040Builder
 
     internal IYamlMapping Build()
     {
-        if (!_block.ContainsKey("board"))
+        ValidateRequiredFields();
+        return _block;
+    }
+
+    private void ValidateRequiredFields()
+    {
+        if (!_block.ContainsKey(BoardKey))
         {
             throw new InvalidOperationException("Für den 'rp2040'-Block muss ein Board mit WithBoard() angegeben werden.");
         }
-
-        return _block;
     }
 }
