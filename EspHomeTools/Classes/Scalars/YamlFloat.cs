@@ -3,15 +3,15 @@
 namespace EspHomeTools.Classes.Scalars;
 
 /// <summary>
-/// Represents a YAML scalar value of type double, providing functionality for serialization and manipulation
-/// specific to floating-point numbers.
+/// Represents a scalar node in a YAML document that contains a floating-point number.
+/// Provides functionality for handling and serializing YAML floating-point scalar values.
 /// </summary>
 public class YamlFloat : YamlScalar<double>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="YamlFloat"/> class with the specified double value.
+    /// Represents a YAML scalar value of type double, providing functionality for serialization and manipulation
+    /// specific to floating-point numbers.
     /// </summary>
-    /// <param name="value">The double-precision floating-point value to be represented as a YAML scalar.</param>
     public YamlFloat(double value)
     {
         Value = value;
