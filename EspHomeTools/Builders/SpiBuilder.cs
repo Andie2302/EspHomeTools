@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class SpiBuilder
+public class SpiBuilder: IYamlBuilder
 {
     private const string ClkPinKey = "clk_pin";
 
