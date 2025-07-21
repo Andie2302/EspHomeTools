@@ -291,13 +291,16 @@ light:
 ## Project Goals (may change)
 
 * text-sensor builder
-* * web_server builder
+* web_server builder
+* correcting outdated demo code
 * pulse_counter builder
 * hx711 builder
 * ina219 builder
 * fan builder
 * cover builder
 * stepper builder
+* comments
+* test case
 
 ## maybe
 
