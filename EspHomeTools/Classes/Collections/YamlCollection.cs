@@ -8,7 +8,7 @@ namespace EspHomeTools.Classes.Collections;
 
 public sealed class YamlCollection : IDictionary<string, IYamlNode>
 {
-    private readonly static string NodeSeparator = Environment.NewLine + Environment.NewLine;
+    private static readonly string NodeSeparator = Environment.NewLine + Environment.NewLine;
     private readonly Dictionary<string, IYamlNode> _nodes = new(StringComparer.OrdinalIgnoreCase);
 
     public IComparer<KeyValuePair<string, IYamlNode>>? CustomSorter { get; set; }
@@ -17,21 +17,22 @@ public sealed class YamlCollection : IDictionary<string, IYamlNode>
 
     private IEnumerable<KeyValuePair<string, IYamlNode>> GetSortedNodes() =>
         CustomSorter != null
-            ? _nodes.OrderBy(kvp => kvp, CustomSorter)
-            : _nodes.OrderBy(kvp => kvp.Key, StringComparer.Ordinal);
+            ? _nodes.OrderBy(nodeKeyValuePair => nodeKeyValuePair, CustomSorter)
+            : _nodes.OrderBy(nodeKeyValuePair => nodeKeyValuePair.Key, StringComparer.Ordinal);
 
     private static string SerializeNodes(IEnumerable<KeyValuePair<string, IYamlNode>> sortedNodes)
     {
-        var serializedStrings = sortedNodes.Select(SerializeNode);
-        return string.Join(NodeSeparator, serializedStrings);
+        var serializedNodeStrings = sortedNodes.Select(SerializeNode);
+        return string.Join(NodeSeparator, serializedNodeStrings);
     }
 
-    private static string SerializeNode(KeyValuePair<string, IYamlNode> kvp)
+    private static string SerializeNode(KeyValuePair<string, IYamlNode> nodeKeyValuePair)
     {
-        kvp.Value.Name = kvp.Key;
-        return kvp.Value.ToYaml();
+        nodeKeyValuePair.Value.Name = nodeKeyValuePair.Key;
+        return nodeKeyValuePair.Value.ToYaml();
     }
 
+    // IDictionary implementation
     public IYamlNode this[string key]
     {
         get => _nodes[key];
@@ -41,23 +42,28 @@ public sealed class YamlCollection : IDictionary<string, IYamlNode>
     public ICollection<string> Keys => _nodes.Keys;
     public ICollection<IYamlNode> Values => _nodes.Values;
     public int Count => _nodes.Count;
-    public bool IsReadOnly => ((ICollection<KeyValuePair<string, IYamlNode>>)_nodes).IsReadOnly;
+    public bool IsReadOnly => GetNodesAsCollection().IsReadOnly;
 
     public void Add(string key, IYamlNode value) => _nodes.Add(key, value);
-    public void Add(KeyValuePair<string, IYamlNode> item) => ((ICollection<KeyValuePair<string, IYamlNode>>)_nodes).Add(item);
+    public void Add(KeyValuePair<string, IYamlNode> item) => GetNodesAsCollection().Add(item);
     public void Clear() => _nodes.Clear();
-    public bool Contains(KeyValuePair<string, IYamlNode> item) => ((ICollection<KeyValuePair<string, IYamlNode>>)_nodes).Contains(item);
+    public bool Contains(KeyValuePair<string, IYamlNode> item) => GetNodesAsCollection().Contains(item);
     public bool ContainsKey(string key) => _nodes.ContainsKey(key);
-    public void CopyTo(KeyValuePair<string, IYamlNode>[] array, int arrayIndex) => ((ICollection<KeyValuePair<string, IYamlNode>>)_nodes).CopyTo(array, arrayIndex);
+    public void CopyTo(KeyValuePair<string, IYamlNode>[] array, int arrayIndex) =>
+        GetNodesAsCollection().CopyTo(array, arrayIndex);
     public bool Remove(string key) => _nodes.Remove(key);
-    public bool Remove(KeyValuePair<string, IYamlNode> item) => ((ICollection<KeyValuePair<string, IYamlNode>>)_nodes).Remove(item);
+    public bool Remove(KeyValuePair<string, IYamlNode> item) => GetNodesAsCollection().Remove(item);
 
 #if NETSTANDARD2_0 || NETCOREAPP3_1
     public bool TryGetValue(string key, out IYamlNode value) => _nodes.TryGetValue(key, out value);
 #else
-    public bool TryGetValue(string key, [MaybeNullWhen(false)] out IYamlNode value) => _nodes.TryGetValue(key, out value);
+    public bool TryGetValue(string key, [MaybeNullWhen(false)] out IYamlNode value) =>
+        _nodes.TryGetValue(key, out value);
 #endif
 
     public IEnumerator<KeyValuePair<string, IYamlNode>> GetEnumerator() => _nodes.GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => _nodes.GetEnumerator();
+
+    private ICollection<KeyValuePair<string, IYamlNode>> GetNodesAsCollection() =>
+        (ICollection<KeyValuePair<string, IYamlNode>>)_nodes;
 }
