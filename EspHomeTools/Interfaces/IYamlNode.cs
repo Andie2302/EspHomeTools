@@ -1,22 +1,23 @@
 ﻿namespace EspHomeTools.Interfaces;
 
 /// <summary>
-/// Represents a general YAML node abstraction that can be used as the base for various types of YAML structures.
+/// Defines the basic functionality and properties for a YAML node representation.
 /// </summary>
 /// <remarks>
-/// This interface defines the common properties shared by all YAML nodes, such as name, comment, and tag. It
-/// also serves as a foundational type for more specific YAML components like scalars, sequences, and mappings.
+/// This interface represents the core abstraction for YAML elements, providing foundational
+/// properties and serving as a base for more specific YAML constructs such as scalars, sequences,
+/// and structures. It includes common attributes such as name, comment, and tag.
 /// </remarks>
 public interface IYamlNode : IYamlSerializable
 {
     /// <summary>
-    /// Gets or sets the name of the YAML node.
+    /// Gets or sets the name associated with the YAML node.
     /// </summary>
     /// <remarks>
-    /// The Name property provides an optional identifier for the YAML node.
-    /// It can be used to represent the key or title associated with the node
-    /// in a structured YAML document. This property is nullable, allowing it to
-    /// remain unset if a name is not explicitly required.
+    /// This property represents an optional identifier for a YAML node, which can be used
+    /// to assign a specific name or key to the node within YAML documents. It allows for
+    /// more organized and identifiable nodes. The property is nullable, enabling scenarios
+    /// where a name may not be explicitly assigned.
     /// </remarks>
     string? Name { get; set; }
 
@@ -24,21 +25,21 @@ public interface IYamlNode : IYamlSerializable
     /// Gets or sets the comment associated with the YAML node.
     /// </summary>
     /// <remarks>
-    /// The comment property represents optional user-defined metadata or annotations for the YAML node.
-    /// It can be used to add descriptive text or notes that may assist in understanding or documenting
-    /// the purpose of the node within the YAML structure. This property is serialized as a comment
-    /// in the generated YAML output, prefixed by the YAML comment indicator (#).
+    /// The Comment property allows for adding optional descriptive text or metadata
+    /// to a YAML node. This property is useful for annotations or explanations
+    /// within YAML documents, enhancing their readability and providing context
+    /// about the node's purpose or use. It supports null values if no comment is provided.
     /// </remarks>
     string? Comment { get; set; }
 
     /// <summary>
-    /// Gets or sets the tag associated with the YAML node.
+    /// Gets or sets the YAML tag associated with the node.
     /// </summary>
     /// <remarks>
-    /// The tag is an optional property that can be used to specify additional metadata about
-    /// the YAML node. It may be utilized for custom processing, type annotations, or other
-    /// advanced YAML features. When not specified, the YAML node is treated as a standard
-    /// untaged entity.
+    /// The Tag property specifies the data type or additional semantic information
+    /// for the YAML node. It aids in providing context or type definition within
+    /// a YAML document. The value of this property is optional and can be null if
+    /// no specific tag is required.
     /// </remarks>
     string? Tag { get; set; }
 }
