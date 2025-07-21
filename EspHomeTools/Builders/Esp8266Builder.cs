@@ -41,7 +41,8 @@ public class Esp8266Builder
     {
         if (!_block.ContainsKey("board"))
         {
-            throw new InvalidOperationException("Für den 'esp8266'-Block muss ein Board mit WithBoard() angegeben werden.");
+            throw new InvalidOperationException(
+                "A board must be specified with WithBoard() for the 'esp8266' block.");
         }
     }
 }
