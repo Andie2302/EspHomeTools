@@ -59,12 +59,12 @@ public class GpioSwitchBuilder
     {
         if (!_config.ContainsKey("pin"))
         {
-            throw new InvalidOperationException("Ein Pin muss für den GPIO-Schalter mit UsePin() angegeben werden.");
+            throw new InvalidOperationException("A pin must be specified for the GPIO switch using UsePin().");
         }
 
         if (!_config.ContainsKey("name"))
         {
-            throw new InvalidOperationException("Ein Name muss für den GPIO-Schalter mit WithName() angegeben werden.");
+            throw new InvalidOperationException("A name must be specified for the GPIO switch using WithName().");
         }
 
         return _config;
