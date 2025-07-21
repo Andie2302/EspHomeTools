@@ -229,7 +229,7 @@ sensor:
     # Read sensor data every 60 seconds.
     update_interval: 60s
   - # Environmental sensor for temp, humidity, and pressure.
-    platform: bme280
+    platform: bme280_i2c
     address: 118
     temperature:
       name: BME280 Temperature
