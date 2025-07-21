@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class LightBuilder
+public class LightBuilder: IYamlBuilder
 {
     private const string PlatformKey = "platform";
 
