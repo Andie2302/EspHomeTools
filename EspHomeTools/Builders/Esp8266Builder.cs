@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class Esp8266Builder
+public class Esp8266Builder: IYamlBuilder
 {
     private readonly YamlMapping _block = new();
 
