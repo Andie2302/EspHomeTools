@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class MqttBuilder: IYamlBuilder
+public class MqttBuilder: IYamlBuilder<IYamlMapping>
 {
     private readonly YamlMapping _block = new();
 
@@ -47,7 +47,7 @@ public class MqttBuilder: IYamlBuilder
         return this;
     }
 
-    internal IYamlMapping Build()
+    public IYamlMapping Build()
     {
         if (!_block.ContainsKey("broker"))
         {
