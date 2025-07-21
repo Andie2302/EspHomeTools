@@ -8,7 +8,7 @@ namespace EspHomeTools.Classes.Collections;
 
 public sealed class YamlCollection : IDictionary<string, IYamlNode>
 {
-    private static readonly string NodeSeparator = Environment.NewLine + Environment.NewLine;
+    private readonly static string NodeSeparator = Environment.NewLine + Environment.NewLine;
     private readonly Dictionary<string, IYamlNode> _nodes = new(StringComparer.OrdinalIgnoreCase);
 
     public IComparer<KeyValuePair<string, IYamlNode>>? CustomSorter { get; set; }
