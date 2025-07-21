@@ -48,12 +48,11 @@ public sealed class YamlCollection : IEnumerable<IYamlNode>
 
     private bool ValidateAndAddNode(IYamlNode node)
     {
-        var nodeName = node.Name;
+        var nodeName = YamlTools.Normalize(node.Name);
         if (string.IsNullOrWhiteSpace(nodeName))
         {
             return false;
         }
-
         _nodes[nodeName] = node;
         return true;
     }
