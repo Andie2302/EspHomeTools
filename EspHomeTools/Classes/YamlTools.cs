@@ -38,9 +38,9 @@ public static class YamlTools
         "light"
     ];
 
-    public static bool NeedsQuoting(string str)
+    public static bool NeedsQuoting(string? str)
     {
-        var trimmedStr = str.Trim();
+        var trimmedStr = Normalize(str);
         return ContainsSpecialYamlCharacters(trimmedStr) || IsNumericValue(trimmedStr) || IsBooleanValue(trimmedStr) || IsNullValue(trimmedStr);
     }
 
