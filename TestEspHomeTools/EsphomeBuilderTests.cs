@@ -4,10 +4,9 @@ using EspHomeTools.Classes.Structures;
 namespace TestEspHomeTools;
 
 /// <summary>
-/// Test class for validating the functionality and behavior of the EsphomeBlockBuilder
-/// and its interaction with the YAML generation system.
-/// Includes tests for correct YAML generation and expected exception handling when
-/// required properties are not provided.
+/// Unit test class for verifying the behavior and functionality of the EsphomeBlockBuilder.
+/// Includes tests for proper YAML generation under valid conditions and appropriate exception
+/// handling when required inputs are missing or invalid.
 /// </summary>
 [TestClass]
 public class EsphomeBuilderTests
@@ -16,11 +15,12 @@ public class EsphomeBuilderTests
     /// Validates that a YAML structure is correctly generated for a given valid device name input.
     /// </summary>
     /// <remarks>
-    /// This test ensures that invoking the YAML block builder with a valid device name produces the expected YAML output.
-    /// The generated output is compared against the expected YAML format for correctness with respect to the device name.
+    /// Ensures that the EsphomeBuilder correctly constructs a YAML block when provided with
+    /// a valid device name. Compares the generated YAML output to the expected format to confirm
+    /// the behavior of the builder logic.
     /// </remarks>
     /// <exception cref="AssertFailedException">
-    /// Thrown when the actual generated YAML does not match the expected YAML structure.
+    /// Thrown when the generated YAML output does not match the expected YAML structure.
     /// </exception>
     [TestMethod]
     public void Build_WithValidName_ShouldGenerateCorrectYaml()
@@ -34,26 +34,22 @@ public class EsphomeBuilderTests
     }
 
     /// <summary>
-    /// Tests whether building an Esphome YAML mapping without specifying a name
-    /// throws an <see cref="InvalidOperationException"/>.
+    /// Ensures that an <see cref="InvalidOperationException"/> is thrown if a YAML mapping is built
+    /// without specifying a required name property.
     /// </summary>
     /// <remarks>
-    /// This test verifies that an <see cref="InvalidOperationException"/> is thrown when attempting
-    /// to create an Esphome YAML mapping without setting a name. The name is expected to be a required property
-    /// for the Esphome block, and the absence of it should lead to an exception to enforce proper configuration.
+    /// This test validates that the Esphome block builder enforces the presence of a required name property.
+    /// When the name is not specified, the builder should throw an exception to signal improper configuration.
+    /// This ensures that invalid YAML mappings cannot be generated.
     /// </remarks>
     /// <exception cref="InvalidOperationException">
-    /// Thrown when the Esphome YAML mapping is built without a specified name.
+    /// Thrown when attempting to build an Esphome YAML block without providing a name.
     /// </exception>
     [TestMethod]
     public void Build_WithoutName_ShouldThrowInvalidOperationException()
     {
         var root = new YamlMapping();
-        Assert.ThrowsException<InvalidOperationException>(() =>
-        {
-            root.WithEsphome(esphome =>
-            { });
-        }, "Eine InvalidOperationException wurde erwartet, wenn kein Name gesetzt wird.");
+        Assert.ThrowsException<InvalidOperationException>(() => { root.WithEsphome(esphome => { }); }, "Eine InvalidOperationException wurde erwartet, wenn kein Name gesetzt wird.");
     }
 }
 
