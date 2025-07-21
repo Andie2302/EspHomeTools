@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class Esp32Builder
+public class Esp32Builder: IYamlBuilder
 {
     private readonly YamlMapping _block = new();
 
