@@ -38,15 +38,13 @@ public static class YamlTools
         "light"
     ];
 
-    public static bool NeedsQuoting(string? str)
+    public static bool NeedsQuoting(string str)
     {
-        if (string.IsNullOrWhiteSpace(str)) return true;
         var trimmedStr = str.Trim();
         return ContainsSpecialYamlCharacters(trimmedStr) || IsNumericValue(trimmedStr) || IsBooleanValue(trimmedStr) || IsNullValue(trimmedStr);
     }
 
-    private static bool ContainsSpecialYamlCharacters(string str) =>
-        str.Any(c => SpecialYamlCharSet.Contains(c));
+    private static bool ContainsSpecialYamlCharacters(string str) => str.Any(c => SpecialYamlCharSet.Contains(c));
 
     private static bool IsNumericValue(string str) => double.TryParse(str, out _);
 
