@@ -11,6 +11,9 @@
 /// </remarks>
 public class YamlString : YamlScalar<string>
 {
+    private const string Quote = "\"";
+    private const string EscapedQuote = "\\\"";
+
     /// <summary>
     /// Represents a YAML scalar node containing a string value.
     /// </summary>
@@ -20,6 +23,7 @@ public class YamlString : YamlScalar<string>
     /// into a YAML-compatible string, ensuring proper quoting if required.
     /// </remarks>
     public YamlString(string value) => Value = value;
+
     /// <summary>
     /// Serializes the scalar value of a YAML node into its string representation.
     /// </summary>
@@ -30,7 +34,20 @@ public class YamlString : YamlScalar<string>
     /// </returns>
     protected override string SerializeValue()
     {
-        var value = (Value ?? string.Empty).Trim();
-        return YamlTools.NeedsQuoting(value) ? $"\"{value.Replace("\"", "\\\"")}\"" : value;
+        var normalizedValue = GetNormalizedValue();
+        return YamlTools.NeedsQuoting(normalizedValue) ? CreateQuotedValue(normalizedValue) : normalizedValue;
     }
+
+    /// <summary>
+    /// Gets the normalized string value by handling null values and trimming whitespace.
+    /// </summary>
+    /// <returns>The normalized string value, never null.</returns>
+    private string GetNormalizedValue() => (Value ?? string.Empty).Trim();
+
+    /// <summary>
+    /// Creates a properly quoted and escaped string value for YAML serialization.
+    /// </summary>
+    /// <param name="value">The value to quote and escape.</param>
+    /// <returns>The quoted and escaped string value.</returns>
+    private static string CreateQuotedValue(string value) => Quote + value.Replace(Quote, EscapedQuote) + Quote;
 }
