@@ -10,8 +10,8 @@ namespace EspHomeTools.Classes;
 public static class YamlTools
 {
     /// <summary>
-    /// Defines characters that are considered special in YAML and may require
-    /// strings containing them to be quoted during serialization or parsing.
+    /// An array of characters that YAML considers to have special meaning. Strings containing
+    /// any of these characters may need to be quoted during YAML serialization or parsing.
     /// </summary>
     public readonly static char[] SpecialYamlChars = [':', '{', '}', '[', ']', ',', '&', '*', '#', '?', '|', '-', '<', '>', '!', '%', '@', '`'];
 
@@ -39,23 +39,29 @@ public static class YamlTools
     /// <summary>
     /// Determines if the given string contains any special characters used in YAML syntax.
     /// </summary>
-    /// <param name="str">The input string to examine for special YAML characters.</param>
-    /// <returns>True if the string contains any special YAML characters; otherwise, false.</returns>
+    /// <param name="str">The input string to examine for special YAML characters. Cannot be null.</param>
+    /// <returns>
+    /// Returns <c>true</c> if the string contains any characters defined as special in YAML syntax.
+    /// Otherwise, returns <c>false</c>.
+    /// </returns>
     private static bool ContainsSpecialYamlCharacters(string str) => str.Any(c => SpecialYamlChars.Contains(c));
     /// <summary>
     /// Determines whether the given string represents a numeric value.
     /// </summary>
     /// <param name="str">The input string to check.</param>
     /// <returns>
-    /// True if the string can be parsed as a numeric value; otherwise, false.
+    /// Returns <c>true</c> if the string can be parsed as a numeric value using standard
+    /// numeric parsing rules. Returns <c>false</c> otherwise, including cases where the string
+    /// is empty or not a valid numeric representation.
     /// </returns>
     private static bool IsNumericValue(string str) => double.TryParse(str, out _);
     /// <summary>
-    /// Determines whether the given string represents a valid boolean value (true or false).
+    /// Determines whether the given string represents a valid boolean value.
     /// </summary>
     /// <param name="str">The input string to evaluate.</param>
     /// <returns>
-    /// Returns true if the string represents a valid boolean value; otherwise, returns false.
+    /// Returns <c>true</c> if the string represents a valid boolean value (e.g., "true" or "false").
+    /// Otherwise, returns <c>false</c>.
     /// </returns>
     private static bool IsBooleanValue(string str) => bool.TryParse(str, out _);
     /// <summary>
@@ -63,7 +69,8 @@ public static class YamlTools
     /// </summary>
     /// <param name="str">The input string to evaluate for null equivalence.</param>
     /// <returns>
-    /// true if the string represents a null value (e.g., "null", case-insensitive); otherwise, false.
+    /// Returns <c>true</c> if the string represents a null value in YAML (e.g., the string "null", case-insensitive).
+    /// Otherwise, returns <c>false</c>.
     /// </returns>
     private static bool IsNullValue(string str) => str.Equals("null", StringComparison.OrdinalIgnoreCase);
 }
