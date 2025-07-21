@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class DhtSensorBuilder
+public class DhtSensorBuilder: IYamlBuilder
 {
     private const string PlatformKey = "platform";
 
