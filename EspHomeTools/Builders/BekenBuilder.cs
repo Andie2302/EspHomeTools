@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class BekenBuilder: IYamlBuilder
+public class BekenBuilder: IYamlBuilder<IYamlMapping>
 {
     private const string BoardKey = "board";
 
@@ -38,7 +38,7 @@ public class BekenBuilder: IYamlBuilder
         return this;
     }
 
-    internal IYamlMapping Build()
+    public IYamlMapping Build()
     {
         ValidateBoardIsSet();
         return _block;
