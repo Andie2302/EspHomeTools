@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class BekenBuilder: IYamlBuilder<IYamlMapping>
+public class BekenBuilder: IYamlBuilder<IYamlMapping>, IYamlBuilder
 {
     private const string BoardKey = "board";
 
