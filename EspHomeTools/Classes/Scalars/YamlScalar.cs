@@ -98,17 +98,34 @@ public abstract class YamlScalar<TValue> : IYamlScalar<TValue>
     /// </remarks>
     public string? Tag { get; set; }
 
-    /// <summary>
-    /// Converts the scalar object to a YAML-formatted string representation with the specified indentation.
-    /// </summary>
-    /// <param name="indent">The number of spaces to use for indentation.</param>
-    /// <returns>A YAML-formatted string representation of the scalar object.</returns>
-    public virtual string ToYaml(int indent = 0)
+    public virtual string ToYaml(int indent, string? name)
     {
         var indentPrefix = CreateIndentPrefix(indent);
         var commentSection = BuildCommentSection(indentPrefix);
-        var contentLine = BuildContentLine(indentPrefix);
+
+        // KORREKTUR: Der 'name'-Parameter wird hier an BuildContentLine weitergegeben.
+        var contentLine = BuildContentLine(indentPrefix, name);
+
+        // Deine neue return-Logik ist in Ordnung, aber die ursprüngliche ist etwas kürzer.
+        // Beide funktionieren.
         return commentSection + contentLine;
+    }
+
+    private string BuildContentLine(string indentPrefix, string? name)
+    {
+        // Der 'name' wird hier an BuildNameWithTag weitergereicht.
+        var nameWithTag = BuildNameWithTag(name);
+        return indentPrefix + nameWithTag + SerializeValue();
+    }
+
+    private string BuildNameWithTag(string? name)
+    {
+        // Hier wird der übergebene 'name' schließlich verwendet.
+        if (string.IsNullOrWhiteSpace(name))
+            return string.Empty;
+
+        var tagPart = !string.IsNullOrWhiteSpace(Tag) ? TagSeparator + Tag : string.Empty;
+        return name + NameValueSeparator + tagPart;
     }
 
     /// <summary>
@@ -148,10 +165,7 @@ public abstract class YamlScalar<TValue> : IYamlScalar<TValue>
         if (string.IsNullOrWhiteSpace(Name))
             return string.Empty;
 
-        var tagPart = !string.IsNullOrWhiteSpace(Tag)
-            ? TagSeparator + Tag
-            : string.Empty;
-
+        var tagPart = !string.IsNullOrWhiteSpace(Tag) ? TagSeparator + Tag : string.Empty;
         return Name + NameValueSeparator + tagPart;
     }
 
