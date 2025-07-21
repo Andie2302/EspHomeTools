@@ -10,6 +10,13 @@ namespace EspHomeTools.Classes.Structures;
 
 public class YamlMapping : IYamlMapping
 {
+    private const int DefaultIndentIncrement = 2;
+    private const string ColonSeparator = ":";
+    private const string CommentPrefix = "# ";
+    private const char SpaceChar = ' ';
+    private static readonly char[] TrimChars = { '\r', '\n', ' ' };
+    private static readonly string[] LineSeparators = { "\r\n", "\r", "\n" };
+
     private readonly Dictionary<string, IYamlNode> _nodes = new();
 
     public string? Name { get; set; }
@@ -23,10 +30,10 @@ public class YamlMapping : IYamlMapping
         AppendCommentIfPresent(yamlBuilder, indentString);
         var childIndent = AppendNameIfPresent(yamlBuilder, indentString, indent);
         AppendChildNodes(yamlBuilder, childIndent);
-        return yamlBuilder.ToString().TrimEnd('\r', '\n', ' ');
+        return yamlBuilder.ToString().TrimEnd(TrimChars);
     }
 
-    private static string CreateIndentString(int indent) => new(' ', indent);
+    private static string CreateIndentString(int indent) => new(SpaceChar, indent);
 
     private void AppendCommentIfPresent(StringBuilder builder, string indentString)
     {
@@ -41,9 +48,8 @@ public class YamlMapping : IYamlMapping
         if (string.IsNullOrWhiteSpace(Name))
             return currentIndent;
 
-        builder.Append(indentString).Append(Name).AppendLine(":");
-        return currentIndent + 2;
-
+        builder.Append(indentString).Append(Name).AppendLine(ColonSeparator);
+        return currentIndent + DefaultIndentIncrement;
     }
 
     private void AppendChildNodes(StringBuilder builder, int indent)
@@ -60,8 +66,8 @@ public class YamlMapping : IYamlMapping
 
     private static string FormatComment(string comment, string prefix)
     {
-        var commentLines = comment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-        return string.Join(Environment.NewLine, commentLines.Select(line => $"{prefix}# {line}")) + Environment.NewLine;
+        var commentLines = comment.Split(LineSeparators, StringSplitOptions.None);
+        return string.Join(Environment.NewLine, commentLines.Select(line => $"{prefix}{CommentPrefix}{line}")) + Environment.NewLine;
     }
 
     public void Add(string key, IYamlNode value) => _nodes.Add(key, value);
