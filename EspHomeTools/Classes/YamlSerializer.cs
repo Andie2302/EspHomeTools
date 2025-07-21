@@ -32,7 +32,7 @@ public class YamlSerializer : IYamlSerializer
     {
         if (!string.IsNullOrWhiteSpace(comment))
         {
-            builder.Append(FormatComment(comment ?? string.Empty, indentString));
+            builder.Append(FormatComment(comment, indentString));
         }
     }
 
