@@ -70,7 +70,7 @@ public class TimeBuilder
     {
         if (!_config.ContainsKey(PlatformKey))
         {
-            throw new InvalidOperationException("Eine Platform muss für die 'time'-Komponente mit WithPlatform() angegeben werden (z.B. 'homeassistant' oder 'sntp').");
+            throw new InvalidOperationException("A platform must be specified for the 'time' component using WithPlatform() (e.g. 'homeassistant' or 'sntp').");
         }
 
         return _config;
