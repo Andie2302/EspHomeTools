@@ -8,7 +8,7 @@ namespace EspHomeTools.Builders;
 public class BekenBuilder
 {
     private const string BoardKey = "board";
-    private const string BoardRequiredErrorMessage = "Für den 'bk72xx'-Block muss ein Board mit WithBoard() angegeben werden.";
+    private const string BoardRequiredErrorMessage = "`A board must be specified with WithBoard() for the 'bk72xx' block.`\n";
 
     private readonly YamlMapping _block = new();
 
