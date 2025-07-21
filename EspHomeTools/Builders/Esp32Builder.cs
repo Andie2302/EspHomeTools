@@ -51,7 +51,7 @@ public class Esp32Builder
     {
         if (!_block.ContainsKey("board"))
         {
-            throw new InvalidOperationException("Für den 'esp32'-Block muss ein Board mit WithBoard() angegeben werden.");
+            throw new InvalidOperationException("A board must be specified for the 'esp32' block using WithBoard().");
         }
 
         return _block;
