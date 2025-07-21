@@ -34,7 +34,7 @@ public class SpiBuilder
     {
         if (!_config.ContainsKey(ClkPinKey))
         {
-            throw new InvalidOperationException("Der Clock-Pin (clk_pin) muss für den SPI-Bus angegeben werden.");
+            throw new InvalidOperationException("The clock pin (clk_pin) must be specified for the SPI bus.");
         }
 
         return _config;
