@@ -7,56 +7,67 @@ namespace EspHomeTools.Builders;
 
 public class BinarySensorBuilder
 {
+    private const string PlatformKey = "platform";
+    private const string PinKey = "pin";
+    private const string NameKey = "name";
+    private const string IdKey = "id";
+    private const string DeviceClassKey = "device_class";
+    private const string OnPressKey = "on_press";
+    private const string OnReleaseKey = "on_release";
+    private const string DefaultPlatform = "gpio";
+
     private readonly YamlMapping _config = new();
 
     public BinarySensorBuilder()
     {
-        _config["platform"] = new YamlString("gpio");
+        _config[PlatformKey] = new YamlString(DefaultPlatform);
     }
 
     public BinarySensorBuilder WithPlatform(string platform)
     {
-        _config["platform"] = new YamlString(platform);
+        _config[PlatformKey] = new YamlString(platform);
         return this;
     }
 
     public BinarySensorBuilder UsePin(string pin)
     {
-        _config["pin"] = new YamlString(pin);
+        _config[PinKey] = new YamlString(pin);
         return this;
     }
 
     public BinarySensorBuilder UsePin(YamlSecret pin)
     {
-        _config["pin"] = pin;
+        _config[PinKey] = pin;
         return this;
     }
 
-    public BinarySensorBuilder UsePin(string pin, bool isSecret) => isSecret ? UsePin(new YamlSecret(pin)) : UsePin(pin);
+    public BinarySensorBuilder UsePin(string pin, bool isSecret) =>
+        isSecret ? UsePin(new YamlSecret(pin)) : UsePin(pin);
 
     public BinarySensorBuilder WithName(string name)
     {
-        _config["name"] = new YamlString(name);
+        _config[NameKey] = new YamlString(name);
         return this;
     }
 
     public BinarySensorBuilder WithName(YamlSecret name)
     {
-        _config["name"] = name;
+        _config[NameKey] = name;
         return this;
     }
 
-    public BinarySensorBuilder WithName(string name, bool isSecret) => isSecret ? WithName(new YamlSecret(name)) : WithName(name);
+    public BinarySensorBuilder WithName(string name, bool isSecret) =>
+        isSecret ? WithName(new YamlSecret(name)) : WithName(name);
 
     public BinarySensorBuilder WithId(string id)
     {
-        _config["id"] = new YamlString(id);
+        _config[IdKey] = new YamlString(id);
         return this;
     }
 
     public BinarySensorBuilder WithDeviceClass(string deviceClass)
     {
-        _config["device_class"] = new YamlString(deviceClass);
+        _config[DeviceClassKey] = new YamlString(deviceClass);
         return this;
     }
 
@@ -68,33 +79,45 @@ public class BinarySensorBuilder
         return this;
     }
 
-    internal IYamlMapping Build()
-    {
-        if (!_config.ContainsKey("pin"))
-        {
-            throw new InvalidOperationException("Ein Pin muss für den Binary Sensor mit UsePin() angegeben werden.");
-        }
-
-        if (!_config.ContainsKey("name"))
-        {
-            throw new InvalidOperationException("Ein Name muss für den Binary Sensor mit WithName() angegeben werden.");
-        }
-
-        return _config;
-    }
     public BinarySensorBuilder OnPress(Action<ActionSequenceBuilder> configurator)
     {
-        var builder = new ActionSequenceBuilder();
-        configurator(builder);
-        _config["on_press"] = builder.Build();
+        ConfigureAction(OnPressKey, configurator);
         return this;
     }
 
     public BinarySensorBuilder OnRelease(Action<ActionSequenceBuilder> configurator)
     {
+        ConfigureAction(OnReleaseKey, configurator);
+        return this;
+    }
+
+    internal IYamlMapping Build()
+    {
+        ValidateRequiredPin();
+        ValidateRequiredName();
+        return _config;
+    }
+
+    private void ConfigureAction(string actionKey, Action<ActionSequenceBuilder> configurator)
+    {
         var builder = new ActionSequenceBuilder();
         configurator(builder);
-        _config["on_release"] = builder.Build();
-        return this;
+        _config[actionKey] = builder.Build();
+    }
+
+    private void ValidateRequiredPin()
+    {
+        if (!_config.ContainsKey(PinKey))
+        {
+            throw new InvalidOperationException("Ein Pin muss für den Binary Sensor mit UsePin() angegeben werden.");
+        }
+    }
+
+    private void ValidateRequiredName()
+    {
+        if (!_config.ContainsKey(NameKey))
+        {
+            throw new InvalidOperationException("Ein Name muss für den Binary Sensor mit WithName() angegeben werden.");
+        }
     }
 }
