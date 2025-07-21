@@ -120,7 +120,7 @@ root.WithEsphome(esphome =>
     })
     .WithEnvironmentalSensor(bme =>
     {
-        bme.WithPlatform("bme280") // BME280 on I2C
+        bme.WithPlatform("bme280_i2c") // BME280 on I2C
            .WithI2CAddress(0x76)
            .WithTemperature("BME280 Temperature")
            .WithPressure("BME280 Pressure")
