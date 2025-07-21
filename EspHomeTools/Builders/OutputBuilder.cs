@@ -5,39 +5,48 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
+
 public class OutputBuilder
 {
+    private const string PlatformKey = "platform";
+    private const string PinKey = "pin";
+    private const string IdKey = "id";
+    private const string DefaultPlatform = "gpio";
+
     private readonly YamlMapping _config = new();
 
     public OutputBuilder()
     {
-        _config["platform"] = new YamlString("gpio");
+        _config[PlatformKey] = new YamlString(DefaultPlatform);
     }
 
     public OutputBuilder WithPlatform(string platform)
     {
-        _config["platform"] = new YamlString(platform);
+        _config[PlatformKey] = new YamlString(platform);
+        return this;
+    }
+
+    public OutputBuilder WithId(string id)
+    {
+        _config[IdKey] = new YamlString(id);
         return this;
     }
 
     public OutputBuilder UsePin(string pin)
     {
-        _config["pin"] = new YamlString(pin);
+        SetPinValue(new YamlString(pin));
         return this;
     }
 
     public OutputBuilder UsePin(YamlSecret pin)
     {
-        _config["pin"] = pin;
+        SetPinValue(pin);
         return this;
     }
 
-    public OutputBuilder UsePin(string pin, bool isSecret) => isSecret ? UsePin(new YamlSecret(pin)) : UsePin(pin);
-
-    public OutputBuilder WithId(string id)
+    public OutputBuilder UsePin(string pin, bool isSecret)
     {
-        _config["id"] = new YamlString(id);
-        return this;
+        return isSecret ? UsePin(new YamlSecret(pin)) : UsePin(pin);
     }
 
     public OutputBuilder WithCommentOn(string key, string comment)
@@ -49,15 +58,25 @@ public class OutputBuilder
 
     internal IYamlMapping Build()
     {
-        if (!_config.ContainsKey("pin"))
+        ValidateRequiredFields();
+        return _config;
+    }
+
+    private void SetPinValue(IYamlNode pinValue)
+    {
+        _config[PinKey] = pinValue;
+    }
+
+    private void ValidateRequiredFields()
+    {
+        if (!_config.ContainsKey(PinKey))
         {
             throw new InvalidOperationException("Ein Pin muss für die 'output'-Komponente mit UsePin() angegeben werden.");
         }
-        if (!_config.ContainsKey("id"))
+
+        if (!_config.ContainsKey(IdKey))
         {
             throw new InvalidOperationException("Eine ID muss für die 'output'-Komponente mit WithId() angegeben werden, damit andere Komponenten darauf verweisen können.");
         }
-
-        return _config;
     }
 }
