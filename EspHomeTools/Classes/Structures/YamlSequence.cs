@@ -10,7 +10,7 @@ public class YamlSequence : IYamlSequence
 {
     private const int IndentSize = 2;
     private const string SequenceItemPrefix = "- ";
-    private static readonly string[] LineSeparators = { "\r\n", "\r", "\n" };
+    private readonly static string[] LineSeparators = { "\r\n", "\r", "\n" };
     private readonly List<IYamlNode> _nodes = new();
 
     public string? Name { get; set; }
