@@ -7,21 +7,27 @@ namespace EspHomeTools.Builders;
 
 public class BekenBuilder
 {
+    private const string BoardKey = "board";
+    private const string BoardRequiredErrorMessage = "Für den 'bk72xx'-Block muss ein Board mit WithBoard() angegeben werden.";
+
     private readonly YamlMapping _block = new();
 
     public BekenBuilder WithBoard(string board)
     {
-        _block["board"] = new YamlString(board);
+        _block[BoardKey] = new YamlString(board);
         return this;
     }
 
     public BekenBuilder WithBoard(YamlSecret board)
     {
-        _block["board"] = board;
+        _block[BoardKey] = board;
         return this;
     }
 
-    public BekenBuilder WithBoard(string board, bool isSecret) => isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
+    public BekenBuilder WithBoard(string board, bool isSecret)
+    {
+        return isSecret ? WithBoard(new YamlSecret(board)) : WithBoard(board);
+    }
 
     public BekenBuilder WithCommentOn(string key, string comment)
     {
@@ -33,11 +39,15 @@ public class BekenBuilder
 
     internal IYamlMapping Build()
     {
-        if (!_block.ContainsKey("board"))
-        {
-            throw new InvalidOperationException("Für den 'bk72xx'-Block muss ein Board mit WithBoard() angegeben werden.");
-        }
-
+        ValidateBoardIsSet();
         return _block;
+    }
+
+    private void ValidateBoardIsSet()
+    {
+        if (!_block.ContainsKey(BoardKey))
+        {
+            throw new InvalidOperationException(BoardRequiredErrorMessage);
+        }
     }
 }
