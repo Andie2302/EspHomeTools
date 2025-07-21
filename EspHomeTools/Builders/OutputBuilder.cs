@@ -71,12 +71,12 @@ public class OutputBuilder
     {
         if (!_config.ContainsKey(PinKey))
         {
-            throw new InvalidOperationException("Ein Pin muss für die 'output'-Komponente mit UsePin() angegeben werden.");
+            throw new InvalidOperationException("A pin must be specified for the 'output' component using UsePin().");
         }
 
         if (!_config.ContainsKey(IdKey))
         {
-            throw new InvalidOperationException("Eine ID muss für die 'output'-Komponente mit WithId() angegeben werden, damit andere Komponenten darauf verweisen können.");
+            throw new InvalidOperationException("An ID must be specified for the 'output' component using WithId() so other components can reference it.");
         }
     }
 }
