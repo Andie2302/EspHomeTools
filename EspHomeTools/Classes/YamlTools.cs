@@ -5,7 +5,7 @@ namespace EspHomeTools.Classes;
 
 public static class YamlTools
 {
-    public static readonly char[] SpecialYamlChars = [':', '{', '}', '[', ']', ',', '&', '*', '#', '?', '|', '-', '<', '>', '!', '%', '@', '`'];
+    public readonly static char[] SpecialYamlChars = [':', '{', '}', '[', ']', ',', '&', '*', '#', '?', '|', '-', '<', '>', '!', '%', '@', '`'];
 
     public static bool NeedsQuoting(string? str)
     {
