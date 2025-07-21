@@ -4,7 +4,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class ActionSequenceBuilder
+public class ActionSequenceBuilder: IYamlBuilder
 {
     private const string LightToggleAction = "light.toggle";
 
