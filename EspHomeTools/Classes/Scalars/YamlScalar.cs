@@ -31,6 +31,6 @@ public abstract class YamlScalar<TValue> : IYamlScalar<TValue>
     }
     private static string CreateIndentPrefix(int indent) => new(' ', indent);
     private string BuildCommentSection(string indentPrefix) => !string.IsNullOrWhiteSpace(Comment) ? FormatComment(Comment, indentPrefix) : string.Empty;
-    private static string FormatComment(string comment, string prefix) => string.Join(Environment.NewLine, comment.Split(LineEndingSeparators, StringSplitOptions.None).Select(line => $"{prefix}{CommentPrefix}{line}")) + Environment.NewLine;
+    private static string FormatComment(string? comment, string prefix) => string.Join(Environment.NewLine, YamlTools.Normalize(comment).Split(LineEndingSeparators, StringSplitOptions.None).Select(line => $"{prefix}{CommentPrefix}{line}")) + Environment.NewLine;
     protected abstract string SerializeValue();
 }
