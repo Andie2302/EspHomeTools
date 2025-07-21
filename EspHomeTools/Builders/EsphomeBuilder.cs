@@ -7,54 +7,84 @@ namespace EspHomeTools.Builders;
 
 public class EsphomeBuilder
 {
+    private const string NameKey = "name";
+    private const string OnBootKey = "on_boot";
+
     private readonly YamlMapping _block = new();
 
     public EsphomeBuilder WithName(string name)
     {
-        _block["name"] = new YamlString(name);
+        ValidateNameInput(name);
+        _block[NameKey] = new YamlString(name);
         return this;
     }
 
     public EsphomeBuilder WithName(YamlSecret name)
     {
-        _block["name"] = name;
+        ValidateNameInput(name);
+        _block[NameKey] = name;
         return this;
     }
 
-    public EsphomeBuilder WithName(string name, bool isSecret) => isSecret ? WithName(new YamlSecret(name)) : WithName(name);
+    public EsphomeBuilder WithSecretName(string secretName)
+    {
+        ValidateNameInput(secretName);
+        return WithName(new YamlSecret(secretName));
+    }
 
     public EsphomeBuilder WithComment(string comment)
     {
-        if (_block.TryGetValue("name", out var nameNode))
-        {
-            nameNode.Comment = comment;
-        }
-
+        SetCommentOnKey(NameKey, comment);
         return this;
     }
 
     public EsphomeBuilder WithCommentOn(string key, string comment)
     {
-        if (_block.TryGetValue(key, out var node))
-            node.Comment = comment;
+        SetCommentOnKey(key, comment);
+        return this;
+    }
 
+    public EsphomeBuilder OnBoot(Action<ActionSequenceBuilder> configurator)
+    {
+        ValidateInput(configurator, nameof(configurator));
+        var builder = new ActionSequenceBuilder();
+        configurator(builder);
+        _block[OnBootKey] = builder.Build();
         return this;
     }
 
     internal IYamlMapping Build()
     {
-        if (!_block.ContainsKey("name"))
+        ValidateRequiredFields();
+        return _block;
+    }
+
+    private void SetCommentOnKey(string key, string comment)
+    {
+        if (_block.TryGetValue(key, out var node))
+        {
+            node.Comment = comment;
+        }
+    }
+
+    private static void ValidateNameInput(object nameInput)
+    {
+        ValidateInput(nameInput, nameof(nameInput));
+    }
+
+    private static void ValidateInput(object input, string parameterName)
+    {
+        if (input == null)
+        {
+            throw new ArgumentNullException(parameterName);
+        }
+    }
+
+    private void ValidateRequiredFields()
+    {
+        if (!_block.ContainsKey(NameKey))
         {
             throw new InvalidOperationException("Der Name im 'esphome'-Block ist erforderlich. Benutze die WithName()-Methode.");
         }
-
-        return _block;
-    }
-    public EsphomeBuilder OnBoot(Action<ActionSequenceBuilder> configurator)
-    {
-        var builder = new ActionSequenceBuilder();
-        configurator(builder);
-        _block["on_boot"] = builder.Build();
-        return this;
     }
 }
