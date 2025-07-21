@@ -6,11 +6,11 @@ namespace EspHomeTools.Interfaces;
 /// Represents a YAML sequence structure as defined in the YAML specification.
 /// </summary>
 /// <remarks>
-/// An implementation of this interface provides functionality to manage a list of YAML nodes
-/// in a sequential order. It extends both <see cref="IYamlStructure"/> and <see cref="IList{T}"/>,
-/// where T is <see cref="IYamlNode"/>. This allows the sequence to behave as a collection of
-/// YAML nodes that can be indexed, enumerated, and manipulated while also supporting YAML-specific
-/// serialization and structural behavior.
+/// This interface defines a collection of YAML nodes arranged in a sequential order. It combines
+/// functionality from <see cref="IYamlStructure"/> and <see cref="IList{T}"/>, where T is
+/// <see cref="IYamlNode"/>. Implementations of this interface enable manipulation and traversal
+/// of YAML sequences using standard collection operations while adhering to the structure and
+/// serialization rules of YAML.
 /// </remarks>
 /// <seealso cref="IYamlStructure"/>
 /// <seealso cref="IYamlNode"/>
