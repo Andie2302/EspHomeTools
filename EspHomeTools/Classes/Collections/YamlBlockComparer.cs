@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Classes.Collections;
@@ -38,7 +39,7 @@ public class YamlBlockComparer : IComparer<KeyValuePair<string, IYamlNode>>
 
     /// Provides comparison logic for sorting YAML nodes based on a custom-defined order.
     /// Implements the IComparer interface for KeyValuePair objects containing a string key and an IYamlNode value.
-    public YamlBlockComparer(List<string> customOrder) => _customOrder = customOrder;
+    public YamlBlockComparer(IEnumerable<string> customOrder) => _customOrder = customOrder.ToList();
 
     /// Compares two KeyValuePair<string, IYamlNode> objects based on a custom order
     /// and their keys, providing a prioritized sorting mechanism.
