@@ -20,24 +20,11 @@ public sealed class YamlCollection : IEnumerable<IYamlNode>
         set => _nodes[key] = value;
     }
 
-    public bool Set(IYamlNode node)
-    {
-        if (string.IsNullOrWhiteSpace(node.Name))
-            return false;
+    public bool Set(IYamlNode node) => ValidateAndAddNode(node);
 
-        _nodes[node.Name] = node;
-        return true;
-    }
+    public bool Set(IEnumerable<IYamlNode> nodes) => nodes.All(ValidateAndAddNode);
 
-    public bool Set(IEnumerable<IYamlNode> nodes)
-    {
-        return SetNodes(nodes);
-    }
-
-    public bool Set(params IYamlNode[] nodes)
-    {
-        return SetNodes(nodes);
-    }
+    public bool Set(params IYamlNode[] nodes) => Set((IEnumerable<IYamlNode>)nodes);
 
     public bool ContainsKey(string key) => _nodes.ContainsKey(key);
     public bool Remove(string key) => _nodes.Remove(key);
@@ -45,9 +32,9 @@ public sealed class YamlCollection : IEnumerable<IYamlNode>
 
     public string ToYaml()
     {
-        var sortedNodes = GetSortedNodes();
-        var yamlNodes = sortedNodes.Select(ConvertNodeToYaml);
-        return string.Join(NodeSeparator, yamlNodes);
+        var sortedPairs = GetSortedNodePairs();
+        var yamlStrings = sortedPairs.Select(kvp => kvp.Value.ToYaml(0, kvp.Key));
+        return string.Join(NodeSeparator, yamlStrings);
     }
 
     public IEnumerator<IYamlNode> GetEnumerator() => _nodes.Values.GetEnumerator();
@@ -59,25 +46,18 @@ public sealed class YamlCollection : IEnumerable<IYamlNode>
         return collection;
     }
 
-    private bool SetNodes(IEnumerable<IYamlNode> nodes)
+    private bool ValidateAndAddNode(IYamlNode node)
     {
-        foreach (var node in nodes)
+        var nodeName = node.Name;
+        if (string.IsNullOrWhiteSpace(nodeName))
         {
-            if (!Set(node))
-                return false;
+            return false;
         }
 
+        _nodes[nodeName] = node;
         return true;
     }
 
-    private IOrderedEnumerable<KeyValuePair<string, IYamlNode>> GetSortedNodes()
-    {
-        var hasCustomSorter = CustomSorter != null;
-        return hasCustomSorter ? _nodes.OrderBy(kvp => kvp, CustomSorter) : _nodes.OrderBy(kvp => kvp.Key, StringComparer.Ordinal);
-    }
-
-    private static string ConvertNodeToYaml(KeyValuePair<string, IYamlNode> kvp)
-    {
-        return kvp.Value.ToYaml(0, kvp.Key);
-    }
+    private IOrderedEnumerable<KeyValuePair<string, IYamlNode>> GetSortedNodePairs() =>
+        CustomSorter != null ? _nodes.OrderBy(kvp => kvp, CustomSorter) : _nodes.OrderBy(kvp => kvp.Key, StringComparer.Ordinal);
 }
