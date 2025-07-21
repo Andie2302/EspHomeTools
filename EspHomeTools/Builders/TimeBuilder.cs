@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class TimeBuilder: IYamlBuilder
+public class TimeBuilder: IYamlBuilder<IYamlMapping>
 {
     private const string PlatformKey = "platform";
 
@@ -69,7 +69,7 @@ public class TimeBuilder: IYamlBuilder
         return serverSequence;
     }
 
-    internal IYamlMapping Build()
+    public IYamlMapping Build()
     {
         if (!_config.ContainsKey(PlatformKey))
         {
