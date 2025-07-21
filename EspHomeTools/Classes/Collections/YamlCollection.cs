@@ -78,17 +78,6 @@ public sealed class YamlCollection : IEnumerable<IYamlNode>
 
     private static string ConvertNodeToYaml(KeyValuePair<string, IYamlNode> kvp)
     {
-        var node = kvp.Value;
-        var toYamlMethod = node.GetType().GetMethod("ToYaml", [typeof(int), typeof(string)]);
-        if (toYamlMethod != null)
-        {
-            return (string?)toYamlMethod.Invoke(node, [0, kvp.Key]) ?? string.Empty;
-        }
-
-        var originalName = node.Name;
-        node.Name = kvp.Key;
-        var yaml = node.ToYaml();
-        node.Name = originalName;
-        return yaml;
+        return kvp.Value.ToYaml(0, kvp.Key);
     }
 }
