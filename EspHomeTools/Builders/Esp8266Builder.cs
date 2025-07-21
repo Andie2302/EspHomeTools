@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class Esp8266Builder: IYamlBuilder
+public class Esp8266Builder: IYamlBuilder<IYamlMapping>
 {
     private readonly YamlMapping _block = new();
 
@@ -31,7 +31,7 @@ public class Esp8266Builder: IYamlBuilder
         return this;
     }
 
-    internal IYamlMapping Build()
+    public IYamlMapping Build()
     {
         ValidateRequiredBoard();
         return _block;
