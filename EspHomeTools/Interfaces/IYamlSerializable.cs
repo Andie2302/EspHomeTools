@@ -1,9 +1,8 @@
 ﻿namespace EspHomeTools.Interfaces;
 
 /// <summary>
-/// Represents an object that can be serialized into a YAML string format.
-/// Provides functionality to convert the implementing object to its
-/// equivalent YAML representation with optional indentation.
+/// Defines an object capable of serializing itself into a YAML formatted string.
+/// Provides methods to represent the object's data structure in YAML syntax.
 /// </summary>
 public interface IYamlSerializable
 {
