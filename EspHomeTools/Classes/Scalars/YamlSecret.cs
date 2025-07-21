@@ -1,16 +1,22 @@
 ﻿namespace EspHomeTools.Classes.Scalars;
 
 /// <summary>
-/// Represents a YAML scalar node specifically designed to hold sensitive configuration secrets.
+/// Represents a YAML scalar node containing sensitive configuration data marked as a secret.
 /// </summary>
 /// <remarks>
-/// The YamlSecret class inherits from the YamlScalar base class and is used to manage and serialize
-/// secret values in YAML. It formats the serialized output as "!secret [value]" to comply with YAML secret-handling conventions.
-/// This class ensures that secrets are represented in a consistent and secure way in YAML files.
+/// This class inherits from the YamlScalar base class and is specialized for securely managing secret values
+/// in YAML files. Secrets are serialized using the "!secret [value]" format, ensuring compatibility with
+/// YAML-based configuration systems that handle sensitive data.
 /// </remarks>
-
 public class YamlSecret : YamlScalar<string>
 {
+    /// <summary>
+    /// Represents a YAML secret scalar value.
+    /// </summary>
+    /// <remarks>
+    /// This class is used to handle YAML scalar nodes that contain secret information.
+    /// When serialized, it formats the scalar using a "!secret" tag followed by the secret value.
+    /// </remarks>
     public YamlSecret(string secretName, string? name = null, string? comment = null, string? tag = null)
     {
         Value = secretName;
@@ -19,5 +25,11 @@ public class YamlSecret : YamlScalar<string>
         Tag = tag;
     }
 
+    /// <summary>
+    /// Serializes the scalar value into a YAML-compatible string representation.
+    /// </summary>
+    /// <returns>
+    /// The serialized string representation of the scalar value.
+    /// </returns>
     protected override string SerializeValue() => $"!secret {Value}";
 }
