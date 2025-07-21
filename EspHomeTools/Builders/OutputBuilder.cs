@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class OutputBuilder
+public class OutputBuilder: IYamlBuilder
 {
     private const string PlatformKey = "platform";
 
