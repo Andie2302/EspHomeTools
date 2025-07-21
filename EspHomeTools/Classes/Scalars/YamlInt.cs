@@ -7,10 +7,13 @@
 /// This class is a specific implementation of <see cref="YamlScalar{TValue}"/> for handling integer values.
 /// It supports serialization to YAML with optional naming, commenting, and tagging.
 /// </remarks>
+
 public class YamlInt : YamlScalar<int>
 {
-    /// Represents a scalar integer value in a YAML structure. Inherits from the generic `YamlScalar<int>` class,
-    /// providing type-specific behavior for serializing and managing integer scalar values.
+    /// <summary>
+    /// Initializes a new instance of the YamlInt class with the specified integer value.
+    /// </summary>
+    /// <param name="value">The integer value to encapsulate in this YAML scalar.</param>
     public YamlInt(int value)
     {
         Value = value;
