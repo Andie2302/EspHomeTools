@@ -273,7 +273,6 @@ light:
 
 * text-sensor builder
 * web_server builder
-* correcting outdated demo code
 * pulse_counter builder
 * hx711 builder
 * ina219 builder
