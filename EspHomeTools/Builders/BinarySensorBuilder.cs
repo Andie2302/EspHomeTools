@@ -109,7 +109,7 @@ public class BinarySensorBuilder
     {
         if (!_config.ContainsKey(PinKey))
         {
-            throw new InvalidOperationException("Ein Pin muss für den Binary Sensor mit UsePin() angegeben werden.");
+            throw new InvalidOperationException("A pin must be specified for the Binary Sensor with UsePin().");
         }
     }
 
@@ -117,7 +117,7 @@ public class BinarySensorBuilder
     {
         if (!_config.ContainsKey(NameKey))
         {
-            throw new InvalidOperationException("Ein Name muss für den Binary Sensor mit WithName() angegeben werden.");
+            throw new InvalidOperationException("A name must be specified for the Binary Sensor using WithName().");
         }
     }
 }
