@@ -30,7 +30,7 @@ public class EsphomeBuilderTests
         var expectedYaml = $"esphome:{Environment.NewLine}  name: \"{expectedDeviceName}\"";
         root.WithEsphome(esphome => { esphome.WithName(expectedDeviceName); });
         var actualYaml = root.ToYaml().Trim();
-        Assert.AreEqual(expectedYaml, actualYaml, "Der generierte YAML-Code für den esphome-Block ist nicht korrekt.");
+        Assert.AreEqual(expectedYaml, actualYaml, "The generated YAML code for the esphome block is not correct.");
     }
 
     /// <summary>
@@ -49,7 +49,6 @@ public class EsphomeBuilderTests
     public void Build_WithoutName_ShouldThrowInvalidOperationException()
     {
         var root = new YamlMapping();
-        Assert.ThrowsException<InvalidOperationException>(() => { root.WithEsphome(esphome => { }); }, "Eine InvalidOperationException wurde erwartet, wenn kein Name gesetzt wird.");
+        Assert.ThrowsException<InvalidOperationException>(() => { root.WithEsphome(esphome => { }); }, "An InvalidOperationException was expected when no name is set.");
     }
 }
-
