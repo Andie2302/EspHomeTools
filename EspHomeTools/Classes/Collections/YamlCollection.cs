@@ -32,7 +32,6 @@ public sealed class YamlCollection : IDictionary<string, IYamlNode>
         return nodeKeyValuePair.Value.ToYaml();
     }
 
-    // IDictionary implementation
     public IYamlNode this[string key]
     {
         get => _nodes[key];
