@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using EspHomeTools.Classes.Structures;
 using EspHomeTools.Interfaces;
 
-namespace EspHomeTools.Classes.Structures;
+namespace EspHomeTools.Classes;
 
 public class YamlSerializer : IYamlSerializer
 {
