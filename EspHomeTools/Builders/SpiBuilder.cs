@@ -7,25 +7,14 @@ namespace EspHomeTools.Builders;
 
 public class SpiBuilder
 {
+    private const string ClkPinKey = "clk_pin";
     private readonly YamlMapping _config = new();
 
-    public SpiBuilder SetClkPin(string pin)
-    {
-        _config["clk_pin"] = new YamlString(pin);
-        return this;
-    }
+    public SpiBuilder SetClkPin(string pin) => SetPin(ClkPinKey, pin);
 
-    public SpiBuilder SetMosiPin(string pin)
-    {
-        _config["mosi_pin"] = new YamlString(pin);
-        return this;
-    }
+    public SpiBuilder SetMosiPin(string pin) => SetPin("mosi_pin", pin);
 
-    public SpiBuilder SetMisoPin(string pin)
-    {
-        _config["miso_pin"] = new YamlString(pin);
-        return this;
-    }
+    public SpiBuilder SetMisoPin(string pin) => SetPin("miso_pin", pin);
 
     public SpiBuilder WithId(string id)
     {
@@ -43,11 +32,17 @@ public class SpiBuilder
 
     internal IYamlMapping Build()
     {
-        if (!_config.ContainsKey("clk_pin"))
+        if (!_config.ContainsKey(ClkPinKey))
         {
             throw new InvalidOperationException("Der Clock-Pin (clk_pin) muss für den SPI-Bus angegeben werden.");
         }
 
         return _config;
+    }
+
+    private SpiBuilder SetPin(string pinKey, string pin)
+    {
+        _config[pinKey] = new YamlString(pin);
+        return this;
     }
 }
