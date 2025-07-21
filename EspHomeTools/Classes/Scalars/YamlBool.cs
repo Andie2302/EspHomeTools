@@ -10,18 +10,20 @@
 /// </remarks>
 public class YamlBool : YamlScalar<bool>
 {
-    /// Represents a YAML boolean value.
-    /// This class extends the functionality of YamlScalar<bool> to specifically handle serialization
-    /// of boolean values to their YAML representation.
-    /// The boolean value is converted to a lowercase string representation ("true" or "false") during serialization.
+    /// <summary>
+    /// Initializes a new instance of the YamlBool class with the specified boolean value.
+    /// </summary>
+    /// <param name="value">The boolean value to encapsulate in this YAML scalar.</param>
     public YamlBool(bool value)
     {
         Value = value;
     }
 
-    /// Serializes the value of the current YAML scalar object into a string representation.
+    /// <summary>
+    /// Serializes the boolean value to its YAML string representation.
+    /// </summary>
     /// <returns>
-    /// A string representation of the value of the current YAML scalar object.
+    /// A lowercase string representation of the boolean value ("true" or "false").
     /// </returns>
     protected override string SerializeValue() => Value.ToString().ToLowerInvariant();
 }
