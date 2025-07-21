@@ -79,12 +79,12 @@ public class EnvironmentalSensorBuilder
     {
         if (!_config.ContainsKey("platform"))
         {
-            throw new InvalidOperationException("Eine Platform muss für den Bosch-Sensor angegeben werden (z.B. 'bme280').");
+            throw new InvalidOperationException("A platform must be specified for the Bosch sensor (e.g. 'bme280').");
         }
 
         if (!_config.ContainsKey("temperature") && !_config.ContainsKey("pressure") && !_config.ContainsKey("humidity"))
         {
-            throw new InvalidOperationException("Es muss mindestens ein Messwert (Temperatur, Druck, Feuchtigkeit) für den Sensor konfiguriert werden.");
+            throw new InvalidOperationException("At least one measurement value (temperature, pressure, humidity) must be configured for the sensor.");
         }
 
         return _config;
