@@ -16,6 +16,10 @@ namespace EspHomeTools.Classes.Scalars;
 /// </remarks>
 public abstract class YamlScalar<TValue> : IYamlScalar<TValue>
 {
+    private const string CommentPrefix = "# ";
+    private const string TagSeparator = " ";
+    private const string NameValueSeparator = ": ";
+
     /// <summary>
     /// Gets or sets the scalar value of the YAML node.
     /// </summary>
@@ -61,27 +65,55 @@ public abstract class YamlScalar<TValue> : IYamlScalar<TValue>
     /// <returns>A YAML-formatted string representation of the scalar object.</returns>
     public virtual string ToYaml(int indent = 0)
     {
-        var yamlBuilder = new StringBuilder();
-        var prefix = new string(' ', indent);
-        if (!string.IsNullOrWhiteSpace(Comment))
-        {
-            yamlBuilder.Append(FormatComment(Comment, prefix));
-        }
+        var indentPrefix = CreateIndentPrefix(indent);
+        var commentSection = BuildCommentSection(indentPrefix);
+        var contentLine = BuildContentLine(indentPrefix);
 
-        var formattedContentLine = new StringBuilder();
-        if (!string.IsNullOrWhiteSpace(Name))
-        {
-            var tagPart = !string.IsNullOrWhiteSpace(Tag) ? $" {Tag}" : string.Empty;
-            formattedContentLine.Append($"{prefix}{Name}:{tagPart} ");
-        }
-        else
-        {
-            formattedContentLine.Append(prefix);
-        }
+        return commentSection + contentLine;
+    }
 
-        formattedContentLine.Append(SerializeValue());
-        yamlBuilder.Append(formattedContentLine.ToString());
-        return yamlBuilder.ToString();
+    /// <summary>
+    /// Creates the indentation prefix string based on the specified indent level.
+    /// </summary>
+    /// <param name="indent">The number of spaces to use for indentation.</param>
+    /// <returns>A string containing the appropriate number of spaces for indentation.</returns>
+    private static string CreateIndentPrefix(int indent)
+    {
+        return new string(' ', indent);
+    }
+
+    /// <summary>
+    /// Builds the comment section of the YAML output if a comment exists.
+    /// </summary>
+    /// <param name="indentPrefix">The indentation prefix to apply.</param>
+    /// <returns>The formatted comment section or an empty string if no comment exists.</returns>
+    private string BuildCommentSection(string indentPrefix) => !string.IsNullOrWhiteSpace(Comment) ? FormatComment(Comment, indentPrefix) : string.Empty;
+
+    /// <summary>
+    /// Builds the main content line containing the name, tag, and serialized value.
+    /// </summary>
+    /// <param name="indentPrefix">The indentation prefix to apply.</param>
+    /// <returns>The formatted content line.</returns>
+    private string BuildContentLine(string indentPrefix)
+    {
+        var nameWithTag = BuildNameWithTag();
+        return indentPrefix + nameWithTag + SerializeValue();
+    }
+
+    /// <summary>
+    /// Builds the name and tag portion of the content line.
+    /// </summary>
+    /// <returns>The formatted name with optional tag and separator, or empty string if no name exists.</returns>
+    private string BuildNameWithTag()
+    {
+        if (string.IsNullOrWhiteSpace(Name))
+            return string.Empty;
+
+        var tagPart = !string.IsNullOrWhiteSpace(Tag)
+            ? TagSeparator + Tag
+            : string.Empty;
+
+        return Name + NameValueSeparator + tagPart;
     }
 
     /// <summary>
@@ -92,8 +124,8 @@ public abstract class YamlScalar<TValue> : IYamlScalar<TValue>
     /// <returns>A string representing the formatted comment, with each line prefixed and properly indented.</returns>
     private static string FormatComment(string comment, string prefix)
     {
-        var commentLines = comment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-        return string.Join(Environment.NewLine, commentLines.Select(line => $"{prefix}# {line}")) + Environment.NewLine;
+        var commentLines = comment.Split(["\r\n", "\r", "\n"], StringSplitOptions.None);
+        return string.Join(Environment.NewLine, commentLines.Select(line => $"{prefix}{CommentPrefix}{line}")) + Environment.NewLine;
     }
 
     /// <summary>
