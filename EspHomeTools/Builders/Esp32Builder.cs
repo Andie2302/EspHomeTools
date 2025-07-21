@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class Esp32Builder: IYamlBuilder
+public class Esp32Builder: IYamlBuilder<IYamlMapping>
 {
     private readonly YamlMapping _block = new();
 
@@ -47,7 +47,7 @@ public class Esp32Builder: IYamlBuilder
         return this;
     }
 
-    internal IYamlMapping Build()
+    public IYamlMapping Build()
     {
         if (!_block.ContainsKey("board"))
         {
