@@ -40,52 +40,52 @@ using EspHomeTools.Builders;
 using EspHomeTools.Classes.Scalars;
 using EspHomeTools.Classes.Structures;
 
-// 1. Erstelle den Root-Knoten für die YAML-Datei
+// 1. Create the root node for the YAML file
 var root = new YamlMapping();
 
-// 2. Nutze die Fluent-Builder-API, um die Konfiguration zu erstellen
+// 2. Use the fluent builder API to construct the configuration
 root.WithEsphome(esphome =>
     {
-        esphome.WithName("wohnzimmer_sensor")
-               .WithCommentOn("name", "Der eindeutige Name des Geräts im Netzwerk.")
-               // Füge einen on_boot-Trigger hinzu, um Aktionen beim Gerätestart auszuführen
+        esphome.WithName("living_room_sensor")
+               .WithCommentOn("name", "The unique name for the device on the network.")
+               // Add an on_boot trigger to run actions when the device starts
                .OnBoot(actions =>
                {
-                   actions.Lambda(@"ESP_LOGI(""main"", ""Gerät wurde erfolgreich gestartet!"");")
+                   actions.Lambda(@"ESP_LOGI(""main"", ""Device has successfully booted!"");")
                           .Delay("2s")
-                          // Die Aktion zielt auf die eindeutige ID des Lichts
-                          .LightTurnOn("dimmbares_licht");
+                          // The action targets the unique ID of the light
+                          .LightTurnOn("dimmable_light");
                });
     })
     .WithEsp32(esp32 =>
     {
         esp32.WithBoard("esp32dev")
-             .WithCommentOn("board", "Verwendet ein Standard-ESP32-Entwicklungsboard.");
+             .WithCommentOn("board", "Using a standard ESP32 development kit.");
     })
     .WithWifi(wifi =>
     {
-        wifi.WithSsid("MeinSuperWLAN")
-            .AddComment("ssid", "Die SSID deines primären WLAN-Netzwerks.\nMuss 2,4 GHz sein.")
-            .WithPassword(new YamlSecret("wifi_passwort"))
-            .AddComment("password", "Das WLAN-Passwort, sicher in 'secrets.yaml' gespeichert.");
+        wifi.WithSsid("MySuperWiFi")
+            .AddComment("ssid", "The SSID of your primary WiFi network.\nMust be 2.4 GHz.")
+            .WithPassword(new YamlSecret("wifi_password"))
+            .AddComment("password", "The WiFi password, stored securely in 'secrets.yaml'.");
     })
     .WithMqtt(mqtt =>
     {
         mqtt.WithBroker("192.168.1.100")
-            .WithCommentOn("broker", "IP-Adresse des Mosquitto MQTT-Brokers.")
-            .WithUsername("mqtt_benutzer", isSecret: true)
-            .WithPassword("mqtt_passwort", isSecret: true);
+            .WithCommentOn("broker", "IP address of the Mosquitto MQTT broker.")
+            .WithUsername("mqtt_user", isSecret: true)
+            .WithPassword("mqtt_password", isSecret: true);
     })
-    .WithLogger() // Fügt einen leeren Logger-Block hinzu
+    .WithLogger() // Adds an empty logger block
     .WithApi(api =>
     {
-        api.WithEncryptionKey("DEIN_VERSCHLUESSELUNGSKEY_HIER", isSecret: true)
-           .WithCommentOn("encryption", "Sichert die native API-Kommunikation mit Home Assistant.");
+        api.WithEncryptionKey("YOUR_ENCRYPTION_KEY_HERE", isSecret: true)
+           .WithCommentOn("encryption", "Secures the native API communication with Home Assistant.");
     })
     .WithOta(ota =>
     {
-        // In der aktuellen Implementierung ist OTA eine Liste, kein einzelnes Objekt.
-        // Die Konfiguration erfolgt direkt auf dem Builder.
+        // In the current implementation, OTA is a list, not a single object.
+        // The configuration is done directly on the builder.
     })
     .WithI2C(i2c =>
     {
@@ -93,7 +93,7 @@ root.WithEsphome(esphome =>
            .SetSclPin("GPIO22")
            .WithScan(true)
            .WithId("i2c_bus")
-           .WithCommentOn("scan", "Sucht beim Start nach I2C-Geräten, nützlich für das Debugging.");
+           .WithCommentOn("scan", "Scans for I2C devices on startup, useful for debugging.");
     })
     .WithSpi(spi =>
     {
@@ -101,70 +101,70 @@ root.WithEsphome(esphome =>
            .SetMosiPin("GPIO23")
            .SetMisoPin("GPIO19")
            .WithId("spi_bus")
-           .WithCommentOn("id", "SPI-Bus für Hochgeschwindigkeitskomponenten wie Displays.");
+           .WithCommentOn("id", "SPI bus for high-speed components like displays.");
     })
     .WithTime(time =>
     {
         time.WithPlatform("homeassistant")
-            .WithId("ha_zeit")
-            .WithComment("platform", "Verwendet Home Assistant als Quelle für die aktuelle Uhrzeit.");
+            .WithId("ha_time")
+            .WithComment("platform", "Use Home Assistant as the source for the current time.");
     })
     .WithDhtSensor(dht =>
     {
         dht.UsePin("GPIO2")
-           .WithCommentOn("pin", "Der Datenpin für den DHT22-Sensor.")
-           .WithTemperature("Wohnzimmer Temperatur")
-           .WithHumidity("Wohnzimmer Luftfeuchtigkeit")
+           .WithCommentOn("pin", "The data pin for the DHT22 sensor.")
+           .WithTemperature("Living Room Temperature")
+           .WithHumidity("Living Room Humidity")
            .WithUpdateInterval("60s")
-           .WithCommentOn("update_interval", "Sensordaten alle 60 Sekunden auslesen.");
+           .WithCommentOn("update_interval", "Read sensor data every 60 seconds.");
     })
     .WithEnvironmentalSensor(bme =>
     {
-        bme.WithPlatform("bme280") // BME280 auf I2C
+        bme.WithPlatform("bme280") // BME280 on I2C
            .WithI2CAddress(0x76)
-           .WithTemperature("BME280 Temperatur")
-           .WithPressure("BME280 Luftdruck")
-           .WithHumidity("BME280 Luftfeuchtigkeit")
+           .WithTemperature("BME280 Temperature")
+           .WithPressure("BME280 Pressure")
+           .WithHumidity("BME280 Humidity")
            .WithUpdateInterval("60s")
-           .WithCommentOn("platform", "Umweltsensor für Temperatur, Luftfeuchtigkeit und Luftdruck.");
+           .WithCommentOn("platform", "Environmental sensor for temp, humidity, and pressure.");
     })
     .WithGpioSwitch(sw =>
     {
         sw.UsePin("GPIO1")
-          .WithName("Wohnzimmerlampe")
-          .WithCommentOn("name", "Anzeigename des Schalters in Home Assistant.")
-          .WithId("wohnzimmer_lampe")
+          .WithName("Living Room Lamp")
+          .WithCommentOn("name", "Friendly name for the switch in Home Assistant.")
+          .WithId("living_room_lamp")
           .WithIcon("mdi:lightbulb");
     })
     .WithBinarySensor(bs =>
     {
         bs.UsePin("GPIO5")
-          .WithName("Bewegungsmelder")
+          .WithName("Motion Sensor")
           .WithDeviceClass("motion")
-          .WithCommentOn("name", "PIR-Sensor im Flur.")
-          // Die Aktion zielt auf die eindeutige ID des Lichts
+          .WithCommentOn("name", "PIR sensor in the hallway.")
+          // The action targets the unique ID of the light
           .OnPress(actions => {
-              actions.LightTurnOn("dimmbares_licht");
+              actions.LightTurnOn("dimmable_light");
           });
     })
     .WithOutput(o =>
     {
         o.WithPlatform("ledc")
          .UsePin("GPIO4")
-         .WithId("led_pwm_ausgang")
-         .WithCommentOn("id", "Dieser PWM-Ausgang steuert den dimmbaren LED-Streifen.");
+         .WithId("led_pwm_output")
+         .WithCommentOn("id", "This PWM output controls the dimmable LED strip.");
     })
     .WithLight(l =>
     {
         l.WithPlatform("monochromatic")
-         .WithName("Dimmbarer LED-Streifen")
-         .UseOutput("led_pwm_ausgang")
-         // Das Licht erhält eine eigene ID, um von Aktionen gesteuert zu werden
-         .WithId("dimmbares_licht")
-         .WithCommentOn("output", "Verknüpft dieses Licht mit dem oben definierten 'ledc' PWM-Kanal.");
+         .WithName("Dimmable LED Strip")
+         .UseOutput("led_pwm_output")
+         // The light gets its own unique ID to be controlled by actions
+         .WithId("dimmable_light")
+         .WithCommentOn("output", "Links this light to the 'ledc' PWM channel defined above.");
     });
 
-// 3. Generiere und drucke den fertigen YAML-String
+// 3. Generate and print the final YAML string
 Console.WriteLine(root.ToYaml());
 ```
 
@@ -174,99 +174,99 @@ The C# code above generates the following perfectly formatted YAML file:
 
 ```yaml
 esphome:
-  # Der eindeutige Name des Geräts im Netzwerk.
-  name: wohnzimmer_sensor
+  # The unique name for the device on the network.
+  name: living_room_sensor
   on_boot:
     - lambda: |-
-        ESP_LOGI("main", "Gerät wurde erfolgreich gestartet!");
+        ESP_LOGI("main", "Device has successfully booted!");
     - delay: 2s
-    - light.turn_on: dimmbares_licht
+    - light.turn_on: dimmable_light
 esp32:
-  # Verwendet ein Standard-ESP32-Entwicklungsboard.
+  # Using a standard ESP32 development kit.
   board: esp32dev
 wifi:
-  # Die SSID deines primären WLAN-Netzwerks.
-  # Muss 2,4 GHz sein.
-  ssid: MeinSuperWLAN
-  # Das WLAN-Passwort, sicher in 'secrets.yaml' gespeichert.
-  password: !secret wifi_passwort
+  # The SSID of your primary WiFi network.
+  # Must be 2.4 GHz.
+  ssid: MySuperWiFi
+  # The WiFi password, stored securely in 'secrets.yaml'.
+  password: !secret wifi_password
 mqtt:
-  # IP-Adresse des Mosquitto MQTT-Brokers.
+  # IP address of the Mosquitto MQTT broker.
   broker: 192.168.1.100
-  username: !secret mqtt_benutzer
-  password: !secret mqtt_passwort
+  username: !secret mqtt_user
+  password: !secret mqtt_password
 logger:
 api:
-  # Sichert die native API-Kommunikation mit Home Assistant.
+  # Secures the native API communication with Home Assistant.
   encryption:
-    key: !secret DEIN_VERSCHLUESSELUNGSKEY_HIER
+    key: !secret YOUR_ENCRYPTION_KEY_HERE
 ota:
   - platform: esphome
 i2c:
   sda: GPIO21
   scl: GPIO22
-  # Sucht beim Start nach I2C-Geräten, nützlich für das Debugging.
+  # Scans for I2C devices on startup, useful for debugging.
   scan: true
   id: i2c_bus
 spi:
   clk_pin: GPIO18
   mosi_pin: GPIO23
   miso_pin: GPIO19
-  # SPI-Bus für Hochgeschwindigkeitskomponenten wie Displays.
+  # SPI bus for high-speed components like displays.
   id: spi_bus
 time:
-  - # Verwendet Home Assistant als Quelle für die aktuelle Uhrzeit.
+  - # Use Home Assistant as the source for the current time.
     platform: homeassistant
-    id: ha_zeit
+    id: ha_time
 sensor:
   - platform: dht
-    # Der Datenpin für den DHT22-Sensor.
+    # The data pin for the DHT22 sensor.
     pin: GPIO2
     temperature:
-      name: Wohnzimmer Temperatur
+      name: Living Room Temperature
     humidity:
-      name: Wohnzimmer Luftfeuchtigkeit
-    # Sensordaten alle 60 Sekunden auslesen.
+      name: Living Room Humidity
+    # Read sensor data every 60 seconds.
     update_interval: 60s
-  - # Umweltsensor für Temperatur, Luftfeuchtigkeit und Luftdruck.
+  - # Environmental sensor for temp, humidity, and pressure.
     platform: bme280
     address: 118
     temperature:
-      name: BME280 Temperatur
+      name: BME280 Temperature
       oversampling: 16x
     pressure:
-      name: BME280 Luftdruck
+      name: BME280 Pressure
       oversampling: 16x
     humidity:
-      name: BME280 Luftfeuchtigkeit
+      name: BME280 Humidity
       oversampling: 16x
     update_interval: 60s
 switch:
   - platform: gpio
     pin: GPIO1
-    # Anzeigename des Schalters in Home Assistant.
-    name: Wohnzimmerlampe
-    id: wohnzimmer_lampe
+    # Friendly name for the switch in Home Assistant.
+    name: Living Room Lamp
+    id: living_room_lamp
     icon: "mdi:lightbulb"
 binary_sensor:
   - platform: gpio
     pin: GPIO5
-    # PIR-Sensor im Flur.
-    name: Bewegungsmelder
+    # PIR sensor in the hallway.
+    name: Motion Sensor
     device_class: motion
     on_press:
-      - light.turn_on: dimmbares_licht
+      - light.turn_on: dimmable_light
 output:
   - platform: ledc
     pin: GPIO4
-    # Dieser PWM-Ausgang steuert den dimmbaren LED-Streifen.
-    id: led_pwm_ausgang
+    # This PWM output controls the dimmable LED strip.
+    id: led_pwm_output
 light:
   - platform: monochromatic
-    name: "Dimmbarer LED-Streifen"
-    # Verknüpft dieses Licht mit dem oben definierten 'ledc' PWM-Kanal.
-    output: led_pwm_ausgang
-    id: dimmbares_licht
+    name: Dimmable LED Strip
+    # Links this light to the 'ledc' PWM channel defined above.
+    output: led_pwm_output
+    id: dimmable_light
 ```
 
 ## Project Goals (may change)
