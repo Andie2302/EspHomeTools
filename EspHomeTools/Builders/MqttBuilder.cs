@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class MqttBuilder: IYamlBuilder<IYamlMapping>
+public class MqttBuilder: IYamlBuilder<IYamlMapping>, IYamlBuilder
 {
     private readonly YamlMapping _block = new();
 
