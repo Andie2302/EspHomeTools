@@ -92,12 +92,12 @@ public class DhtSensorBuilder
     {
         if (!_config.ContainsKey(PinKey))
         {
-            throw new InvalidOperationException("Ein Pin muss für den DHT-Sensor mit UsePin() angegeben werden.");
+            throw new InvalidOperationException("A pin must be specified for the DHT sensor using UsePin().");
         }
 
         if (!_config.ContainsKey(TemperatureKey) && !_config.ContainsKey(HumidityKey))
         {
-            throw new InvalidOperationException("Für einen DHT-Sensor muss mindestens Temperatur (WithTemperature) oder Feuchtigkeit (WithHumidity) konfiguriert werden.");
+            throw new InvalidOperationException("For a DHT sensor, at least temperature (WithTemperature) or humidity (WithHumidity) must be configured.");
         }
 
         return _config;
