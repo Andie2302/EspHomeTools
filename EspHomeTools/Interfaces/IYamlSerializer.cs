@@ -1,4 +1,6 @@
-﻿namespace EspHomeTools.Classes.Structures;
+﻿using EspHomeTools.Classes.Structures;
+
+namespace EspHomeTools.Interfaces;
 
 public interface IYamlSerializer
 {
