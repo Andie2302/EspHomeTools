@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class Rp2040Builder
+public class Rp2040Builder: IYamlBuilder
 {
     private const string BoardKey = "board";
 
