@@ -13,9 +13,9 @@ public class LightBuilder
     private const string IdKey = "id";
     private const string DefaultPlatform = "monochromatic";
 
-    private const string PlatformRequiredError = "Eine Platform muss für die 'light'-Komponente angegeben werden.";
-    private const string NameRequiredError = "Ein Name muss für die 'light'-Komponente mit WithName() angegeben werden.";
-    private const string OutputRequiredError = "Ein Output muss für die 'light'-Komponente mit UseOutput() angegeben werden.";
+    private const string PlatformRequiredError = "A platform must be specified for the 'light' component.";
+    private const string NameRequiredError = "A name must be specified for the 'light' component with WithName().";
+    private const string OutputRequiredError = "An output must be specified for the 'light' component with UseOutput().";
 
     private readonly YamlMapping _config = new();
 
