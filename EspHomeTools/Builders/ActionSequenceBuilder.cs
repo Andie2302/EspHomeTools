@@ -7,37 +7,48 @@ namespace EspHomeTools.Builders;
 /// <summary>
 /// A fluent builder for creating a sequence of actions for ESPHome automations.
 /// </summary>
+
 public class ActionSequenceBuilder
 {
-    private readonly YamlSequence _sequence = new();
+    // Extracted constants for action types
+    private const string LightToggleAction = "light.toggle";
+    private const string LightTurnOnAction = "light.turn_on";
+    private const string LightTurnOffAction = "light.turn_off";
+    private const string SwitchToggleAction = "switch.toggle";
+    private const string SwitchTurnOnAction = "switch.turn_on";
+    private const string SwitchTurnOffAction = "switch.turn_off";
+    private const string DelayAction = "delay";
+    private const string LambdaNodeName = "lambda";
+
+    private readonly YamlSequence _sequence = [];
 
     /// <summary>
     /// Adds a simple key-value action to the sequence.
     /// </summary>
-    /// <param name="key">The action key (e.g., "light.toggle").</param>
-    /// <param name="value">The action value (e.g., the ID of the light).</param>
-    private ActionSequenceBuilder AddSimpleAction(string key, string value)
+    /// <param name="actionKey">The action key (e.g., "light.toggle").</param>
+    /// <param name="entityId">The entity ID (e.g., the ID of the light).</param>
+    private ActionSequenceBuilder AddSimpleAction(string actionKey, string entityId)
     {
-        var mapping = new YamlMapping { { key, new YamlString(value) } };
+        var mapping = new YamlMapping { { actionKey, new YamlString(entityId) } };
         _sequence.Add(mapping);
         return this;
     }
 
-    public ActionSequenceBuilder LightToggle(string lightId) => AddSimpleAction("light.toggle", lightId);
-    public ActionSequenceBuilder LightTurnOn(string lightId) => AddSimpleAction("light.turn_on", lightId);
-    public ActionSequenceBuilder LightTurnOff(string lightId) => AddSimpleAction("light.turn_off", lightId);
-    public ActionSequenceBuilder SwitchToggle(string switchId) => AddSimpleAction("switch.toggle", switchId);
-    public ActionSequenceBuilder SwitchTurnOn(string switchId) => AddSimpleAction("switch.turn_on", switchId);
-    public ActionSequenceBuilder SwitchTurnOff(string switchId) => AddSimpleAction("switch.turn_off", switchId);
-    public ActionSequenceBuilder Delay(string delay) => AddSimpleAction("delay", delay);
+    public ActionSequenceBuilder LightToggle(string lightId) => AddSimpleAction(LightToggleAction, lightId);
+    public ActionSequenceBuilder LightTurnOn(string lightId) => AddSimpleAction(LightTurnOnAction, lightId);
+    public ActionSequenceBuilder LightTurnOff(string lightId) => AddSimpleAction(LightTurnOffAction, lightId);
+    public ActionSequenceBuilder SwitchToggle(string switchId) => AddSimpleAction(SwitchToggleAction, switchId);
+    public ActionSequenceBuilder SwitchTurnOn(string switchId) => AddSimpleAction(SwitchTurnOnAction, switchId);
+    public ActionSequenceBuilder SwitchTurnOff(string switchId) => AddSimpleAction(SwitchTurnOffAction, switchId);
+    public ActionSequenceBuilder Delay(string delay) => AddSimpleAction(DelayAction, delay);
 
     /// <summary>
     /// Adds a multi-line lambda action.
     /// </summary>
-    /// <param name="csharpLambda">The C++ code to execute in the lambda.</param>
-    public ActionSequenceBuilder Lambda(string csharpLambda)
+    /// <param name="cppLambdaCode">The C++ code to execute in the lambda.</param>
+    public ActionSequenceBuilder Lambda(string cppLambdaCode)
     {
-        var lambdaNode = new YamlLambda(csharpLambda) { Name = "lambda" };
+        var lambdaNode = new YamlLambda(cppLambdaCode) { Name = LambdaNodeName };
         _sequence.Add(lambdaNode);
         return this;
     }
