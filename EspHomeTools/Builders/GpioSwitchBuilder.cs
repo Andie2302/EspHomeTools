@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class GpioSwitchBuilder: IYamlBuilder
+public class GpioSwitchBuilder: IYamlBuilder<IYamlMapping>
 {
     private readonly YamlMapping _config = new();
 
@@ -63,7 +63,7 @@ public class GpioSwitchBuilder: IYamlBuilder
         return this;
     }
 
-    internal IYamlMapping Build()
+    public IYamlMapping Build()
     {
         if (!_config.ContainsKey("pin"))
         {
