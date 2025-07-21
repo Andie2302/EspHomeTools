@@ -5,111 +5,76 @@ using EspHomeTools.Classes.Scalars;
 namespace EspHomeTools.Builders;
 
 /// <summary>
-/// Represents a YAML scalar node for embedding lambda functions in a YAML document.
+/// Stellt einen YAML-Skalarknoten zum Einbetten von Lambda-Funktionen in ein YAML-Dokument dar.
 /// </summary>
-/// <remarks>
-/// YamlLambda is derived from YamlScalar and encapsulates a C++-style lambda function
-/// as a string value, designed for integration in YAML configurations. It supports
-/// serialization to YAML format and allows the inclusion of comments and custom formatting.
-/// </remarks>
 public class YamlLambda : YamlScalar<string>
 {
-    /// <summary>
-    /// Represents the number of spaces used for code indentation in the YAML output.
-    /// </summary>
-    /// <remarks>
-    /// This constant defines the spacing level used to indent code sections, ensuring consistent formatting
-    /// when rendering YAML blocks with embedded code. It is applied in the construction of indented strings
-    /// for proper alignment within the YAML serialization process.
-    /// </remarks>
     private const int CodeIndentationSpaces = 2;
+    private static readonly string[] LineBreakSeparators = ["\r\n", "\r", "\n"];
+
+    public YamlLambda(string value) => Value = value;
 
     /// <summary>
-    /// Defines the line break characters used to split strings into multiple lines.
+    /// Konvertiert die aktuelle Instanz des YamlLambda-Objekts in ihre YAML-Zeichenfolgendarstellung.
     /// </summary>
-    /// <remarks>
-    /// The array contains platform-specific and common line break separators:
-    /// - "\r\n" (Windows-style)
-    /// - "\r" (Classic Mac-style)
-    /// - "\n" (Unix/Linux-style)
-    /// These separators are used to normalize and handle multi-line text processing.
-    /// </remarks>
-    private readonly static string[] LineBreakSeparators = ["\r\n", "\r", "\n"];
-
-    /// Represents a YAML scalar that contains a lambda block.
-    /// This class is specialized to serialize and format YAML content for lambda expressions.
-    /// Inherits from:
-    /// - YamlScalar<string>: Represents a generic base class for YAML scalar values.
-    /// Key functionality:
-    /// - Custom serialization of the lambda block content into YAML format.
-    /// - Optionally appends comments, name, and formatted code lines during conversion to YAML.
-    public YamlLambda(string value) => Value = value;
-    /// Converts the current instance of the YamlLambda object into its YAML string representation.
-    /// <param name="indent">
-    /// The number of spaces to use for indentations. Defaults to 0.
-    /// </param>
-    /// <returns>
-    /// A YAML formatted string representation of the object with the specified indentation.
-    /// </returns>
-    public override string ToYaml(int indent = 0)
+    /// <param name="indent">Die Anzahl der Leerzeichen, die für die Einrückung verwendet werden sollen. Standard ist 0.</param>
+    /// <param name="name">Der Name (Schlüssel), der für diesen Lambda-Block gerendert werden soll.</param>
+    /// <returns>Eine YAML-formatierte Zeichenfolgendarstellung des Objekts mit der angegebenen Einrückung.</returns>
+    public override string ToYaml(int indent = 0, string? name = null)
     {
         var sb = new StringBuilder();
         var baseIndentation = new string(' ', indent);
+
         AppendComments(sb, baseIndentation);
-        AppendNameAndLiteralBlock(sb, baseIndentation);
+        AppendNameAndLiteralBlock(sb, baseIndentation, name);
         AppendCodeLines(sb, indent);
+
         return sb.ToString().TrimEnd('\r', '\n', ' ');
     }
-    /// <summary>
-    /// Appends comments to the specified StringBuilder instance using the given base indentation.
-    /// Each line of the comment is prefixed with the base indentation and a comment marker (#).
-    /// </summary>
-    /// <param name="sb">The StringBuilder to which the comments will be appended.</param>
-    /// <param name="baseIndentation">The string representing the base indentation to prefix each line of the comment.</param>
+
     private void AppendComments(StringBuilder sb, string baseIndentation)
     {
         if (string.IsNullOrWhiteSpace(Comment)) return;
-        var commentLines = Comment?.Split(LineBreakSeparators, StringSplitOptions.None);
-        if (commentLines == null) return;
+
+        var commentLines = Comment.Split(LineBreakSeparators, StringSplitOptions.None);
         foreach (var commentLine in commentLines)
         {
             sb.Append(baseIndentation).Append("# ").AppendLine(commentLine);
         }
     }
-    /// <summary>
-    /// Appends the name of the YAML scalar node and a literal block indicator to the specified StringBuilder.
-    /// </summary>
-    /// <param name="sb">The StringBuilder to append the name and literal block to.</param>
-    /// <param name="baseIndentation">The base indentation string to use for formatting.</param>
-    private void AppendNameAndLiteralBlock(StringBuilder sb, string baseIndentation)
+
+    private static void AppendNameAndLiteralBlock(StringBuilder sb, string baseIndentation, string? name)
     {
         sb.Append(baseIndentation);
-        if (!string.IsNullOrWhiteSpace(Name))
+        if (!string.IsNullOrWhiteSpace(name))
         {
-            sb.Append(Name).Append(':');
+            sb.Append(name).Append(':');
         }
+        // Der literal block operator sorgt für die korrekte mehrzeilige Darstellung.
         sb.AppendLine(" |-");
     }
-    /// <summary>
-    /// Appends code lines to the provided <see cref="StringBuilder"/> with the specified indentation.
-    /// </summary>
-    /// <param name="sb">The <see cref="StringBuilder"/> instance to which the code lines will be appended.</param>
-    /// <param name="indent">The level of indentation to be applied to each code line.</param>
+
     private void AppendCodeLines(StringBuilder sb, int indent)
     {
         var normalizedValue = (Value ?? string.Empty).Trim();
         var codeLines = normalizedValue.Split(LineBreakSeparators, StringSplitOptions.None);
         var codeIndentation = new string(' ', indent + CodeIndentationSpaces);
+
         foreach (var codeLine in codeLines)
         {
             sb.Append(codeIndentation).AppendLine(codeLine);
         }
     }
+
     /// <summary>
-    /// Converts the encapsulated value of the scalar node into its string representation, suitable for serialization in YAML format.
+    /// Serialisiert den Wert des Skalarknotens in seine Zeichenfolgendarstellung.
+    /// Bei einem Lambda-Block wird der Wert selbst nicht weiter formatiert, da dies die ToYaml-Methode übernimmt.
     /// </summary>
-    /// <returns>
-    /// A string representation of the scalar's value. If the value is null, an empty string is returned.
-    /// </returns>
-    protected override string SerializeValue() => Value ?? string.Empty;
+    /// <returns>Einen leeren String, da die Logik in ToYaml liegt.</returns>
+    protected override string SerializeValue()
+    {
+        // Diese Methode wird hier nicht benötigt, da ToYaml die gesamte Logik für
+        // die mehrzeilige Ausgabe übernimmt. Wir geben einen leeren String zurück.
+        return "YamlLambda::SerializeValue::"+string.Empty;
+    }
 }
