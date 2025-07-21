@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class BinarySensorBuilder
+public class BinarySensorBuilder: IYamlBuilder
 {
     private const string PlatformKey = "platform";
 
