@@ -10,7 +10,7 @@ namespace EspHomeTools.Builders;
 public class YamlLambda : YamlScalar<string>
 {
     private const int CodeIndentationSpaces = 2;
-    private static readonly string[] LineBreakSeparators = ["\r\n", "\r", "\n"];
+    private readonly static string[] LineBreakSeparators = ["\r\n", "\r", "\n"];
 
     public YamlLambda(string value) => Value = value;
 
