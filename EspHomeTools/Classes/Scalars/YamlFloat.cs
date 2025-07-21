@@ -8,16 +8,18 @@ namespace EspHomeTools.Classes.Scalars;
 /// </summary>
 public class YamlFloat : YamlScalar<double>
 {
-    /// Represents a YAML float scalar value.
-    /// This class is derived from `YamlScalar<double>`
-    /// and provides a mechanism to handle and serialize
-    /// double-precision floating-point numbers as YAML scalar values.
+    /// <summary>
+    /// Initializes a new instance of the <see cref="YamlFloat"/> class with the specified double value.
+    /// </summary>
+    /// <param name="value">The double-precision floating-point value to be represented as a YAML scalar.</param>
     public YamlFloat(double value)
     {
         Value = value;
     }
 
+    /// <summary>
     /// Serializes the value of the current YAML scalar object into a string representation.
+    /// </summary>
     /// <returns>
     /// A string representing the serialized value of the current YAML scalar object.
     /// </returns>
