@@ -19,10 +19,12 @@ public class YamlSequence : IYamlSequence
     /// </summary>
     private readonly List<IYamlNode> _nodes = new();
 
+    /// <summary>
     /// Gets or sets the name associated with the YAML sequence.
     /// This represents the key or identifier for this YAML node when
     /// serialized in YAML format. If `Name` is not null or empty,
     /// it will be included in the serialized output as a key.
+    /// </summary>
     public string? Name { get; set; }
 
     /// <summary>
@@ -40,7 +42,9 @@ public class YamlSequence : IYamlSequence
     /// </summary>
     public string? Tag { get; set; }
 
+    /// <summary>
     /// Converts the current YAML sequence into a string representation in YAML format with the specified level of indentation.
+    /// </summary>
     /// <param name="indent">
     /// The number of spaces to use for indenting the YAML output. Defaults to 0 if not specified.
     /// </param>
@@ -50,18 +54,31 @@ public class YamlSequence : IYamlSequence
     public string ToYaml(int indent = 0)
     {
         var sb = new StringBuilder();
+        var currentIndent = indent;
+        AppendCommentIfPresent(sb, indent);
+        currentIndent = AppendNameIfPresent(sb, currentIndent);
+        AppendSequenceItems(sb, currentIndent);
+        return sb.ToString().TrimEnd();
+    }
+
+    private void AppendCommentIfPresent(StringBuilder sb, int indent)
+    {
+        if (string.IsNullOrWhiteSpace(Comment)) return;
         var basePrefix = new string(' ', indent);
-        if (!string.IsNullOrWhiteSpace(Comment))
-        {
-            sb.Append(basePrefix).Append("# ").AppendLine(Comment);
-        }
+        sb.Append(basePrefix).Append("# ").AppendLine(Comment);
+    }
 
-        if (!string.IsNullOrWhiteSpace(Name))
-        {
-            sb.Append(basePrefix).Append(Name).AppendLine(":");
-            indent += 2;
-        }
+    private int AppendNameIfPresent(StringBuilder sb, int indent)
+    {
+        if (string.IsNullOrWhiteSpace(Name)) return indent;
+        var basePrefix = new string(' ', indent);
+        sb.Append(basePrefix).Append(Name).AppendLine(":");
+        return indent + 2;
 
+    }
+
+    private void AppendSequenceItems(StringBuilder sb, int indent)
+    {
         var itemIndentStr = new string(' ', indent);
         var childIndent = indent + 2;
         foreach (var node in _nodes)
@@ -70,35 +87,39 @@ public class YamlSequence : IYamlSequence
             var trimmedChildYaml = childYaml.TrimStart();
             sb.Append(itemIndentStr).Append("- ").AppendLine(trimmedChildYaml);
         }
-
-        return sb.ToString().TrimEnd();
     }
 
 
-    #region IList Implementierung
+    #region IList Implementation
 
     /// <summary>
     /// Adds an <see cref="IYamlNode"/> item to the sequence.
     /// </summary>
     /// <param name="item">The <see cref="IYamlNode"/> item to be added to the sequence.</param>
     public void Add(IYamlNode item) => _nodes.Add(item);
+
     /// <summary>
     /// Removes all elements from the sequence.
     /// </summary>
     public void Clear() => _nodes.Clear();
+
     /// <summary>
     /// Determines whether the sequence contains a specific IYamlNode item.
     /// </summary>
     /// <param name="item">The IYamlNode item to locate in the sequence.</param>
     /// <returns>True if the item is found in the sequence; otherwise, false.</returns>
     public bool Contains(IYamlNode item) => _nodes.Contains(item);
+
     /// <summary>
     /// Copies the elements of the <see cref="IYamlNode"/> collection to a specified array, starting at the given array index.
     /// </summary>
     /// <param name="array">The destination array to which the elements of the collection should be copied.</param>
     /// <param name="arrayIndex">The zero-based index in the destination array at which copying begins.</param>
     public void CopyTo(IYamlNode[] array, int arrayIndex) => _nodes.CopyTo(array, arrayIndex);
+
+    /// <summary>
     /// Removes the first occurrence of a specific IYamlNode item from the sequence.
+    /// </summary>
     /// <param name="item">The IYamlNode item to remove from the sequence.</param>
     /// <returns>True if the item was successfully removed; otherwise, false. This method also returns false if the item is not found in the sequence.</returns>
     public bool Remove(IYamlNode item) => _nodes.Remove(item);
@@ -120,17 +141,25 @@ public class YamlSequence : IYamlSequence
     /// </remarks>
     public bool IsReadOnly => false;
 
+    /// <summary>
     /// Returns the zero-based index of the first occurrence of a specified IYamlNode within the sequence.
+    /// </summary>
     /// <param name="item">The IYamlNode to locate in the sequence.</param>
     /// <returns>
     /// The zero-based index of the first occurrence of the specified IYamlNode if found; otherwise, -1.
     /// </returns>
     public int IndexOf(IYamlNode item) => _nodes.IndexOf(item);
+
+    /// <summary>
     /// Inserts an IYamlNode item into the sequence at the specified index.
+    /// </summary>
     /// <param name="index">The zero-based index at which item should be inserted.</param>
     /// <param name="item">The IYamlNode element to insert into the sequence.</param>
     public void Insert(int index, IYamlNode item) => _nodes.Insert(index, item);
+
+    /// <summary>
     /// Removes the element at the specified index in the sequence.
+    /// </summary>
     /// <param name="index">The zero-based index of the element to remove.</param>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the index is less than 0 or greater than or equal to the count of elements in the sequence.
@@ -138,21 +167,28 @@ public class YamlSequence : IYamlSequence
     public void RemoveAt(int index) => _nodes.RemoveAt(index);
 
     /// <summary>
-    /// Represents a sequence node in a YAML document that can contain other YAML nodes as items.
+    /// Gets or sets the element at the specified index.
     /// </summary>
+    /// <param name="index">The zero-based index of the element to get or set.</param>
+    /// <returns>The element at the specified index.</returns>
     public IYamlNode this[int index]
     {
         get => _nodes[index];
         set => _nodes[index] = value;
     }
 
+    /// <summary>
     /// Returns an enumerator that iterates through the collection.
+    /// </summary>
     /// <returns>
     /// An enumerator for the collection.
     /// </returns>
     public IEnumerator<IYamlNode> GetEnumerator() => _nodes.GetEnumerator();
+
+    /// <summary>
     /// Returns an enumerator that iterates through the collection.
-    /// <return>An enumerator for the collection.</return>
+    /// </summary>
+    /// <returns>An enumerator for the collection.</returns>
     IEnumerator IEnumerable.GetEnumerator() => _nodes.GetEnumerator();
 
     #endregion
