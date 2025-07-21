@@ -9,19 +9,9 @@ public class MqttBuilder
 {
     private readonly YamlMapping _block = new();
 
-    public MqttBuilder WithBroker(string broker)
-    {
-        _block["broker"] = new YamlString(broker);
-        return this;
-    }
-
-    public MqttBuilder WithBroker(YamlSecret broker)
-    {
-        _block["broker"] = broker;
-        return this;
-    }
-
-    public MqttBuilder WithBroker(string broker, bool isSecret) => isSecret ? WithBroker(new YamlSecret(broker)) : WithBroker(broker);
+    public MqttBuilder WithBroker(string broker) => AddValueToBlock("broker", broker, false);
+    public MqttBuilder WithBroker(YamlSecret broker) => AddValueToBlock("broker", broker);
+    public MqttBuilder WithBroker(string broker, bool isSecret) => AddValueToBlock("broker", broker, isSecret);
 
     public MqttBuilder WithPort(int port)
     {
@@ -29,33 +19,13 @@ public class MqttBuilder
         return this;
     }
 
-    public MqttBuilder WithUsername(string username)
-    {
-        _block["username"] = new YamlString(username);
-        return this;
-    }
+    public MqttBuilder WithUsername(string username) => AddValueToBlock("username", username, false);
+    public MqttBuilder WithUsername(YamlSecret username) => AddValueToBlock("username", username);
+    public MqttBuilder WithUsername(string username, bool isSecret) => AddValueToBlock("username", username, isSecret);
 
-    public MqttBuilder WithUsername(YamlSecret username)
-    {
-        _block["username"] = username;
-        return this;
-    }
-
-    public MqttBuilder WithUsername(string username, bool isSecret) => isSecret ? WithUsername(new YamlSecret(username)) : WithUsername(username);
-
-    public MqttBuilder WithPassword(string password)
-    {
-        _block["password"] = new YamlString(password);
-        return this;
-    }
-
-    public MqttBuilder WithPassword(YamlSecret password)
-    {
-        _block["password"] = password;
-        return this;
-    }
-
-    public MqttBuilder WithPassword(string password, bool isSecret) => isSecret ? WithPassword(new YamlSecret(password)) : WithPassword(password);
+    public MqttBuilder WithPassword(string password) => AddValueToBlock("password", password, false);
+    public MqttBuilder WithPassword(YamlSecret password) => AddValueToBlock("password", password);
+    public MqttBuilder WithPassword(string password, bool isSecret) => AddValueToBlock("password", password, isSecret);
 
     public MqttBuilder WithClientId(string clientId)
     {
@@ -79,5 +49,17 @@ public class MqttBuilder
         }
 
         return _block;
+    }
+
+    private MqttBuilder AddValueToBlock(string key, string value, bool isSecret)
+    {
+        _block[key] = isSecret ? new YamlSecret(value) : new YamlString(value);
+        return this;
+    }
+
+    private MqttBuilder AddValueToBlock(string key, YamlSecret secret)
+    {
+        _block[key] = secret;
+        return this;
     }
 }
