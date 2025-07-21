@@ -30,11 +30,12 @@ public class YamlMapping : IYamlMapping
     public bool Remove(string key) => _nodes.Remove(key);
     public bool TryGetValue(string key, out IYamlNode value)
     {
-        if (_nodes.TryGetValue(key, out var nodeValue) && nodeValue != null)
+        if (_nodes.TryGetValue(key, out var nodeValue))
         {
             value = nodeValue;
             return true;
         }
+
         value = new YamlString(string.Empty);
         return false;
     }
