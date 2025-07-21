@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using EspHomeTools.Interfaces;
@@ -10,6 +11,7 @@ namespace EspHomeTools.Classes.Structures;
 public class YamlMapping : IYamlMapping
 {
     private readonly Dictionary<string, IYamlNode> _nodes = new();
+
     public string? Name { get; set; }
     public string? Comment { get; set; }
     public string? Tag { get; set; }
@@ -30,7 +32,7 @@ public class YamlMapping : IYamlMapping
     {
         if (!string.IsNullOrWhiteSpace(Comment))
         {
-            builder.Append(FormatComment(Comment ?? string.Empty, indentString));
+            builder.Append(FormatComment(Comment, indentString));
         }
     }
 
@@ -41,9 +43,14 @@ public class YamlMapping : IYamlMapping
 
         builder.Append(indentString).Append(Name).AppendLine(":");
         return currentIndent + 2;
+
     }
 
-    private void AppendChildNodes(StringBuilder builder, int indent) => builder.Append(string.Join(Environment.NewLine, _nodes.Select(kvp => SerializeNode(kvp, indent)).Where(yaml => !string.IsNullOrEmpty(yaml))));
+    private void AppendChildNodes(StringBuilder builder, int indent)
+    {
+        var nodeStrings = _nodes.Select(kvp => SerializeNode(kvp, indent)).Where(yaml => !string.IsNullOrEmpty(yaml));
+        builder.Append(string.Join(Environment.NewLine, nodeStrings));
+    }
 
     private static string SerializeNode(KeyValuePair<string, IYamlNode> kvp, int indent)
     {
@@ -53,14 +60,19 @@ public class YamlMapping : IYamlMapping
 
     private static string FormatComment(string comment, string prefix)
     {
-        var commentLines = comment.Split(["\r\n", "\r", "\n"], StringSplitOptions.None);
+        var commentLines = comment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
         return string.Join(Environment.NewLine, commentLines.Select(line => $"{prefix}# {line}")) + Environment.NewLine;
     }
 
     public void Add(string key, IYamlNode value) => _nodes.Add(key, value);
     public bool ContainsKey(string key) => _nodes.ContainsKey(key);
     public bool Remove(string key) => _nodes.Remove(key);
+
+#if NETSTANDARD2_0 || NETCOREAPP3_1
     public bool TryGetValue(string key, out IYamlNode value) => _nodes.TryGetValue(key, out value);
+#else
+    public bool TryGetValue(string key, [MaybeNullWhen(false)] out IYamlNode value) => _nodes.TryGetValue(key, out value);
+#endif
 
     public IYamlNode this[string key]
     {
