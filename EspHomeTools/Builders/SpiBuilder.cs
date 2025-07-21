@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class SpiBuilder: IYamlBuilder
+public class SpiBuilder: IYamlBuilder<IYamlMapping>
 {
     private const string ClkPinKey = "clk_pin";
 
@@ -31,7 +31,7 @@ public class SpiBuilder: IYamlBuilder
         return this;
     }
 
-    internal IYamlMapping Build()
+    public IYamlMapping Build()
     {
         if (!_config.ContainsKey(ClkPinKey))
         {
