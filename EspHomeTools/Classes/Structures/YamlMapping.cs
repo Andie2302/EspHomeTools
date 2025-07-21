@@ -58,12 +58,7 @@ public class YamlMapping : IYamlMapping
         builder.Append(string.Join(Environment.NewLine, nodeStrings));
     }
 
-    private static string SerializeNode(KeyValuePair<string, IYamlNode> kvp, int indent)
-    {
-        // Hier ist der korrekte Aufruf:
-        // Nutze den Key des Dictionary-Eintrags als 'name' für den Kind-Knoten.
-        return kvp.Value.ToYaml(indent, kvp.Key);
-    }
+    private static string SerializeNode(KeyValuePair<string, IYamlNode> kvp, int indent) => kvp.Value.ToYaml(indent, kvp.Key);
 
     private static string FormatComment(string comment, string prefix)
     {
