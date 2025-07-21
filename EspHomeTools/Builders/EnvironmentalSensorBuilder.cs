@@ -5,7 +5,7 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public class EnvironmentalSensorBuilder
+public class EnvironmentalSensorBuilder: IYamlBuilder
 {
     private readonly YamlMapping _config = new();
 
