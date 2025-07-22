@@ -1,6 +1,6 @@
 ﻿namespace EspHomeTools.Classes;
 
-public abstract class YamlElement
+public interface IYamlObject
 {
     public abstract void Render(YamlRenderManager yamlRenderManager, int indentationLevel);
 }
