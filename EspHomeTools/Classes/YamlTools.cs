@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EspHomeTools.Classes.Scalars;
+using EspHomeTools.Interfaces.Fluent;
 
 namespace EspHomeTools.Classes;
 
