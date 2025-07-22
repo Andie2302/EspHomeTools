@@ -1,4 +1,6 @@
-﻿namespace EspHomeTools.Classes;
+﻿using EspHomeTools.Classes.Validators;
+
+namespace EspHomeTools.Classes.Render;
 
 public class YamlRenderSettings
 {
