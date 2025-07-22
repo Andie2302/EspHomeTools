@@ -4,11 +4,6 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-public interface IYamlBuilder
-{
-    IYamlMapping Build();
-}
-
 public static class EspHomeExtensions
 {
     private const string SensorComponent = "sensor";
