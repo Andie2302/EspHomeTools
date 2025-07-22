@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using EspHomeTools.Classes.Constants;
 
-namespace EspHomeTools.Classes;
+namespace EspHomeTools.Classes.Render;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
