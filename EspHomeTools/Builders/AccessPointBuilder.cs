@@ -5,6 +5,14 @@ using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
+
+public interface IWithSsid
+{
+    AccessPointBuilder WithSsid(string ssid);
+    AccessPointBuilder WithSsid(YamlSecret ssid);
+    AccessPointBuilder WithSsid(string ssid, bool isSecret);
+}
+
 public class AccessPointBuilder : IYamlBuilder<IYamlMapping>
 {
     private const string SsidKey = "ssid";
