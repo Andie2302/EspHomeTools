@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace EspHomeTools.Enums;
 
@@ -62,7 +63,7 @@ public static class YamlKeysExtensions
             YamlKeys.Time => TimeKey,
             YamlKeys.WebServer => WebServerKey,
             YamlKeys.Mqtt => MqttKey,
-            YamlKeys.CaptivePortal => CaptivePortalKey,
+            //YamlKeys.CaptivePortal => CaptivePortalKey,
             YamlKeys.Logger => LoggerKey,
             YamlKeys.I2C => I2CKey,
             YamlKeys.Spi => SpiKey,
@@ -87,8 +88,26 @@ public static class YamlKeysExtensions
             YamlKeys.Script => ScriptKey,
             YamlKeys.Select => SelectKey,
             YamlKeys.TextSensor => TextSensorKey,
-            _ => key.ToString().ToLowerInvariant()
+            _ => CamelCaseToSnakeCase(key.ToString().ToLowerInvariant())
         };
+    }
+
+    private static string CamelCaseToSnakeCase(this string text)
+    {
+        if (string.IsNullOrEmpty(text)) return text;
+        var result = new StringBuilder();
+        for (var i = 0; i < text.Length; i++)
+        {
+            var current = text[i];
+            if (char.IsUpper(current) && i > 0)
+            {
+                result.Append('_');
+            }
+
+            result.Append(char.ToLowerInvariant(current));
+        }
+
+        return result.ToString();
     }
 }
 public enum YamlKeys
