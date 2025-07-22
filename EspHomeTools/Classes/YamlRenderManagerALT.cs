@@ -1,8 +1,10 @@
-﻿namespace EspHomeTools.Classes;
+﻿  /*
+
+namespace EspHomeTools.Classes;
 
 public class YamlRenderManagerALT
 {
-    /*
+  
     public static void RenderItems(List<YamlObject> items, YamlRenderManager manager, int indentationLevel)
     {
         if (items.Count != 0)
@@ -24,5 +26,5 @@ public class YamlRenderManagerALT
             manager.AppendEmptyList();
         }
     }
-    //*/
-}
+   
+} //*/
