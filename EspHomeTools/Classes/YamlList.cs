@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Classes;
 
@@ -21,12 +22,6 @@ public class YamlList : IYamlList
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     public void Render(YamlRenderManager yamlRenderManager, int indentationLevel)
     {
-        Console.WriteLine("Hallo von Render!");
+        Console.WriteLine("Hallo von Render in YamlList!");
     }
-}
-public interface IYamlList : IYamlObject, IEnumerable<IYamlScalar>
-{
-    int Count { get; }
-    bool HasItems { get; }
-    void Add(IYamlScalar item);
 }
