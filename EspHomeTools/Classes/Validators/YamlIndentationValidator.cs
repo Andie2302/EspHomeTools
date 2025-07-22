@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using EspHomeTools.Classes.Constants;
 
-namespace EspHomeTools.Classes;
+namespace EspHomeTools.Classes.Validators;
 
 public static class YamlIndentationValidator
 {
