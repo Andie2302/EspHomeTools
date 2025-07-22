@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using EspHomeTools.Interfaces;
 
-namespace EspHomeTools.Classes;
+namespace EspHomeTools.Interfaces;
 
 public interface IYamlList : IYamlObject, IEnumerable<IYamlScalar>
 {
