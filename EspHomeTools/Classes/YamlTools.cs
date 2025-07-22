@@ -1,8 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EspHomeTools.Classes.Scalars;
 
 namespace EspHomeTools.Classes;
+
+public interface IWithPassword<out T> : IWithPassword
+{
+    T WithPassword(string password);
+    T WithPassword(string password, bool isSecret);
+    T WithPassword(YamlString password);
+    T WithPassword(YamlString password, bool isSecret);
+    T WithPassword(YamlSecret password);
+}
+public interface IWithSsid<out T> : IWithSsid
+{
+    T WithSsid(string ssid);
+    T WithSsid(string ssid, bool isSecret);
+    T WithSsid(YamlString ssid);
+    T WithSsid(YamlString ssid, bool isSecret);
+    T WithSsid(YamlSecret ssid);
+}
+public interface IWithComment<out T> : IWithComment
+{
+    T WithComment(string ssid);
+    T WithComment(YamlString ssid);
+}
 
 public static class YamlTools
 {
