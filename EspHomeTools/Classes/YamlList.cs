@@ -11,9 +11,8 @@ public class YamlList : IYamlObject, IEnumerable<IYamlScalar>
     //public void Render(YamlRenderManager manager, int indentationLevel) => //YamlRenderManager.RenderItems(_items, manager, indentationLevel);
     public IEnumerator<IYamlScalar> GetEnumerator() => _items.GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-}
-
-public interface IYamlScalar : IYamlObject
-{
-
+    public void Render(YamlRenderManager yamlRenderManager, int indentationLevel)
+    {
+        throw new System.NotImplementedException();
+    }
 }
