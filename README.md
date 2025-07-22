@@ -1,5 +1,9 @@
 # EspHomeTools
 
+# Project Goals (may change)
+
+
+
 **EspHomeTools** is a .NET library for programmatically creating [ESPHome](https://esphome.io/) configurations using C#. Instead of writing YAML files by hand, you can leverage a type-safe and intuitive fluent builder API to generate your configurations.
 
 ## Why EspHomeTools?
