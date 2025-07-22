@@ -8,9 +8,6 @@ namespace EspHomeTools.Builders;
 
 public class AccessPointBuilder : IYamlBuilder<IYamlMapping>
 {
-    private readonly static string SsidKey = YamlKeys.Ssid.GetKeyString();
-
-    private readonly static string PasswordKey = YamlKeys.Password.GetKeyString();
 
     private readonly YamlMapping _block = new();
     public AccessPointBuilder WithSsid(string ssid)
