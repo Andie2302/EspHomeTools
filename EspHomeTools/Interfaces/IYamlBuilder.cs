@@ -1,6 +1,6 @@
 ﻿namespace EspHomeTools.Interfaces;
 
-public interface IYamlBuilder<T> : IYamlBuilder
+public interface IYamlBuilder<out T> : IYamlBuilder
 {
     T Build();
 }
