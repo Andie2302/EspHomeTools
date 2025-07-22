@@ -6,13 +6,7 @@ namespace EspHomeTools.Builders;
 
 public static class EspHomeExtensions
 {
-    private const string SensorComponent = "sensor";
-    private const string SwitchComponent = "switch";
-    private const string BinarySensorComponent = "binary_sensor";
-    private const string TimeComponent = "time";
-    private const string OutputComponent = "output";
-    private const string LightComponent = "light";
-    private const string OtaComponent = "ota";
+
 
     #region Private Helfermethoden
     private static T ConfigureBuilder<T>(Action<T> configurator) where T : IYamlBuilder, new()
