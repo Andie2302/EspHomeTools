@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace EspHomeTools.Classes;
@@ -18,7 +19,10 @@ public class YamlList : IYamlList
     public IEnumerator<IYamlScalar> GetEnumerator() => _items.GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    public void Render(YamlRenderManager yamlRenderManager, int indentationLevel) => throw new System.NotImplementedException();
+    public void Render(YamlRenderManager yamlRenderManager, int indentationLevel)
+    {
+        Console.WriteLine("Hallo von Render!");
+    }
 }
 public interface IYamlList : IYamlObject, IEnumerable<IYamlScalar>
 {
