@@ -1,26 +1,18 @@
 ﻿using System;
 using EspHomeTools.Classes.Scalars;
 using EspHomeTools.Classes.Structures;
+using EspHomeTools.Enums;
 using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Builders;
 
-
-public interface IWithSsid
-{
-    AccessPointBuilder WithSsid(string ssid);
-    AccessPointBuilder WithSsid(YamlSecret ssid);
-    AccessPointBuilder WithSsid(string ssid, bool isSecret);
-}
-
 public class AccessPointBuilder : IYamlBuilder<IYamlMapping>
 {
-    private const string SsidKey = "ssid";
+    private readonly static string SsidKey = YamlKeys.Ssid.GetKeyString();
 
-    private const string PasswordKey = "password";
+    private readonly static string PasswordKey = YamlKeys.Password.GetKeyString();
 
     private readonly YamlMapping _block = new();
-
     public AccessPointBuilder WithSsid(string ssid)
     {
         SetValue(SsidKey, ssid, false);
@@ -59,9 +51,7 @@ public class AccessPointBuilder : IYamlBuilder<IYamlMapping>
 
     public AccessPointBuilder AddComment(string key, string comment)
     {
-        if (_block.TryGetValue(key, out var node))
-            node.Comment = comment;
-
+        if (_block.TryGetValue(key, out var node)) node.Comment = comment;
         return this;
     }
 
@@ -71,7 +61,6 @@ public class AccessPointBuilder : IYamlBuilder<IYamlMapping>
         {
             throw new InvalidOperationException("The SSID for the Access Point (AP) is required.");
         }
-
         return _block;
     }
 
