@@ -1,3 +1,3 @@
-﻿namespace EspHomeTools.Classes;
+﻿namespace EspHomeTools.Interfaces;
 
 public interface IYamlScalar : IYamlObject { }
