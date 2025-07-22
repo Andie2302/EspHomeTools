@@ -1,6 +1,5 @@
-﻿
-using System.Text;
-namespace EspHomeTools.Classes;
+﻿namespace EspHomeTools.Classes;
+
 public class YamlRenderSettings
 {
     private const char DefaultIndentationCharacter = ' ';
