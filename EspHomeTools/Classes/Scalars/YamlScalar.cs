@@ -1,7 +1,8 @@
 ﻿using System;
+using EspHomeTools.Classes.Render;
 using EspHomeTools.Interfaces;
 
-namespace EspHomeTools.Classes;
+namespace EspHomeTools.Classes.Scalars;
 
 public class YamlScalar : IYamlScalar
 {
