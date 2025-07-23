@@ -2,7 +2,7 @@
 
 namespace EspHomeTools.Classes;
 
-public class YamlNull : IYamlNull, IYamlNullable
+public class YamlNull : IYamlNull
 {
     public void Render(IYamlRenderManager yamlRenderManager, int indentationLevel)
     {
