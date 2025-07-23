@@ -18,11 +18,32 @@ public static class YamlRenderManagerExtensions
             manager.Append($"# {comment}", indentationLevel);
         }
     }
-    public static void AppendScalar(this IYamlRenderManager manager, YamlBoolean yamlBoolean, int indentationLevel) => manager.Append(yamlBoolean.Value.ToString().ToLower(), indentationLevel);
-    public static void AppendScalar(this IYamlRenderManager manager, YamlFloat yamlFloat, int indentationLevel) => manager.Append(yamlFloat.Value.ToString(CultureInfo.InvariantCulture), indentationLevel);
-    public static void AppendScalar(this IYamlRenderManager manager, YamlInteger yamlInteger, int indentationLevel) => manager.Append(yamlInteger.Value.ToString(), indentationLevel);
-    public static void AppendScalar(this IYamlRenderManager manager, YamlNull yamlNull, int indentationLevel) => manager.Append("null", indentationLevel);
-    public static void AppendScalar(this IYamlRenderManager manager, YamlString yamlString, int indentationLevel) => manager.Append(GetRenderValue(yamlString), indentationLevel);
+
+    // Neue generische AppendScalar-Methode für YamlScalarBase<T>
+    public static void AppendScalar<T>(this IYamlRenderManager manager, YamlScalarBase<T> yamlScalar, int indentationLevel)
+    {
+        switch (yamlScalar)
+        {
+            case YamlBoolean yamlBoolean:
+                manager.Append(yamlBoolean.Value.ToString().ToLower(), indentationLevel);
+                break;
+            case YamlFloat yamlFloat:
+                manager.Append(yamlFloat.Value.ToString(CultureInfo.InvariantCulture), indentationLevel);
+                break;
+            case YamlInteger yamlInteger:
+                manager.Append(yamlInteger.Value.ToString(), indentationLevel);
+                break;
+            case YamlNull yamlNull:
+                manager.Append("null", indentationLevel);
+                break;
+            case YamlString yamlString:
+                manager.Append(GetRenderValue(yamlString), indentationLevel);
+                break;
+            default:
+                manager.Append(yamlScalar.Value?.ToString() ?? "null", indentationLevel);
+                break;
+        }
+    }
 
     private const string NullValue = "null";
     private const string BackslashEscape = @"\\";
