@@ -2,4 +2,4 @@
 
 namespace EspHomeTools.Classes;
 
-public class YamlBoolean : YamlScalarBase<bool>, IYamlBoolean { }
+public class YamlBoolean : YamlScalarBase<bool>, IYamlBoolean;
