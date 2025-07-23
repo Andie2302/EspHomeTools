@@ -8,9 +8,6 @@
 
     <ItemGroup>
       <Folder Include="Scratch\" />
-      <Folder Include="Scratch\Classes\RenderManagers\" />
-      <Folder Include="Scratch\Classes\Scalars\" />
-      <Folder Include="Scratch\Interfaces\RenderManagers\" />
     </ItemGroup>
 
 </Project>
