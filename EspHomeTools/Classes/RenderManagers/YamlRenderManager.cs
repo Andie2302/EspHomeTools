@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using EspHomeTools.Interfaces.Render;
+using EspHomeTools.Interfaces.RenderManagers;
 
-namespace EspHomeTools.Classes.Render;
+namespace EspHomeTools.Classes.RenderManagers;
 
 /// <summary>
 /// Manages the generation and rendering of YAML-formatted text with proper indentation support.
