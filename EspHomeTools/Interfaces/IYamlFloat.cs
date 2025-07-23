@@ -1,3 +1,3 @@
-﻿namespace EspHomeTools.Scratch.Interfaces.Scalars;
+﻿namespace EspHomeTools.Interfaces;
 
 public interface IYamlFloat : IYamlScalar<float>;
