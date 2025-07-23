@@ -62,9 +62,9 @@ public class YamlRenderManager : IYamlRenderManager
 
     /// Appends the specified text to the internal StringBuilder with the given indentation level.
     /// The method automatically adjusts the indentation based on the clamped indentation level.
-    /// <param name="text">The text to append to the internal StringBuilder.</param>
     /// <param name="indentationLevel">The level of indentation to apply to the text. The value is clamped between the defined minimum and maximum levels.</param>
-    public void Append(string text, int indentationLevel) => _stringBuilder.Append(GetClampedIndentationString(indentationLevel)).Append(text);
+    /// <param name="text">The text to append to the internal StringBuilder.</param>
+    public void Append(int indentationLevel, string text) => _stringBuilder.Append(GetClampedIndentationString(indentationLevel)).Append(text);
     /// <summary>
     /// Appends a new line character to the current string representation without adding any additional text or indentation.
     /// </summary>
@@ -72,7 +72,7 @@ public class YamlRenderManager : IYamlRenderManager
     /// <summary>
     /// Appends a newline character to the internal string builder.
     /// </summary>
-    public void AppendLine(string text, int indentationLevel) => _stringBuilder.Append(GetClampedIndentationString(indentationLevel)).Append(text).Append(NewLine);
+    public void AppendLine(int indentationLevel, string text) => _stringBuilder.Append(GetClampedIndentationString(indentationLevel)).Append(text).Append(NewLine);
     /// <summary>
     /// Retrieves the current rendered YAML content as a string.
     /// </summary>
