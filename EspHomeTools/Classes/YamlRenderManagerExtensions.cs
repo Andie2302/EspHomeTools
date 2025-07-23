@@ -40,21 +40,13 @@ public static class YamlRenderManagerExtensions
         manager.Append(value, indentationLevel);
     }
 
-    private static string RenderBoolean(YamlBoolean yamlBoolean) =>
-        yamlBoolean.Value.ToString().ToLower();
+    private static string RenderBoolean(YamlBoolean yamlBoolean) => yamlBoolean.Value.ToString().ToLower();
 
-    private static string RenderFloat(YamlFloat yamlFloat) =>
-        yamlFloat.Value.ToString(CultureInfo.InvariantCulture);
+    private static string RenderFloat(YamlFloat yamlFloat) => yamlFloat.Value.ToString(CultureInfo.InvariantCulture);
 
-    private static string RenderInteger(YamlInteger yamlInteger) =>
-        yamlInteger.Value.ToString();
+    private static string RenderInteger(YamlInteger yamlInteger) => yamlInteger.Value.ToString();
 
-    private static string RenderString(IYamlString yamlString) =>
-        yamlString.Value == null ? NullValue : $"\"{EscapeString(yamlString.Value)}\"";
+    private static string RenderString(YamlString yamlString) => yamlString.Value == null ? NullValue : $"\"{EscapeString(yamlString.Value)}\"";
 
-    private static string EscapeString(string input) =>
-        input.Replace("\\", BackslashEscape).Replace("\"", QuoteEscape);
-
-    private static string GetRenderValue(IYamlString yamlString) =>
-        RenderString(yamlString);
+    private static string EscapeString(string input) => input.Replace("\\", BackslashEscape).Replace("\"", QuoteEscape);
 }
