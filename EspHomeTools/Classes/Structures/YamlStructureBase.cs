@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using EspHomeTools.Interfaces;
 
 namespace EspHomeTools.Classes.Structures;
