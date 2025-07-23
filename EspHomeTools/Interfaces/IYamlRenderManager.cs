@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 
 namespace EspHomeTools.Interfaces;
 
@@ -8,10 +9,10 @@ namespace EspHomeTools.Interfaces;
 public interface IYamlRenderManager
 {
     /// Appends the specified text to the internal string buffer at a given indentation level.
+    /// <param name="text">The text to append.</param>
     /// <param name="indentationLevel">The level of indentation to apply.
     ///     Values beyond recommended bounds are clamped internally.</param>
-    /// <param name="text">The text to append.</param>
-    void Append(int indentationLevel, string text);
+    void Append(string text, int indentationLevel);
     /// <summary>
     /// Appends a newline character to the internal string builder without any additional text or indentation.
     /// </summary>
@@ -20,12 +21,12 @@ public interface IYamlRenderManager
     /// Appends the specified text followed by a newline to the internal string builder,
     /// using the specified indentation level to determine the number of leading spaces.
     /// </summary>
+    /// <param name="text">The text to append.</param>
     /// <param name="indentationLevel">
     ///     The level of indentation to apply. The level determines the amount of space
     ///     added before the text. It will be clamped within a valid range.
     /// </param>
-    /// <param name="text">The text to append.</param>
-    void AppendLine(int indentationLevel, string text);
+    void AppendLine(string text, int indentationLevel);
     /// Retrieves the current-accumulated result from the internal StringBuilder used for rendering a YAML structure.
     /// <returns>
     /// A string representing the full YAML content accumulated by the YamlRenderManager.
@@ -35,5 +36,5 @@ public interface IYamlRenderManager
     /// Clears all content from the internal buffer used for building YAML render output.
     /// </summary>
     void Clear();
-    public StringBuilder BaseBuilder { get; }
+    void Append(int indentationLevel, params string[]? text);
 }
