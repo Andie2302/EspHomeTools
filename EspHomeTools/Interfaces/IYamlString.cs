@@ -1,3 +1,5 @@
-﻿namespace EspHomeTools.Interfaces;
+﻿using EspHomeTools.Classes;
 
-public interface IYamlString : IYamlScalar<string>;
+namespace EspHomeTools.Interfaces;
+
+public interface IYamlString : IYamlScalar<string>, IYamlNullable;
