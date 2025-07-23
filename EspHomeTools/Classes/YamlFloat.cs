@@ -2,4 +2,4 @@
 
 namespace EspHomeTools.Classes;
 
-public class YamlFloat : YamlScalarBase<float>, IYamlFloat;
+public class YamlFloat : YamlScalarBase<float>;
