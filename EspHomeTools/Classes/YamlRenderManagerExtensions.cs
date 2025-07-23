@@ -6,6 +6,8 @@ namespace EspHomeTools.Classes;
 [SuppressMessage("ReSharper", "UnusedType.Global")]
 public static class YamlRenderManagerExtensions
 {
+    public static void XXXAppendLineXXX(this IYamlRenderManager manager, string prefix, string v) { }
+
     public static void ExAppendKeyValueLine(this IYamlRenderManager manager, string key, string value, int indentationLevel)
     {
         manager.Append($"{key}: ", indentationLevel);
