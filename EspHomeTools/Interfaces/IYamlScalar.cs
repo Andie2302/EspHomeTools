@@ -1,6 +1,4 @@
-﻿using EspHomeTools.Interfaces;
-
-namespace EspHomeTools.Scratch.Interfaces.Scalars;
+﻿namespace EspHomeTools.Interfaces;
 
 public interface IYamlScalar;
 
