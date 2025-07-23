@@ -8,6 +8,8 @@ namespace EspHomeTools.Classes;
 /// </summary>
 public class YamlRenderManager : IYamlRenderManager
 {
+    public StringBuilder BaseBuilder { get; } = new();
+
     /// <summary>
     /// Represents the character used for generating indentation in the YAML rendering process.
     /// This character determines how indentation levels are visually represented in the output.
@@ -49,6 +51,31 @@ public class YamlRenderManager : IYamlRenderManager
     /// </summary>
     private const int MaxRecommendedSpacesPerLevel = 10;
 
+    /// Appends the specified text to the internal StringBuilder with the given indentation level.
+    /// The method automatically adjusts the indentation based on the clamped indentation level.
+    /// <param name="indentationLevel">The level of indentation to apply to the text. The value is clamped between the defined minimum and maximum levels.</param>
+    /// <param name="text">The text to append to the internal StringBuilder.</param>
+    public void Append(int indentationLevel, string text) => BaseBuilder.Append(GetClampedIndentationString(indentationLevel)).Append(text);
+    /// <summary>
+    /// Appends a new line character to the current string representation without adding any additional text or indentation.
+    /// </summary>
+    public void AppendLine() => BaseBuilder.Append(NewLine);
+    /// <summary>
+    /// Appends a newline character to the internal string builder.
+    /// </summary>
+    public void AppendLine(int indentationLevel, string text) => BaseBuilder.Append(GetClampedIndentationString(indentationLevel)).Append(text).Append(NewLine);
+    /// <summary>
+    /// Retrieves the current rendered YAML content as a string.
+    /// </summary>
+    /// <returns>
+    /// A string containing the accumulated YAML content.
+    /// </returns>
+    public string GetResult() => BaseBuilder.ToString();
+    /// <summary>
+    /// Clears all content from the internal string builder, resetting it to an empty state.
+    /// </summary>
+    public void Clear() => BaseBuilder.Clear();
+
     /// <summary>
     /// A private instance of <see cref="StringBuilder"/> used to construct and manage
     /// the YAML output dynamically as strings are appended or cleared.
@@ -58,32 +85,6 @@ public class YamlRenderManager : IYamlRenderManager
     /// append operation with appropriate indentation, clearing, and retrieval of the
     /// generated YAML content as a final string.
     /// </remarks>
-    private readonly StringBuilder _stringBuilder = new();
-
-    /// Appends the specified text to the internal StringBuilder with the given indentation level.
-    /// The method automatically adjusts the indentation based on the clamped indentation level.
-    /// <param name="indentationLevel">The level of indentation to apply to the text. The value is clamped between the defined minimum and maximum levels.</param>
-    /// <param name="text">The text to append to the internal StringBuilder.</param>
-    public void Append(int indentationLevel, string text) => _stringBuilder.Append(GetClampedIndentationString(indentationLevel)).Append(text);
-    /// <summary>
-    /// Appends a new line character to the current string representation without adding any additional text or indentation.
-    /// </summary>
-    public void AppendLine() => _stringBuilder.Append(NewLine);
-    /// <summary>
-    /// Appends a newline character to the internal string builder.
-    /// </summary>
-    public void AppendLine(int indentationLevel, string text) => _stringBuilder.Append(GetClampedIndentationString(indentationLevel)).Append(text).Append(NewLine);
-    /// <summary>
-    /// Retrieves the current rendered YAML content as a string.
-    /// </summary>
-    /// <returns>
-    /// A string containing the accumulated YAML content.
-    /// </returns>
-    public string GetResult() => _stringBuilder.ToString();
-    /// <summary>
-    /// Clears all content from the internal string builder, resetting it to an empty state.
-    /// </summary>
-    public void Clear() => _stringBuilder.Clear();
     /// <summary>
     /// Generates a string of spaces corresponding to the specified indentation level,
     /// ensuring that the indentation level is clamped within the allowed range.
