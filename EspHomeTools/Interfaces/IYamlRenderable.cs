@@ -1,6 +1,4 @@
-﻿using EspHomeTools.Scratch.Interfaces.RenderManagers;
-
-namespace EspHomeTools.Interfaces;
+﻿namespace EspHomeTools.Interfaces;
 
 /// <summary>
 /// Represents an interface defining the ability of an object to render its state into a YAML representation.
