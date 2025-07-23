@@ -2,7 +2,7 @@
 
 namespace EspHomeTools.Classes;
 
-public class YamlNull : YamlScalarBase<string?>, IYamlNull
+public class YamlNull : YamlScalarBase<string?>
 {
     public override string? Value
     {
