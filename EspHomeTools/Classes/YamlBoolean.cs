@@ -6,7 +6,7 @@ public class YamlBoolean : IYamlBoolean
 {
     public void Render(IYamlRenderManager yamlRenderManager, int indentationLevel)
     {
-        throw new System.NotImplementedException();
+        yamlRenderManager.Append(Value.ToString().ToLower(), indentationLevel);
     }
     public bool Value { get; set; }
 }
