@@ -1,4 +1,4 @@
-﻿namespace EspHomeTools.Interfaces.Render;
+﻿namespace EspHomeTools.Interfaces.RenderManagers;
 
 /// <summary>
 /// Defines a manager for rendering YAML content with support for indentation and formatting.
