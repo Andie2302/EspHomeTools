@@ -1,6 +1,7 @@
-﻿using EspHomeTools.Interfaces.Render;
+﻿using EspHomeTools.Interfaces.RenderManagers;
+using EspHomeTools.Interfaces.Scalars;
 
-namespace EspHomeTools.Interfaces;
+namespace EspHomeTools.Interfaces.Base;
 
 public interface IYamlObject : IYamlRenderable { }
 
