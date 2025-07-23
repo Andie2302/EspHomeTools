@@ -7,8 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Classes\" />
-      <Folder Include="Interfaces\" />
+      <Folder Include="Classes\Base\" />
       <Folder Include="Scratch\" />
     </ItemGroup>
 
