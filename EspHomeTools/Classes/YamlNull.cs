@@ -2,13 +2,9 @@
 
 namespace EspHomeTools.Classes;
 
-public class YamlNull : IYamlNull
+public class YamlNull : YamlScalarBase<string?>, IYamlNull
 {
-    public void Render(IYamlRenderManager yamlRenderManager, int indentationLevel) => yamlRenderManager.AppendScalar(this,indentationLevel);
-
-    private string? Value { get; set; } = null;
-
-    string? IYamlValue<string?>.Value
+    public override string? Value
     {
         get => null;
         set { }
