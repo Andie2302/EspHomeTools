@@ -8,7 +8,7 @@
 
     <ItemGroup>
       <Folder Include="Scratch\" />
-      <Folder Include="Scratch\Interfaces\Scalars\" />
+      <Folder Include="Scratch\Classes\Scalars\" />
     </ItemGroup>
 
 </Project>
