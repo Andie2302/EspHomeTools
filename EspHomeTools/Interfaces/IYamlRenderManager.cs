@@ -1,4 +1,6 @@
-﻿namespace EspHomeTools.Interfaces;
+﻿using System.Text;
+
+namespace EspHomeTools.Interfaces;
 
 /// <summary>
 /// Defines a manager for rendering YAML content with support for indentation and formatting.
@@ -33,4 +35,5 @@ public interface IYamlRenderManager
     /// Clears all content from the internal buffer used for building YAML render output.
     /// </summary>
     void Clear();
+    public StringBuilder BaseBuilder { get; }
 }
