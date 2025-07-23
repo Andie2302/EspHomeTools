@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using EspHomeTools.Interfaces;
-using EspHomeTools.Interfaces.Render;
+using EspHomeTools.Interfaces.RenderManagers;
+using EspHomeTools.Interfaces.Scalars;
 
 namespace EspHomeTools.DEMO;
 
