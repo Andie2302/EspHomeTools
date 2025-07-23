@@ -2,4 +2,4 @@
 
 namespace EspHomeTools.Classes;
 
-public class YamlInteger : YamlScalarBase<int>, IYamlInteger;
+public class YamlInteger : YamlScalarBase<int>;
