@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
-using EspHomeTools.Interfaces;
+using EspHomeTools.Interfaces.Base;
+using EspHomeTools.Interfaces.Scalars;
+
+namespace EspHomeTools.DEMO;
 
 /// <summary>
 /// Definiert eine Liste von YAML-Skalarwerten.
