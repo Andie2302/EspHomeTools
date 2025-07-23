@@ -6,8 +6,9 @@ public class YamlNull : IYamlNull
 {
     public void Render(IYamlRenderManager yamlRenderManager, int indentationLevel)
     {
-        throw new System.NotImplementedException();
+        yamlRenderManager.Append("null", indentationLevel);
     }
+
     private string? Value { get; set; } = null;
 
     string? IYamlValue<string?>.Value
