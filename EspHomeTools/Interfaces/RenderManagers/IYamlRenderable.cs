@@ -1,4 +1,4 @@
-﻿namespace EspHomeTools.Interfaces.Render;
+﻿namespace EspHomeTools.Interfaces.RenderManagers;
 
 /// <summary>
 /// Defines a contract for objects that can render their state into YAML format.
