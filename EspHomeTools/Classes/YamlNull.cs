@@ -8,6 +8,13 @@ public class YamlNull : IYamlNull, IYamlNullable
     {
         throw new System.NotImplementedException();
     }
-    public string? Value { get; set; } = null;
+    private string? Value { get; set; } = null;
+
+    string? IYamlValue<string?>.Value
+    {
+        get => null;
+        set { }
+    }
+
     public bool IsValueNull => true;
 }
