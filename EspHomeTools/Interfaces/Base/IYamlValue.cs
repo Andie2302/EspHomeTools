@@ -1,3 +1,3 @@
-﻿namespace EspHomeTools.Interfaces;
+﻿namespace EspHomeTools.Interfaces.Base;
 
 public interface IYamlValue { }
