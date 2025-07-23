@@ -1,6 +1,6 @@
 ﻿using EspHomeTools.Interfaces.RenderManagers;
 
-namespace EspHomeTools.Interfaces.Base;
+namespace EspHomeTools.Interfaces;
 
 /// <summary>
 /// Represents a base interface for objects that can be serialized into YAML format.
