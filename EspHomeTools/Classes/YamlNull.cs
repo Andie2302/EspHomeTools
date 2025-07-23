@@ -4,10 +4,7 @@ namespace EspHomeTools.Classes;
 
 public class YamlNull : IYamlNull
 {
-    public void Render(IYamlRenderManager yamlRenderManager, int indentationLevel)
-    {
-        yamlRenderManager.Append("null", indentationLevel);
-    }
+    public void Render(IYamlRenderManager yamlRenderManager, int indentationLevel) => yamlRenderManager.AppendScalar(this,indentationLevel);
 
     private string? Value { get; set; } = null;
 
