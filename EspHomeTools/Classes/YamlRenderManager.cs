@@ -6,16 +6,11 @@ namespace EspHomeTools.Classes;
 public sealed class YamlRenderManager : IYamlRenderManager
 {
     private readonly StringBuilder _stringBuilder  = new();
-
     private const char IndentationCharacter = ' ';
-
     private const char NewLine = '\n';
-
     private const int SpacesPerLevel = 2;
-
     private const int MinIndentationLevel = 0;
-
-    private const int MaxRecommendedSpacesPerLevel = 10;
+    private const int MaxLevel = 1000;
 
     public void Append(string text, int indentationLevel) => _stringBuilder.Append(GetClampedIndentationString(indentationLevel)).Append(text);
 
@@ -40,5 +35,5 @@ public sealed class YamlRenderManager : IYamlRenderManager
 
     private static string GetIndentationString(int indentationLevel) => indentationLevel <= 0 ? string.Empty : new string(IndentationCharacter, indentationLevel * SpacesPerLevel);
 
-    private static int ClampIndentationLevel(int indentationLevel) => indentationLevel < MinIndentationLevel ? MinIndentationLevel : indentationLevel > MaxRecommendedSpacesPerLevel ? MaxRecommendedSpacesPerLevel : indentationLevel;
+    private static int ClampIndentationLevel(int indentationLevel) => indentationLevel < MinIndentationLevel ? MinIndentationLevel : indentationLevel > MaxLevel ? MaxLevel : indentationLevel;
 }
