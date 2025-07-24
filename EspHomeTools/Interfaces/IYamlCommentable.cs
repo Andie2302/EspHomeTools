@@ -1,3 +1,8 @@
-﻿namespace EspHomeTools.Interfaces;
+﻿using EspHomeTools.Classes;
 
-public interface IYamlCommentable { }
+namespace EspHomeTools.Interfaces;
+
+public interface IYamlCommentable
+{
+    IYamlComment Comment { get; }
+}
