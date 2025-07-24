@@ -23,7 +23,7 @@ public class YamlComment : IYamlComment
                 var trimed = item.Trim();
                 if (trimed.Contains('\n') || trimed.Contains('\r')) // char statt string
                 {
-                    var lines = trimed.Split(["\r\n", "\n", "\r"], StringSplitOptions.RemoveEmptyEntries);
+                    var lines = trimed.Split(["\r\n", "\n", "\r"], StringSplitOptions.None);
                     foreach (var line in lines)
                     {
                         if (string.IsNullOrWhiteSpace(line))
@@ -43,15 +43,21 @@ public class YamlComment : IYamlComment
             }
         }
     }
+    public static IEnumerable<string> Check(string comment) => Check([comment]);
     public void SetInline(string comment)
     {
-        if (string.IsNullOrEmpty(comment))
+        if (string.IsNullOrWhiteSpace(comment))
         {
             Inline = null;
+            return;
+        }
+
+        if (comment.Contains('\n') || comment.Contains('\r'))
+        {
+            Inline = string.Join(" ", Check(comment));
         }
         else
         {
-            comment = comment.Trim();
             Inline = comment;
         }
     }
