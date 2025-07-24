@@ -1,5 +1,5 @@
 ﻿namespace EspHomeTools.Interfaces;
 
-public interface IYamlScalar;
+public interface IYamlScalar<T> : IYamlScalar { }
 
-public interface IYamlScalar<T> : IYamlScalar, IYamlValue<T>;
+public interface IYamlScalar : IYamlObject { }
