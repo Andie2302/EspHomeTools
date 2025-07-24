@@ -1,3 +1,3 @@
 ﻿namespace EspHomeTools.Interfaces;
 
-public interface IYamlObject;
+public interface IYamlObject : IYamlRenderable, IYamlCommentable { }
