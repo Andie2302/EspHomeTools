@@ -1,4 +1,6 @@
-﻿namespace EspHomeTools.Interfaces;
+﻿using EspHomeTools.Classes.Render;
+
+namespace EspHomeTools.Interfaces;
 
 public interface IYamlRenderable : IYamlCommentable
 {
