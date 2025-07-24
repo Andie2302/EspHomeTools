@@ -1,4 +1,4 @@
-﻿namespace EspHomeTools.Classes;
+﻿namespace EspHomeTools.Classes.Comment;
 
 public interface IYamlComment
 {
