@@ -11,7 +11,7 @@ public record EsphomeDevice
     public Dictionary<string, EsphomeValue> Substitutions { get; init; } = [];
 
     [YamlMember(Alias = "wifi")]
-    public WifiSection Wifi { get; init; } = new WifiSection();
+    public WifiSection? Wifi { get; init; } = new();
 
     [YamlMember(Alias = "sensor")]
     public List<Dictionary<string, object>> Sensors { get; init; } = [];
