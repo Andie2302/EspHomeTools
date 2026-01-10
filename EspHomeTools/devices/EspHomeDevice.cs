@@ -20,19 +20,19 @@ public record EspHomeDevice
     public LoggerSection? Logger { get; init; } = new(); // Standardmäßig aktiv
 
     [YamlMember(Alias = "api", Order = 11)]
-    public ApiSection? Api { get; init; }
+    public ApiSection? Api { get; init; } = new();
 
     [YamlMember(Alias = "ota", Order = 12)]
-    public OtaSection? Ota { get; init; }
+    public OtaSection? Ota { get; init; } = new();
 
     [YamlMember(Alias = "web_server", Order = 13)]
-    public WebServerSection? WebServer { get; init; }
+    public WebServerSection? WebServer { get; init; } = new();
 
     [YamlMember(Alias = "wifi", Order = 20)]
-    public WifiSection? Wifi { get; init; }
+    public WifiSection? Wifi { get; init; } = new();
 
     [YamlMember(Alias = "captive_portal", Order = 21)]
-    public CaptivePortalSection? CaptivePortal { get; init; }
+    public CaptivePortalSection? CaptivePortal { get; init; } = new();
 
     [YamlMember(Alias = "sensor", Order = 30)]
     public List<SensorBase> Sensors { get; init; } = [];
