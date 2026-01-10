@@ -16,37 +16,37 @@ public record EspHomeDevice
     // --- Hardware Plattformen (Nur eine sollte aktiv sein) ---
 
     [YamlMember(Alias = "esp32", Order = 3)]
-    public Esp32Section? Esp32 { get; init; }
+    public Esp32Section? Esp32 { get; init; } = new();
 
-    [YamlMember(Alias = "esp32_s2", Order = 4)]
-    public Esp32S2Section? Esp32S2 { get; init; }
+    [YamlMember(Alias = "esp32", Order = 4)]
+    public Esp32S2Section? Esp32S2 { get; init; } = new();
 
-    [YamlMember(Alias = "esp32_s3", Order = 5)]
-    public Esp32S3Section? Esp32S3 { get; init; }
+    [YamlMember(Alias = "esp32", Order = 5)]
+    public Esp32S3Section? Esp32S3 { get; init; } = new();
 
-    [YamlMember(Alias = "esp32_c3", Order = 6)]
-    public Esp32C3Section? Esp32C3 { get; init; }
+    [YamlMember(Alias = "esp32", Order = 6)]
+    public Esp32C3Section? Esp32C3 { get; init; } = new();
 
-    [YamlMember(Alias = "esp32_c6", Order = 7)]
-    public Esp32C6Section? Esp32C6 { get; init; }
+    [YamlMember(Alias = "esp32", Order = 7)]
+    public Esp32C6Section? Esp32C6 { get; init; } = new();
 
     [YamlMember(Alias = "esp8266", Order = 8)]
-    public Esp8266Section? Esp8266 { get; init; }
+    public Esp8266Section? Esp8266 { get; init; } = new();
 
     [YamlMember(Alias = "rp2040", Order = 9)]
-    public Rp2040? Rp2040 { get; init; }
+    public Rp2040? Rp2040 { get; init; } = new();
 
     [YamlMember(Alias = "rtl87xx", Order = 10)]
-    public Rtl87Xx? Rtl87Xx { get; init; }
+    public Rtl87Xx? Rtl87Xx { get; init; } = new();
 
     [YamlMember(Alias = "bk72xx", Order = 11)]
-    public Bk72Xx? Bk72Xx { get; init; }
+    public Bk72Xx? Bk72Xx { get; init; } = new();
 
     [YamlMember(Alias = "ln882x", Order = 12)]
-    public Ln882X? Ln882X { get; init; }
+    public Ln882X? Ln882X { get; init; } = new();
 
-    [YamlMember(Alias = "raspberry_pi_pico_w", Order = 13)]
-    public RaspBerryPicoW? RaspBerryPicoW { get; init; }
+    [YamlMember(Alias = "rp2040", Order = 13)]
+    public RaspBerryPicoW? RaspBerryPicoW { get; init; } = new();
 
     // --- Standard Sektionen ---
 
