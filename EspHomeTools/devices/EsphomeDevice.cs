@@ -1,6 +1,8 @@
-﻿using YamlDotNet.Serialization;
+﻿using EspHomeTools.sections;
+using EspHomeTools.values;
+using YamlDotNet.Serialization;
 
-namespace EspHomeTools;
+namespace EspHomeTools.devices;
 
 public record EsphomeDevice
 {
