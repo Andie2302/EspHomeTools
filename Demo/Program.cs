@@ -19,6 +19,8 @@ var myConfig = new EspHomeDevice
         ["wifi_password"] = new EspHomeValue("wifi_password", true),
         ["ap_ssid"] = new EspHomeValue("ap_ssid", true),
         ["ap_password"] = new EspHomeValue("ap_password", true),
+        ["ota_password"] = new EspHomeValue("ota_password", true),
+        ["api_key"] = new EspHomeValue("api_key", true),
     },
 
     Sensors = [
