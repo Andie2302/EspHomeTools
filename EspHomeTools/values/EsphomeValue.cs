@@ -1,4 +1,4 @@
-﻿namespace EspHomeTools;
+﻿namespace EspHomeTools.values;
 
 public record EsphomeValue
 {
