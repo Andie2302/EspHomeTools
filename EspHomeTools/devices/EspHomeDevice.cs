@@ -1,5 +1,4 @@
-﻿// EspHomeTools/devices/EspHomeDevice.cs
-namespace EspHomeTools.devices;
+﻿namespace EspHomeTools.devices;
 
 using sections;
 using sensors;
@@ -13,11 +12,11 @@ public record EspHomeDevice
     [YamlMember(Alias = "esphome", Order = 2)]
     public EspHomeSection SectionEspHome { get; init; } = new();
 
-    [YamlMember(Alias = "esp32", Order = 3)] // Falls du ein Board spezifizierst
+    [YamlMember(Alias = "esp32", Order = 3)]
     public Dictionary<string, object>? Esp32 { get; init; }
 
     [YamlMember(Alias = "logger", Order = 10)]
-    public LoggerSection? Logger { get; init; } = new(); // Standardmäßig aktiv
+    public LoggerSection? Logger { get; init; } = new();
 
     [YamlMember(Alias = "api", Order = 11)]
     public ApiSection? Api { get; init; } = new();
