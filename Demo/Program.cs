@@ -10,7 +10,7 @@ var serializer = new EspHomeSerializer();
 var myConfig = new EspHomeDevice 
 {
     SectionEspHome = new EspHomeSection { Name = "test_node" },
-    Substitutions = new Dictionary<string, EspHomeValue>
+    Substitutions = new SubstitutionsSection
     {
         ["name"] = "og-sz-bett",
         ["friendly_name"] = "OG-SZ-BETT",
@@ -18,12 +18,11 @@ var myConfig = new EspHomeDevice
         ["wifi_password"] = new EspHomeValue("wifi_password", true),
         ["ap_ssid"] = new EspHomeValue("ap_ssid", true),
         ["ap_password"] = new EspHomeValue("ap_password", true),
-        
     },
     Sensors = [
         new Dictionary<string, object> { ["platform"] = "dht", ["pin"] = 14, ["name"] = "Temp" }
     ]
 };
 
-string yamlOutput = serializer.Serialize(myConfig);
+var yamlOutput = serializer.Serialize(myConfig);
 Console.WriteLine(yamlOutput);
