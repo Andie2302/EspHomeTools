@@ -1,5 +1,6 @@
 ﻿using EspHomeTools.devices;
 using EspHomeTools.sections;
+using EspHomeTools.sensors;
 using EspHomeTools.serializers;
 using EspHomeTools.values;
 
@@ -19,7 +20,20 @@ var myConfig = new EspHomeDevice
         ["ap_ssid"] = new EspHomeValue("ap_ssid", true),
         ["ap_password"] = new EspHomeValue("ap_password", true),
     },
-    //Sensors = [new Dictionary<string, object> { ["platform"] = "dht", ["pin"] = 14, ["name"] = "Temp" }]
+
+    Sensors = [
+        new DhtSensor 
+        { 
+            Name = "Temperatur", 
+            Pin = 14, 
+            Model = "DHT22",
+            UpdateInterval = "60s" 
+        },
+        new UptimeSensor 
+        { 
+            Name = "Laufzeit" 
+        }
+    ]
 };
 
 var yamlOutput = serializer.Serialize(myConfig);
