@@ -1,4 +1,5 @@
 ﻿using EspHomeTools.devices;
+using EspHomeTools.sections;
 using EspHomeTools.serializers;
 using EspHomeTools.values;
 
@@ -6,17 +7,17 @@ Console.WriteLine("Hello, World!");
 
 var serializer = new EspHomeSerializer();
 
-var myConfig = new EsphomeDevice 
+var myConfig = new EspHomeDevice 
 {
-    SectionEsphome = new() { Name = "test_node" },
-    Substitutions = new()
+    SectionEspHome = new EspHomeSection { Name = "test_node" },
+    Substitutions = new Dictionary<string, EspHomeValue>
     {
         ["name"] = "og-sz-bett",
         ["friendly_name"] = "OG-SZ-BETT",
-        ["wifi_ssid"] = new EsphomeValue("wifi_ssid", true),
-        ["wifi_password"] = new EsphomeValue("wifi_password", true),
-        ["ap_ssid"] = new EsphomeValue("ap_ssid", true),
-        ["ap_password"] = new EsphomeValue("ap_password", true),
+        ["wifi_ssid"] = new EspHomeValue("wifi_ssid", true),
+        ["wifi_password"] = new EspHomeValue("wifi_password", true),
+        ["ap_ssid"] = new EspHomeValue("ap_ssid", true),
+        ["ap_password"] = new EspHomeValue("ap_password", true),
         
     },
     Sensors = [
