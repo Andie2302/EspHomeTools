@@ -1,4 +1,4 @@
-﻿namespace EspHomeTools;
+﻿namespace EspHomeTools.sections;
 
 public record WifiSection
 {
