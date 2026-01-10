@@ -57,7 +57,7 @@ public record EspHomeDevice
     public ApiSection? Api { get; init; } = new();
 
     [YamlMember(Alias = "ota", Order = 22)]
-    public OtaSection? Ota { get; init; } = new();
+    public List<OtaSection>? Ota { get; init; } = [new OtaSection()];
 
     [YamlMember(Alias = "web_server", Order = 23)]
     public WebServerSection? WebServer { get; init; } = new();
