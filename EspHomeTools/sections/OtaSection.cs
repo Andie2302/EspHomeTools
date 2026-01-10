@@ -2,6 +2,6 @@
 
 public record OtaSection
 {
-    public string? Password { get; init; }
-    public string? Platform { get; init; }
+    public string? Password { get; init; } = "${ota_password}";
+    public string? Platform { get; init; } = "esphome";
 }
