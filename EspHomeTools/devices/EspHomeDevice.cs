@@ -6,13 +6,13 @@ namespace EspHomeTools.devices;
 
 public record EspHomeDevice
 {
-    [YamlMember(Alias = "esphome")]
+    [YamlMember(Alias = "esphome", Order = 0)]
     public EspHomeSection SectionEspHome { get; init; } = new();
 
-    [YamlMember(Alias = "substitutions")]
+    [YamlMember(Alias = "substitutions", Order = -1)]
     public Dictionary<string, EspHomeValue> Substitutions { get; init; } = [];
 
-    [YamlMember(Alias = "wifi")]
+    [YamlMember(Alias = "wifi", Order = 1)]
     public WifiSection? Wifi { get; init; } = new();
 
     [YamlMember(Alias = "sensor")]
