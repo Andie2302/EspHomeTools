@@ -1,8 +1,9 @@
-﻿using YamlDotNet.Core;
+﻿using EspHomeTools.values;
+using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
 
-namespace EspHomeTools;
+namespace EspHomeTools.serializers.converters;
 
 public class EsphomeValueConverter : IYamlTypeConverter
 {
