@@ -1,14 +1,10 @@
-﻿using EspHomeTools;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
+﻿using EspHomeTools.devices;
+using EspHomeTools.serializers;
+using EspHomeTools.values;
 
 Console.WriteLine("Hello, World!");
 
-var serializer = new SerializerBuilder()
-    .WithNamingConvention(UnderscoredNamingConvention.Instance)
-    .WithTypeConverter(new EsphomeValueConverter())
-    .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitDefaults|DefaultValuesHandling.OmitEmptyCollections|DefaultValuesHandling.OmitNull)
-    .Build();
+var serializer = new EspHomeSerializer();
 
 var myConfig = new EsphomeDevice 
 {
@@ -24,7 +20,7 @@ var myConfig = new EsphomeDevice
         
     },
     Sensors = [
-        new() { ["platform"] = "dht", ["pin"] = 14, ["name"] = "Temp" }
+        new Dictionary<string, object> { ["platform"] = "dht", ["pin"] = 14, ["name"] = "Temp" }
     ]
 };
 
