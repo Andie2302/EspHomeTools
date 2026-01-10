@@ -5,19 +5,19 @@ using YamlDotNet.Serialization;
 
 namespace EspHomeTools.serializers.converters;
 
-public class EsphomeValueConverter : IYamlTypeConverter
+public class EspHomeValueConverter : IYamlTypeConverter
 {
-    public bool Accepts(Type type) => type == typeof(EsphomeValue);
+    public bool Accepts(Type type) => type == typeof(EspHomeValue);
 
     public object? ReadYaml(IParser parser, Type type, ObjectDeserializer rootDeserializer)
     {
         var scalar = parser.Consume<Scalar>();
-        return new EsphomeValue(scalar.Value, scalar.Tag == "!secret");
+        return new EspHomeValue(scalar.Value, scalar.Tag == "!secret");
     }
 
     public void WriteYaml(IEmitter emitter, object? value, Type type, ObjectSerializer serializer)
     {
-        var esphomeValue = (EsphomeValue)value!;
+        var esphomeValue = (EspHomeValue)value!;
         var stringValue = esphomeValue.Value?.ToString() ?? string.Empty;
 
         var isSecret = esphomeValue.IsSecret;
