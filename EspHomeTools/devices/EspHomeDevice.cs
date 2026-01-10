@@ -4,13 +4,13 @@ using YamlDotNet.Serialization;
 
 namespace EspHomeTools.devices;
 
-public record EsphomeDevice
+public record EspHomeDevice
 {
     [YamlMember(Alias = "esphome")]
-    public EsphomeSection SectionEsphome { get; init; } = new();
+    public EspHomeSection SectionEspHome { get; init; } = new();
 
     [YamlMember(Alias = "substitutions")]
-    public Dictionary<string, EsphomeValue> Substitutions { get; init; } = [];
+    public Dictionary<string, EspHomeValue> Substitutions { get; init; } = [];
 
     [YamlMember(Alias = "wifi")]
     public WifiSection? Wifi { get; init; } = new();
