@@ -1,13 +1,13 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using EspHomeTools;
+﻿using EspHomeTools;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 Console.WriteLine("Hello, World!");
 
 var serializer = new SerializerBuilder()
-    .WithNamingConvention(UnderscoredNamingConvention.Instance) // ESPHome nutzt snake_case
+    .WithNamingConvention(UnderscoredNamingConvention.Instance)
+    .WithTypeConverter(new EsphomeValueConverter())
+    .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitDefaults|DefaultValuesHandling.OmitEmptyCollections|DefaultValuesHandling.OmitNull)
     .Build();
 
 var myConfig = new EsphomeDevice 
