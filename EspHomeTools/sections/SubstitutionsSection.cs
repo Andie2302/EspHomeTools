@@ -2,7 +2,7 @@
 
 namespace EspHomeTools.sections;
 
-public class SubstitutionsSection
+public class SubstitutionsSection : Dictionary<string, EspHomeValue>
 {
-    public Dictionary<string, EspHomeValue> Substitutions { get; init; } = new();
+    public void AddSecret(string key, object value) => this[key] = new EspHomeValue(value, true);
 }
