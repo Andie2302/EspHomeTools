@@ -12,20 +12,24 @@ public partial class EspHomeSerializer
         .WithNamingConvention(UnderscoredNamingConvention.Instance)
         .WithTypeConverter(new EspHomeValueConverter())
         .ConfigureDefaultValuesHandling(
-            DefaultValuesHandling.OmitDefaults | 
-            DefaultValuesHandling.OmitEmptyCollections | 
+            DefaultValuesHandling.OmitDefaults |
+            DefaultValuesHandling.OmitEmptyCollections |
             DefaultValuesHandling.OmitNull)
         .Build();
 
     /// <summary>
     /// Serialisiert ein EsphomeDevice Objekt in einen YAML-String.
     /// </summary>
-    public string Serialize(EspHomeDevice device,bool prettyPrint = true)
+    public string Serialize(EspHomeDevice device, bool prettyPrint = true)
     {
         var yaml = _serializer.Serialize(device);
+        yaml = RemoveEmptyEntries().Replace(yaml, ":\n");
         return prettyPrint ? AddSectionSeparatorLines().Replace(yaml, Environment.NewLine + "$1").Trim() : yaml;
     }
 
     [GeneratedRegex(@"(?m)^([^\s\-]+:)")]
     private static partial Regex AddSectionSeparatorLines();
+
+    [GeneratedRegex(@":\s*{\s*}\s*")]
+    private static partial Regex RemoveEmptyEntries();
 }
