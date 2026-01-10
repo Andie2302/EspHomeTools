@@ -1,11 +1,12 @@
-﻿using EspHomeTools.devices;
+﻿using System.Text.RegularExpressions;
+using EspHomeTools.devices;
 using EspHomeTools.serializers.converters;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 namespace EspHomeTools.serializers;
 
-public class EspHomeSerializer
+public partial class EspHomeSerializer
 {
     private readonly ISerializer _serializer = new SerializerBuilder()
         .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -19,8 +20,12 @@ public class EspHomeSerializer
     /// <summary>
     /// Serialisiert ein EsphomeDevice Objekt in einen YAML-String.
     /// </summary>
-    public string Serialize(EspHomeDevice device)
+    public string Serialize(EspHomeDevice device,bool prettyPrint = true)
     {
-        return _serializer.Serialize(device);
+        var yaml = _serializer.Serialize(device);
+        return prettyPrint ? AddSectionSeparatorLines().Replace(yaml, Environment.NewLine + "$1").Trim() : yaml;
     }
+
+    [GeneratedRegex(@"(?m)^([^\s\-]+:)")]
+    private static partial Regex AddSectionSeparatorLines();
 }
