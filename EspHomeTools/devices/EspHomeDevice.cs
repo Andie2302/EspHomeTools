@@ -1,4 +1,5 @@
 ﻿using EspHomeTools.sections;
+using EspHomeTools.sensors;
 using EspHomeTools.values;
 using YamlDotNet.Serialization;
 
@@ -15,6 +16,6 @@ public record EspHomeDevice
     [YamlMember(Alias = "wifi", Order = 1)]
     public WifiSection? Wifi { get; init; } = new();
 
-    [YamlMember(Alias = "sensor")]
-    public List<Dictionary<string, object>> Sensors { get; init; } = [];
+    [YamlMember(Alias = "sensor", Order = 4)]
+    public List<SensorBase> Sensors { get; init; } = [];
 }
