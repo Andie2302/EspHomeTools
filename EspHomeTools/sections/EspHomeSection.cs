@@ -2,6 +2,6 @@
 
 public record EspHomeSection
 {
-    public string Name { get; init; } = "default-node";
-    public string FriendlyName { get; init; } = string.Empty;
+    public string Name { get; init; } = "${name}";
+    public string FriendlyName { get; init; } = "${friendly_name}";
 }
